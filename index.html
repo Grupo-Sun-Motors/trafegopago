@@ -41,196 +41,355 @@
             background-color: #fee2e2;
             color: #991b1b;
         }
+        
+        /* Sidemenu Styles */
+        .sidemenu {
+            transition: width 0.3s ease, transform 0.3s ease;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .sidemenu.collapsed {
+            width: 70px !important;
+        }
+        
+        .sidemenu.collapsed .sidemenu-text {
+            display: none;
+        }
+        
+        .sidemenu.collapsed .nav-icon {
+            margin-right: 0 !important;
+        }
+        
+        .sidemenu.mobile-hidden {
+            transform: translateX(-100%);
+        }
+        
+        .main-content {
+            transition: margin-left 0.3s ease;
+        }
+        
+        .nav-item {
+            transition: all 0.2s ease;
+        }
+        
+        .nav-item:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .nav-item.active {
+            background-color: #dbeafe;
+            border-right: 3px solid #3b82f6;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+        
+        @media (min-width: 768px) {
+            .sidemenu.mobile-hidden {
+                transform: translateX(0);
+            }
+            .overlay {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body class="text-gray-800">
-
-    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
-        
+    <!-- Overlay for mobile -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Sidemenu -->
+    <div class="sidemenu w-64 bg-white md:relative md:translate-x-0 mobile-hidden" id="sidemenu">
         <!-- Header -->
-        <header class="text-center mb-10">
-            <h1 class="text-4xl font-bold text-gray-900">Dashboard de Performance - Tráfego Pago</h1>
-            <p class="text-lg text-gray-600 mt-2">Kia Sun Motors & Suzuki Motor Ipiranga - Porto Alegre (Julho)</p>
+        <div class="h-16 flex items-center justify-between px-4 border-b border-gray-200">
+            <div class="flex items-center">
+                <svg class="w-8 h-8 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+                <span class="font-bold text-gray-900 text-lg sidemenu-text">Sun Motors</span>
+            </div>
+            <button class="md:block hidden p-1 rounded hover:bg-gray-100" id="collapseBtn">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+                </svg>
+            </button>
+            <button class="md:hidden block p-1 rounded hover:bg-gray-100" id="closeMobileMenu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="mt-4">
+            <a href="index.html" class="nav-item active flex items-center px-4 py-3 text-gray-700">
+                <svg class="w-5 h-5 mr-3 nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                </svg>
+                <span class="sidemenu-text">Dashboard</span>
+            </a>
+            <a href="pages/orcamento/index.html" class="nav-item flex items-center px-4 py-3 text-gray-700">
+                <svg class="w-5 h-5 mr-3 nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+                <span class="sidemenu-text">Orçamento</span>
+            </a>
+            <a href="pages/publico-alvo/index.html" class="nav-item flex items-center px-4 py-3 text-gray-700">
+                <svg class="w-5 h-5 mr-3 nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                <span class="sidemenu-text">Público-Alvo</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content md:ml-64 min-h-screen">
+        <!-- Top Header -->
+        <header class="h-16 bg-white shadow-sm flex items-center justify-between px-4 md:px-6">
+            <button class="md:hidden p-2 rounded hover:bg-gray-100" id="mobileMenuBtn">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+            <h1 class="text-xl font-semibold text-gray-900">Dashboard de Performance</h1>
+            <div class="w-8"></div> <!-- Spacer for mobile -->
         </header>
 
-        <!-- Main Content -->
-        <main class="space-y-12">
+        <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+            <!-- Page Header -->
+            <header class="text-center mb-10">
+                <h1 class="text-4xl font-bold text-gray-900">Dashboard de Performance - Tráfego Pago</h1>
+                <p class="text-lg text-gray-600 mt-2">Kia Sun Motors & Suzuki Motor Ipiranga - Porto Alegre (Julho)</p>
+            </header>
 
-            <!-- Kia Sun Motors Section -->
-            <section id="kia" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
-                <div class="flex items-center mb-6">
-                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-1.621-1.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z" />
-                     </svg>
-                    <h2 class="text-3xl font-bold text-gray-900">Kia Sun Motors</h2>
-                </div>
+            <!-- Main Content -->
+            <main class="space-y-12">
 
-                <!-- KPIs -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div class="kpi-card bg-red-50 p-5 rounded-xl">
-                        <h3 class="font-semibold text-red-800">Investimento Total</h3>
-                        <p class="text-3xl font-bold text-red-900 mt-2">R$ 2.800,00</p>
+                <!-- Kia Sun Motors Section -->
+                <section id="kia" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                    <div class="flex items-center mb-6">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-1.621-1.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z" />
+                         </svg>
+                        <h2 class="text-3xl font-bold text-gray-900">Kia Sun Motors</h2>
                     </div>
-                    <div class="kpi-card bg-green-50 p-5 rounded-xl">
-                        <h3 class="font-semibold text-green-800">Leads Gerados</h3>
-                        <p class="text-3xl font-bold text-green-900 mt-2">74</p>
-                    </div>
-                    <div class="kpi-card bg-yellow-50 p-5 rounded-xl">
-                        <h3 class="font-semibold text-yellow-800">Custo por Lead (CPL)</h3>
-                        <p class="text-3xl font-bold text-yellow-900 mt-2">R$ 37,84</p>
-                    </div>
-                    <div class="kpi-card bg-blue-50 p-5 rounded-xl">
-                        <h3 class="font-semibold text-blue-800">Taxa de Conversão</h3>
-                        <p class="text-3xl font-bold text-blue-900 mt-2">2.15%</p>
-                    </div>
-                </div>
 
-                <!-- Detailed Table -->
-                <h3 class="text-xl font-semibold text-gray-800 mb-4">Performance por Modelo</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-600">
-                        <thead class="text-xs text-gray-700 bg-gray-100">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 rounded-l-lg">Modelo</th>
-                                <th scope="col" class="px-6 py-3">Investimento</th>
-                                <th scope="col" class="px-6 py-3">Cliques</th>
-                                <th scope="col" class="px-6 py-3">Leads</th>
-                                <th scope="col" class="px-6 py-3">CPL</th>
-                                <th scope="col" class="px-6 py-3 rounded-r-lg">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Sportage</th><td class="px-6 py-4">R$ 700,00</td><td class="px-6 py-4">850</td><td class="px-6 py-4">18</td><td class="px-6 py-4">R$ 38,89</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-                            <tr class="bg-gray-50 border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Niro</th><td class="px-6 py-4">R$ 600,00</td><td class="px-6 py-4">720</td><td class="px-6 py-4">16</td><td class="px-6 py-4">R$ 37,50</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-                            <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Stonic</th><td class="px-6 py-4">R$ 500,00</td><td class="px-6 py-4">650</td><td class="px-6 py-4">14</td><td class="px-6 py-4">R$ 35,71</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-                            <tr class="bg-gray-50 border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Carnival</th><td class="px-6 py-4">R$ 400,00</td><td class="px-6 py-4">400</td><td class="px-6 py-4">8</td><td class="px-6 py-4">R$ 50,00</td><td class="px-6 py-4"><span class="status-badge status-attention">Atenção</span></td></tr>
-                            <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">EV6</th><td class="px-6 py-4">R$ 400,00</td><td class="px-6 py-4">380</td><td class="px-6 py-4">7</td><td class="px-6 py-4">R$ 57,14</td><td class="px-6 py-4"><span class="status-badge status-attention">Atenção</span></td></tr>
-                            <tr class="bg-gray-50"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Bongo</th><td class="px-6 py-4">R$ 200,00</td><td class="px-6 py-4">450</td><td class="px-6 py-4">11</td><td class="px-6 py-4">R$ 18,18</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                 <!-- Chart Section -->
-                <div class="mt-8">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Investimento por Modelo (Kia)</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <canvas id="kiaInvestChart"></canvas>
+                    <!-- KPIs -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="kpi-card bg-red-50 p-5 rounded-xl">
+                            <h3 class="font-semibold text-red-800">Investimento Total</h3>
+                            <p class="text-3xl font-bold text-red-900 mt-2">R$ 2.800,00</p>
+                        </div>
+                        <div class="kpi-card bg-green-50 p-5 rounded-xl">
+                            <h3 class="font-semibold text-green-800">Leads Gerados</h3>
+                            <p class="text-3xl font-bold text-green-900 mt-2">74</p>
+                        </div>
+                        <div class="kpi-card bg-yellow-50 p-5 rounded-xl">
+                            <h3 class="font-semibold text-yellow-800">Custo por Lead (CPL)</h3>
+                            <p class="text-3xl font-bold text-yellow-900 mt-2">R$ 37,84</p>
+                        </div>
+                        <div class="kpi-card bg-blue-50 p-5 rounded-xl">
+                            <h3 class="font-semibold text-blue-800">Taxa de Conversão</h3>
+                            <p class="text-3xl font-bold text-blue-900 mt-2">2.15%</p>
+                        </div>
                     </div>
-                </div>
-            </section>
 
-            <!-- Suzuki Motor Ipiranga Section -->
-            <section id="suzuki" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
-                <div class="flex items-center mb-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600 mr-3" viewBox="0 0 20 20" fill="currentColor">
-                         <path d="M5.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 8c0-2.691-1.46-5.083-3.687-6.364A1 1 0 007.007.25L5.682 2.094A1 1 0 006.9 3.65l.593-.435a5.525 5.525 0 014.005 4.313 1 1 0 001.99.143zM14.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 9a1 1 0 00-1 1v1a1 1 0 002 0v-1a1 1 0 00-1-1z" />
-                    </svg>
-                    <h2 class="text-3xl font-bold text-gray-900">Suzuki Motor Ipiranga</h2>
-                </div>
-                
-                <!-- KPIs -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div class="kpi-card bg-blue-50 p-5 rounded-xl">
-                        <h3 class="font-semibold text-blue-800">Investimento Total</h3>
-                        <p class="text-3xl font-bold text-blue-900 mt-2">R$ 6.100,00</p>
+                    <!-- Detailed Table -->
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Performance por Modelo</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-600">
+                            <thead class="text-xs text-gray-700 bg-gray-100">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 rounded-l-lg">Modelo</th>
+                                    <th scope="col" class="px-6 py-3">Investimento</th>
+                                    <th scope="col" class="px-6 py-3">Cliques</th>
+                                    <th scope="col" class="px-6 py-3">Leads</th>
+                                    <th scope="col" class="px-6 py-3">CPL</th>
+                                    <th scope="col" class="px-6 py-3 rounded-r-lg">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Sportage</th><td class="px-6 py-4">R$ 700,00</td><td class="px-6 py-4">850</td><td class="px-6 py-4">18</td><td class="px-6 py-4">R$ 38,89</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
+                                <tr class="bg-gray-50 border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Niro</th><td class="px-6 py-4">R$ 600,00</td><td class="px-6 py-4">720</td><td class="px-6 py-4">16</td><td class="px-6 py-4">R$ 37,50</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
+                                <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Stonic</th><td class="px-6 py-4">R$ 500,00</td><td class="px-6 py-4">650</td><td class="px-6 py-4">14</td><td class="px-6 py-4">R$ 35,71</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
+                                <tr class="bg-gray-50 border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Carnival</th><td class="px-6 py-4">R$ 400,00</td><td class="px-6 py-4">400</td><td class="px-6 py-4">8</td><td class="px-6 py-4">R$ 50,00</td><td class="px-6 py-4"><span class="status-badge status-attention">Atenção</span></td></tr>
+                                <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">EV6</th><td class="px-6 py-4">R$ 400,00</td><td class="px-6 py-4">380</td><td class="px-6 py-4">7</td><td class="px-6 py-4">R$ 57,14</td><td class="px-6 py-4"><span class="status-badge status-attention">Atenção</span></td></tr>
+                                <tr class="bg-gray-50"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Bongo</th><td class="px-6 py-4">R$ 200,00</td><td class="px-6 py-4">450</td><td class="px-6 py-4">11</td><td class="px-6 py-4">R$ 18,18</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="kpi-card bg-green-50 p-5 rounded-xl">
-                        <h3 class="font-semibold text-green-800">Leads Gerados</h3>
-                        <p class="text-3xl font-bold text-green-900 mt-2">182</p>
-                    </div>
-                    <div class="kpi-card bg-yellow-50 p-5 rounded-xl">
-                        <h3 class="font-semibold text-yellow-800">Custo por Lead (CPL)</h3>
-                        <p class="text-3xl font-bold text-yellow-900 mt-2">R$ 33,52</p>
-                    </div>
-                    <div class="kpi-card bg-purple-50 p-5 rounded-xl">
-                        <h3 class="font-semibold text-purple-800">Taxa de Conversão</h3>
-                        <p class="text-3xl font-bold text-purple-900 mt-2">3.10%</p>
-                    </div>
-                </div>
-
-                 <!-- Detailed Table -->
-                <h3 class="text-xl font-semibold text-gray-800 mb-4">Performance por Marca/Modelo</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-600">
-                        <thead class="text-xs text-gray-700 bg-gray-100">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 rounded-l-lg">Marca / Modelo</th>
-                                <th scope="col" class="px-6 py-3">Investimento</th>
-                                <th scope="col" class="px-6 py-3">Cliques</th>
-                                <th scope="col" class="px-6 py-3">Leads</th>
-                                <th scope="col" class="px-6 py-3">CPL</th>
-                                <th scope="col" class="px-6 py-3 rounded-r-lg">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="bg-blue-50 border-b"><td colspan="6" class="px-6 py-3 font-bold text-blue-800">Suzuki</td></tr>
-                            <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">GSX-8R / 8S</th><td class="px-6 py-4">R$ 700,00</td><td class="px-6 py-4">950</td><td class="px-6 py-4">20</td><td class="px-6 py-4">R$ 35,00</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-                            <tr class="bg-gray-50 border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">V-Strom 800/650</th><td class="px-6 py-4">R$ 600,00</td><td class="px-6 py-4">800</td><td class="px-6 py-4">15</td><td class="px-6 py-4">R$ 40,00</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-                            
-                            <tr class="bg-gray-200 border-b"><td colspan="6" class="px-6 py-3 font-bold text-gray-800">Zontes</td></tr>
-                            <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Linha 350</th><td class="px-6 py-4">R$ 1.500,00</td><td class="px-6 py-4">1800</td><td class="px-6 py-4">45</td><td class="px-6 py-4">R$ 33,33</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-
-                            <tr class="bg-red-50 border-b"><td colspan="6" class="px-6 py-3 font-bold text-red-800">Haojue</td></tr>
-                            <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">NK 150 / DK 160</th><td class="px-6 py-4">R$ 1.200,00</td><td class="px-6 py-4">1500</td><td class="px-6 py-4">42</td><td class="px-6 py-4">R$ 28,57</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-                             <tr class="bg-gray-50 border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">MASTER / DR 160</th><td class="px-6 py-4">R$ 1.100,00</td><td class="px-6 py-4">1300</td><td class="px-6 py-4">38</td><td class="px-6 py-4">R$ 28,95</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-                            <tr class="bg-white"><th scope="row" class="px-6 py-4 font-medium text-gray-900">DL 160 (Lançamento)</th><td class="px-6 py-4">R$ 1.000,00</td><td class="px-6 py-4">1100</td><td class="px-6 py-4">22</td><td class="px-6 py-4">R$ 45,45</td><td class="px-6 py-4"><span class="status-badge status-paused">Pausada</span></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                 <!-- Chart Section -->
-                <div class="mt-8">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Investimento por Marca (Suzuki & Associadas)</h3>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <canvas id="suzukiInvestChart"></canvas>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- General Charts Section -->
-            <section id="general-charts" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
-                 <h2 class="text-3xl font-bold text-gray-900 mb-6">Visão Geral da Campanha</h2>
-                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div>
-                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Leads Gerados (Julho)</h3>
+                     <!-- Chart Section -->
+                    <div class="mt-8">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Investimento por Modelo (Kia)</h3>
                         <div class="bg-gray-50 p-4 rounded-lg">
-                             <canvas id="leadsOverTimeChart"></canvas>
+                            <canvas id="kiaInvestChart"></canvas>
                         </div>
                     </div>
-                    <div>
-                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Distribuição de Leads por Marca</h3>
-                        <div class="bg-gray-50 p-4 rounded-lg h-80 flex items-center justify-center">
-                             <canvas id="leadsDistributionChart"></canvas>
+                </section>
+
+                <!-- Suzuki Motor Ipiranga Section -->
+                <section id="suzuki" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                    <div class="flex items-center mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600 mr-3" viewBox="0 0 20 20" fill="currentColor">
+                             <path d="M5.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 8c0-2.691-1.46-5.083-3.687-6.364A1 1 0 007.007.25L5.682 2.094A1 1 0 006.9 3.65l.593-.435a5.525 5.525 0 014.005 4.313 1 1 0 001.99.143zM14.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 9a1 1 0 00-1 1v1a1 1 0 002 0v-1a1 1 0 00-1-1z" />
+                        </svg>
+                        <h2 class="text-3xl font-bold text-gray-900">Suzuki Motor Ipiranga</h2>
+                    </div>
+                    
+                    <!-- KPIs -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="kpi-card bg-blue-50 p-5 rounded-xl">
+                            <h3 class="font-semibold text-blue-800">Investimento Total</h3>
+                            <p class="text-3xl font-bold text-blue-900 mt-2">R$ 6.100,00</p>
+                        </div>
+                        <div class="kpi-card bg-green-50 p-5 rounded-xl">
+                            <h3 class="font-semibold text-green-800">Leads Gerados</h3>
+                            <p class="text-3xl font-bold text-green-900 mt-2">182</p>
+                        </div>
+                        <div class="kpi-card bg-yellow-50 p-5 rounded-xl">
+                            <h3 class="font-semibold text-yellow-800">Custo por Lead (CPL)</h3>
+                            <p class="text-3xl font-bold text-yellow-900 mt-2">R$ 33,52</p>
+                        </div>
+                        <div class="kpi-card bg-purple-50 p-5 rounded-xl">
+                            <h3 class="font-semibold text-purple-800">Taxa de Conversão</h3>
+                            <p class="text-3xl font-bold text-purple-900 mt-2">3.10%</p>
                         </div>
                     </div>
-                 </div>
-            </section>
+
+                     <!-- Detailed Table -->
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Performance por Marca/Modelo</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-600">
+                            <thead class="text-xs text-gray-700 bg-gray-100">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 rounded-l-lg">Marca / Modelo</th>
+                                    <th scope="col" class="px-6 py-3">Investimento</th>
+                                    <th scope="col" class="px-6 py-3">Cliques</th>
+                                    <th scope="col" class="px-6 py-3">Leads</th>
+                                    <th scope="col" class="px-6 py-3">CPL</th>
+                                    <th scope="col" class="px-6 py-3 rounded-r-lg">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-blue-50 border-b"><td colspan="6" class="px-6 py-3 font-bold text-blue-800">Suzuki</td></tr>
+                                <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">GSX-8R / 8S</th><td class="px-6 py-4">R$ 700,00</td><td class="px-6 py-4">950</td><td class="px-6 py-4">20</td><td class="px-6 py-4">R$ 35,00</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
+                                <tr class="bg-gray-50 border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">V-Strom 800/650</th><td class="px-6 py-4">R$ 600,00</td><td class="px-6 py-4">800</td><td class="px-6 py-4">15</td><td class="px-6 py-4">R$ 40,00</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
+                                
+                                <tr class="bg-gray-200 border-b"><td colspan="6" class="px-6 py-3 font-bold text-gray-800">Zontes</td></tr>
+                                <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Linha 350</th><td class="px-6 py-4">R$ 1.500,00</td><td class="px-6 py-4">1800</td><td class="px-6 py-4">45</td><td class="px-6 py-4">R$ 33,33</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
+
+                                <tr class="bg-red-50 border-b"><td colspan="6" class="px-6 py-3 font-bold text-red-800">Haojue</td></tr>
+                                <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">NK 150 / DK 160</th><td class="px-6 py-4">R$ 1.200,00</td><td class="px-6 py-4">1500</td><td class="px-6 py-4">42</td><td class="px-6 py-4">R$ 28,57</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
+                                 <tr class="bg-gray-50 border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">MASTER / DR 160</th><td class="px-6 py-4">R$ 1.100,00</td><td class="px-6 py-4">1300</td><td class="px-6 py-4">38</td><td class="px-6 py-4">R$ 28,95</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
+                                <tr class="bg-white"><th scope="row" class="px-6 py-4 font-medium text-gray-900">DL 160 (Lançamento)</th><td class="px-6 py-4">R$ 1.000,00</td><td class="px-6 py-4">1100</td><td class="px-6 py-4">22</td><td class="px-6 py-4">R$ 45,45</td><td class="px-6 py-4"><span class="status-badge status-paused">Pausada</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                     <!-- Chart Section -->
+                    <div class="mt-8">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Investimento por Marca (Suzuki & Associadas)</h3>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <canvas id="suzukiInvestChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- General Charts Section -->
+                <section id="general-charts" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                     <h2 class="text-3xl font-bold text-gray-900 mb-6">Visão Geral da Campanha</h2>
+                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Leads Gerados (Julho)</h3>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                 <canvas id="leadsOverTimeChart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Distribuição de Leads por Marca</h3>
+                            <div class="bg-gray-50 p-4 rounded-lg h-80 flex items-center justify-center">
+                                 <canvas id="leadsDistributionChart"></canvas>
+                            </div>
+                        </div>
+                     </div>
+                </section>
 
 
-            <!-- Recommendations Section -->
-            <section id="recomendacoes" class="bg-gray-800 text-white p-6 sm:p-8 rounded-2xl shadow-lg">
-                <div class="flex items-center mb-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                    </svg>
-                    <h2 class="text-3xl font-bold">Recomendações e Observações</h2>
-                </div>
-                <ul class="space-y-4 list-disc list-inside text-gray-300">
-                    <li><strong class="font-semibold text-white">Kia Carnival & EV6:</strong> O CPL está acima da média. Recomendo revisar a segmentação de público e os criativos para otimizar a performance. Podemos testar novos ângulos de comunicação focados em benefícios mais específicos.</li>
-                    <li><strong class="font-semibold text-white">Kia Bongo:</strong> Excelente performance com o CPL mais baixo. Sugiro aumentar gradualmente o investimento para escalar a geração de leads qualificados neste segmento.</li>
-                    <li><strong class="font-semibold text-white">Haojue DL 160:</strong> Campanha de lançamento pausada. Aguardando definição da data oficial para reativar com força total, focando em "novidade" e "design aventureiro".</li>
-                    <li><strong class="font-semibold text-white">Zontes:</strong> A marca apresenta um bom volume de leads com CPL competitivo. Manter a estratégia atual e focar na qualidade dos criativos, destacando a tecnologia embarcada.</li>
-                </ul>
-            </section>
+                <!-- Recommendations Section -->
+                <section id="recomendacoes" class="bg-gray-800 text-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                    <div class="flex items-center mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                        <h2 class="text-3xl font-bold">Recomendações e Observações</h2>
+                    </div>
+                    <ul class="space-y-4 list-disc list-inside text-gray-300">
+                        <li><strong class="font-semibold text-white">Kia Carnival & EV6:</strong> O CPL está acima da média. Recomendo revisar a segmentação de público e os criativos para otimizar a performance. Podemos testar novos ângulos de comunicação focados em benefícios mais específicos.</li>
+                        <li><strong class="font-semibold text-white">Kia Bongo:</strong> Excelente performance com o CPL mais baixo. Sugiro aumentar gradualmente o investimento para escalar a geração de leads qualificados neste segmento.</li>
+                        <li><strong class="font-semibold text-white">Haojue DL 160:</strong> Campanha de lançamento pausada. Aguardando definição da data oficial para reativar com força total, focando em "novidade" e "design aventureiro".</li>
+                        <li><strong class="font-semibold text-white">Zontes:</strong> A marca apresenta um bom volume de leads com CPL competitivo. Manter a estratégia atual e focar na qualidade dos criativos, destacando a tecnologia embarcada.</li>
+                    </ul>
+                </section>
 
-        </main>
+            </main>
 
-        <!-- Footer -->
-        <footer class="text-center mt-12 py-4 border-t border-gray-200">
-            <p class="text-sm text-gray-500">Dashboard atualizado em tempo real. Porto Alegre, 2024.</p>
-        </footer>
+            <!-- Footer -->
+            <footer class="text-center mt-12 py-4 border-t border-gray-200">
+                <p class="text-sm text-gray-500">Dashboard atualizado em tempo real. Porto Alegre, 2024.</p>
+            </footer>
 
+        </div>
     </div>
 
     <script>
+        // Sidemenu functionality
+        const sidemenu = document.getElementById('sidemenu');
+        const mainContent = document.querySelector('.main-content');
+        const overlay = document.getElementById('overlay');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+        const collapseBtn = document.getElementById('collapseBtn');
+
+        // Mobile menu toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            sidemenu.classList.remove('mobile-hidden');
+            overlay.style.display = 'block';
+        });
+
+        closeMobileMenu.addEventListener('click', () => {
+            sidemenu.classList.add('mobile-hidden');
+            overlay.style.display = 'none';
+        });
+
+        overlay.addEventListener('click', () => {
+            sidemenu.classList.add('mobile-hidden');
+            overlay.style.display = 'none';
+        });
+
+        // Desktop collapse toggle
+        collapseBtn.addEventListener('click', () => {
+            sidemenu.classList.toggle('collapsed');
+            if (sidemenu.classList.contains('collapsed')) {
+                mainContent.style.marginLeft = '70px';
+            } else {
+                mainContent.style.marginLeft = '256px';
+            }
+        });
+
         // Chart.js configuration
         const defaultFont = "'Inter', sans-serif";
         Chart.defaults.font.family = defaultFont;
@@ -394,7 +553,6 @@
                 }
             }
         });
-
     </script>
 </body>
 </html>
