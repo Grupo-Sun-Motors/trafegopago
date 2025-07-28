@@ -1,0 +1,22 @@
+Sugestões SUN MOTORS
+
+
+
+
+Nomenclaturas (+ significa que há mais de uma especificação para o respectivo parâmetro)
+
+
+
+Segmentação/Publico personalizado:
+	[tipo]_[interesse ou fonte]_[local ou comportamento]_[data ou versão]
+
+
+Campanhas:
+	[UF]_[objetivo]_[modelo-tipo_de_veiculo]_[mês/ano]_[detalhes_extra]
+
+		Conjunto:
+			[audiência]_[tipo_segmentação]_[localização]_[mês/ano]_[detalhes_extra]
+
+				Anúncios: 
+					[ad01]_[formato]_[oferta_gatilho]_[data]_[detalhes_extra]
+

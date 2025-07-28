@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Controle de Campanhas - Kia & Suzuki</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* General body and font styling */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Table header styling */
+        th {
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+        }
+        /* Base styling for all input fields in the tables */
+        .metric-input {
+            background-color: #f9fafb;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            width: 100%;
+            min-width: 90px;
+            text-align: right;
+            font-weight: 500;
+        }
+        /* Focus state for inputs */
+        .metric-input:focus {
+            outline: 2px solid #ef4444;
+            border-color: transparent;
+        }
+        /* Styling for calculated fields that are read-only */
+        .calculated {
+            background-color: #e5e7eb;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        /* Tooltip container for help icons */
+        .tooltip {
+            position: absolute;
+            display: inline-block;
+            margin-left: 4px;
+            cursor: help;
+        }
+        /* Tooltip text box styling */
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 220px;
+            background-color: #1f2937;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -110px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 12px;
+            text-transform: none;
+            letter-spacing: normal;
+        }
+        /* Show tooltip on hover */
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Custom Number Input Styles */
+        .number-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        .number-input-wrapper input.metric-input {
+            padding-right: 1.75rem; 
+        }
+        .number-input-wrapper .spinners {
+            position: absolute;
+            right: 1px;
+            top: 1px;
+            bottom: 1px;
+            display: flex;
+            flex-direction: column;
+            width: 1.5rem;
+        }
+        .number-input-wrapper .spinner {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background-color: #f3f4f6;
+            color: #4b5563;
+            border-left: 1px solid #d1d5db;
+            user-select: none;
+        }
+        .number-input-wrapper .spinner:hover {
+            background-color: #e5e7eb;
+        }
+        .number-input-wrapper .spinner-up {
+            border-top-right-radius: 0.45rem;
+        }
+        .number-input-wrapper .spinner-down {
+            border-bottom-right-radius: 0.45rem;
+        }
+        .number-input-wrapper .spinner svg {
+             width: 0.7em;
+             height: 0.7em;
+        }
+        
+        /* Hide default browser spinners */
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield; /* Firefox */
+        }
+
+        /* Platform Toggle/Tabs Styling */
+        .platform-toggle {
+            display: flex;
+            border-radius: 0.75rem;
+            background-color: #e5e7eb;
+            padding: 0.25rem;
+            margin-bottom: 1.5rem;
+            width: fit-content;
+        }
+        .platform-toggle button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            background-color: transparent;
+            font-weight: 600;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .platform-toggle button.active {
+            background-color: #ffffff;
+            color: #111827;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-gray-900">Painel de Controle de Campanhas</h1>
+            <p class="text-lg text-gray-600 mt-2">Kia Sun Motors & Suzuki Motor - Porto Alegre (Julho)</p>
+        </header>
+
+        <main class="space-y-12" id="campaign-dashboard">
+
+            <!-- Kia Sun Motors Section -->
+            <section id="kia" data-section="kia" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                <div class="flex items-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-1.621-1.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z" /></svg>
+                    <h2 class="text-3xl font-bold text-gray-900">Kia Sun Motors</h2>
+                </div>
+                <div class="mb-8 p-4 bg-gray-50 rounded-lg">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Investimento de Campanha</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                        <div class="bg-red-100 p-4 rounded-lg"><p class="text-sm text-red-800 font-semibold">Investimento Total</p><p class="text-2xl font-bold text-red-900">R$ 2.800,00</p></div>
+                        <div class="bg-blue-100 p-4 rounded-lg"><p class="text-sm text-blue-800 font-semibold">Google Ads</p><p class="text-2xl font-bold text-blue-900">R$ 2.000,00</p></div>
+                        <div class="bg-indigo-100 p-4 rounded-lg"><p class="text-sm text-indigo-800 font-semibold">Meta Ads</p><p class="text-2xl font-bold text-indigo-900">R$ 800,00</p></div>
+                    </div>
+                </div>
+                <div class="platform-toggle">
+                    <button data-platform="google" class="active">Google Ads</button>
+                    <button data-platform="meta">Meta Ads</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-600">
+                        <thead class="text-xs text-gray-700 bg-gray-100">
+                            <tr>
+                                <th class="px-2 py-3">Modelo</th>
+                                <th class="px-2 py-3">Orçamento Diário<div class="tooltip">?<span class="tooltiptext">Orçamento diário (Total / 30).</span></div></th>
+                                <th class="px-2 py-3">Orçamento Semanal<div class="tooltip">?<span class="tooltiptext">Calculado automaticamente (Diário x 7).</span></div></th>
+                                <th class="px-2 py-3">Orçamento Total<div class="tooltip">?<span class="tooltiptext">Valor total gasto no período.</span></div></th>
+                                <th class="px-2 py-3">Resultados<div class="tooltip">?<span class="tooltiptext">Total de resultados (e.g., leads, vendas).</span></div></th>
+                                <th class="px-2 py-3">Custo p/ Resultado<div class="tooltip">?<span class="tooltiptext">Custo por Resultado (Gasto Total / Resultados).</span></div></th>
+                                <th class="px-2 py-3">Observações<div class="tooltip">?<span class="tooltiptext">Anotações sobre a campanha.</span></div></th>
+                            </tr>
+                        </thead>
+                        <tbody><!-- Table rows will be populated by JavaScript --></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Suzuki Motor Section -->
+            <section id="suzuki-main" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                <div class="flex items-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600 mr-3" viewBox="0 0 20 20" fill="currentColor"><path d="M5.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 8c0-2.691-1.46-5.083-3.687-6.364A1 1 0 007.007.25L5.682 2.094A1 1 0 006.9 3.65l.593-.435a5.525 5.525 0 014.005 4.313 1 1 0 001.99.143zM14.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 9a1 1 0 00-1 1v1a1 1 0 002 0v-1a1 1 0 00-1-1z" /></svg>
+                    <h2 class="text-3xl font-bold text-gray-900">Suzuki Motor</h2>
+                </div>
+                
+                <!-- Suzuki Sub-section Table -->
+                <div id="suzuki" data-section="suzuki" class="mb-10">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4 border-l-4 border-blue-700 pl-4">Suzuki</h3>
+                     <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                            <div class="bg-blue-100 p-4 rounded-lg"><p class="text-sm text-blue-800 font-semibold">Budget Total</p><p class="text-2xl font-bold text-blue-900">R$ 1.300,00</p></div>
+                            <div class="bg-green-100 p-4 rounded-lg"><p class="text-sm text-green-800 font-semibold">Google Ads</p><p class="text-2xl font-bold text-green-900">R$ 430,00</p></div>
+                            <div class="bg-purple-100 p-4 rounded-lg"><p class="text-sm text-purple-800 font-semibold">Meta Ads</p><p class="text-2xl font-bold text-purple-900">R$ 870,00</p></div>
+                        </div>
+                    </div>
+                    <div class="platform-toggle">
+                        <button data-platform="google" class="active">Google Ads</button>
+                        <button data-platform="meta">Meta Ads</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-600">
+                           <thead class="text-xs text-gray-700 bg-gray-100">
+                                <tr>
+                                    <th class="px-2 py-3">Modelo</th>
+                                    <th class="px-2 py-3">Orçamento Diário<div class="tooltip">?<span class="tooltiptext">Orçamento diário (Total / 30).</span></div></th>
+                                    <th class="px-2 py-3">Orçamento Semanal<div class="tooltip">?<span class="tooltiptext">Calculado (Diário x 7).</span></div></th>
+                                    <th class="px-2 py-3">Orçamento Total<div class="tooltip">?<span class="tooltiptext">Valor total gasto.</span></div></th>
+                                    <th class="px-2 py-3">Resultados<div class="tooltip">?<span class="tooltiptext">Total de resultados.</span></div></th>
+                                    <th class="px-2 py-3">Custo p/ Resultado<div class="tooltip">?<span class="tooltiptext">Custo por Resultado.</span></div></th>
+                                    <th class="px-2 py-3">Observações<div class="tooltip">?<span class="tooltiptext">Anotações.</span></div></th>
+                                </tr>
+                            </thead>
+                            <tbody><!-- Rows will be populated by JS --></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Zontes Sub-section Table -->
+                 <div id="zontes" data-section="zontes" class="mb-10">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-4 border-l-4 border-gray-700 pl-4">Zontes</h3>
+                     <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                            <div class="bg-gray-200 p-4 rounded-lg"><p class="text-sm text-gray-800 font-semibold">Budget Total</p><p class="text-2xl font-bold text-gray-900">R$ 1.500,00</p></div>
+                            <div class="bg-green-100 p-4 rounded-lg"><p class="text-sm text-green-800 font-semibold">Google Ads</p><p class="text-2xl font-bold text-green-900">R$ 490,00</p></div>
+                            <div class="bg-purple-100 p-4 rounded-lg"><p class="text-sm text-purple-800 font-semibold">Meta Ads</p><p class="text-2xl font-bold text-purple-900">R$ 1.010,00</p></div>
+                        </div>
+                    </div>
+                    <div class="platform-toggle">
+                        <button data-platform="google" class="active">Google Ads</button>
+                        <button data-platform="meta">Meta Ads</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-600">
+                           <thead class="text-xs text-gray-700 bg-gray-100">
+                                <tr>
+                                    <th class="px-2 py-3">Modelo</th>
+                                    <th class="px-2 py-3">Orçamento Diário<div class="tooltip">?<span class="tooltiptext">Orçamento diário (Total / 30).</span></div></th>
+                                    <th class="px-2 py-3">Orçamento Semanal<div class="tooltip">?<span class="tooltiptext">Calculado (Diário x 7).</span></div></th>
+                                    <th class="px-2 py-3">Orçamento Total<div class="tooltip">?<span class="tooltiptext">Valor total gasto.</span></div></th>
+                                    <th class="px-2 py-3">Resultados<div class="tooltip">?<span class="tooltiptext">Total de resultados.</span></div></th>
+                                    <th class="px-2 py-3">Custo p/ Resultado<div class="tooltip">?<span class="tooltiptext">Custo por Resultado.</span></div></th>
+                                    <th class="px-2 py-3">Observações<div class="tooltip">?<span class="tooltiptext">Anotações.</span></div></th>
+                                </tr>
+                            </thead>
+                            <tbody><!-- Rows will be populated by JS --></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Haojue Sub-section Table -->
+                <div id="haojue" data-section="haojue">
+                    <h3 class="text-2xl font-semibold text-red-700 mb-4 border-l-4 border-red-700 pl-4">Haojue</h3>
+                    <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                            <div class="bg-red-100 p-4 rounded-lg"><p class="text-sm text-red-800 font-semibold">Budget Total</p><p class="text-2xl font-bold text-red-900">R$ 3.300,00</p></div>
+                            <div class="bg-green-100 p-4 rounded-lg"><p class="text-sm text-green-800 font-semibold">Google Ads</p><p class="text-2xl font-bold text-green-900">R$ 1.080,00</p></div>
+                            <div class="bg-purple-100 p-4 rounded-lg"><p class="text-sm text-purple-800 font-semibold">Meta Ads</p><p class="text-2xl font-bold text-purple-900">R$ 2.220,00</p></div>
+                        </div>
+                    </div>
+                     <div class="platform-toggle">
+                        <button data-platform="google" class="active">Google Ads</button>
+                        <button data-platform="meta">Meta Ads</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-600">
+                           <thead class="text-xs text-gray-700 bg-gray-100">
+                                <tr>
+                                    <th class="px-2 py-3">Modelo</th>
+                                    <th class="px-2 py-3">Orçamento Diário<div class="tooltip">?<span class="tooltiptext">Orçamento diário (Total / 30).</span></div></th>
+                                    <th class="px-2 py-3">Orçamento Semanal<div class="tooltip">?<span class="tooltiptext">Calculado (Diário x 7).</span></div></th>
+                                    <th class="px-2 py-3">Orçamento Total<div class="tooltip">?<span class="tooltiptext">Valor total gasto.</span></div></th>
+                                    <th class="px-2 py-3">Resultados<div class="tooltip">?<span class="tooltiptext">Total de resultados.</span></div></th>
+                                    <th class="px-2 py-3">Custo p/ Resultado<div class="tooltip">?<span class="tooltiptext">Custo por Resultado.</span></div></th>
+                                    <th class="px-2 py-3">Observações<div class="tooltip">?<span class="tooltiptext">Anotações.</span></div></th>
+                                </tr>
+                            </thead>
+                            <tbody><!-- Rows will be populated by JS --></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Strategic Recommendations Section -->
+            <section id="recomendacoes" class="bg-gray-800 text-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                <div class="flex items-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                    <h2 class="text-3xl font-bold">Recomendações Estratégicas</h2>
+                </div>
+                <ul class="space-y-4 list-disc list-inside text-gray-300">
+                    <li><strong class="font-semibold text-white">Segmentação Geográfica:</strong> Focar os anúncios em Porto Alegre e na região metropolitana para atingir o público local das concessionárias.</li>
+                    <li><strong class="font-semibold text-white">Segmentação por Interesses:</strong> Criar públicos-alvo detalhados para cada modelo. Ex: para a V-Strom, focar em "motociclismo de aventura"; para o EV6, em "veículos elétricos" e "tecnologia".</li>
+                    <li><strong class="font-semibold text-white">Criativos dos Anúncios:</strong> Produzir vídeos e imagens de alta qualidade. Para motos, mostrar a pilotagem em ação. Para carros, destacar detalhes de design, interior e funcionalidades.</li>
+                    <li><strong class="font-semibold text-white">Canais de Divulgação:</strong> Usar Google Ads (Pesquisa, Display, YouTube) e Meta Ads (Instagram/Facebook), aproveitando formatos como Carrossel e Reels para maximizar o engajamento.</li>
+                    <li><strong class="font-semibold text-white">Páginas de Destino (Landing Pages):</strong> Garantir que cada anúncio direcione para uma página específica do modelo, com todas as informações, fotos, vídeos e um formulário de contato bem visível para agendar um test-drive ou solicitar um orçamento.</li>
+                </ul>
+            </section>
+        </main>
+        <footer class="text-center mt-12 py-4 border-t border-gray-200"><p class="text-sm text-gray-500">Documento gerado para planejamento de campanha. Porto Alegre, 2024.</p></footer>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Defines the initial state for active platforms in each section
+    const activePlatforms = {
+        kia: 'google',
+        suzuki: 'google',
+        zontes: 'google',
+        haojue: 'google',
+    };
+
+    /**
+     * Creates a data object for a platform with pre-filled and calculated budgets.
+     * @param {number} orcamentoTotal - The pre-filled total budget for the month.
+     * @returns {object} The platform data object.
+     */
+    const createPlatformData = (orcamentoTotal = 0) => ({
+        orcamentoDiario: orcamentoTotal / 30, // Pre-calculate daily budget (assuming 30 days)
+        orcamentoTotal: orcamentoTotal,
+        resultados: 0,
+        observacoes: '',
+    });
+
+    // Initial data structure for all campaigns, with corrected models and distributed budgets
+    const campaignData = {
+        kia: [
+            { name: 'Sportage', google: createPlatformData(333.33), meta: createPlatformData(133.33) },
+            { name: 'Niro', google: createPlatformData(333.33), meta: createPlatformData(133.33) },
+            { name: 'Stonic', google: createPlatformData(333.33), meta: createPlatformData(133.33) },
+            { name: 'Carnival', google: createPlatformData(333.33), meta: createPlatformData(133.33) },
+            { name: 'EV6', google: createPlatformData(333.34), meta: createPlatformData(133.34) },
+            { name: 'Bongo', google: createPlatformData(333.34), meta: createPlatformData(133.34) }
+        ],
+        suzuki: [
+            { name: 'GSX-8R', google: createPlatformData(107.50), meta: createPlatformData(217.50) },
+            { name: 'GSX-8S', google: createPlatformData(107.50), meta: createPlatformData(217.50) },
+            { name: 'V-Strom 800DE', google: createPlatformData(107.50), meta: createPlatformData(217.50) },
+            { name: 'V-Strom 650', google: createPlatformData(107.50), meta: createPlatformData(217.50) }
+        ],
+        zontes: [
+            { name: 'E350 Scooter', google: createPlatformData(98.00), meta: createPlatformData(202.00) },
+            { name: 'S350', google: createPlatformData(98.00), meta: createPlatformData(202.00) },
+            { name: 'Tactic 400', google: createPlatformData(98.00), meta: createPlatformData(202.00) },
+            { name: 'T350 e T350x', google: createPlatformData(98.00), meta: createPlatformData(202.00) },
+            { name: 'V350', google: createPlatformData(98.00), meta: createPlatformData(202.00) }
+        ],
+        haojue: [
+            { name: 'NK 150', google: createPlatformData(216.00), meta: createPlatformData(444.00) },
+            { name: 'DK 160', google: createPlatformData(216.00), meta: createPlatformData(444.00) },
+            { name: 'MASTER RIDE', google: createPlatformData(216.00), meta: createPlatformData(444.00) }, // Corrected model
+            { name: 'DR 160', google: createPlatformData(216.00), meta: createPlatformData(444.00) },
+            { name: 'CHOPPER ROAD', google: createPlatformData(216.00), meta: createPlatformData(444.00) } // Corrected model
+        ]
+    };
+
+    /**
+     * Creates a standard input element.
+     * @param {string} type - The input type (e.g., 'text', 'number').
+     * @param {string} name - The name attribute for the input.
+     * @param {boolean} isCalculated - True if the input is for a calculated, read-only value.
+     * @returns {HTMLInputElement} The created input element.
+     */
+    const createInput = (type, name, isCalculated = false) => {
+        const input = document.createElement('input');
+        input.type = type;
+        input.name = name;
+        input.className = 'metric-input';
+        input.placeholder = type === 'number' ? '0' : '...';
+        if (isCalculated) {
+            input.readOnly = true;
+            input.classList.add('calculated');
+            input.value = 'R$ 0.00';
+        }
+        if (type === 'number') {
+           input.step = "0.01"; // Allow decimal values for currency
+        }
+        return input;
+    };
+
+    /**
+     * Creates a number input with custom up/down spinner controls.
+     * @param {string} name - The name attribute for the input.
+     * @returns {HTMLDivElement} The wrapper div containing the input and spinners.
+     */
+    const createNumberInputWithSpinners = (name) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'number-input-wrapper';
+        const input = createInput('number', name);
+        const spinnersDiv = document.createElement('div');
+        spinnersDiv.className = 'spinners';
+        const upArrowSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" /></svg>`;
+        const downArrowSVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>`;
+        spinnersDiv.innerHTML = `
+            <span class="spinner spinner-up" data-step="up">${upArrowSVG}</span>
+            <span class="spinner spinner-down" data-step="down">${downArrowSVG}</span>`;
+        wrapper.appendChild(input);
+        wrapper.appendChild(spinnersDiv);
+        return wrapper;
+    };
+
+    /**
+     * Renders a single table row with data for the active platform.
+     * @param {object} modelData - The data object for a single model.
+     * @param {string} activePlatform - The currently active platform ('google' or 'meta').
+     * @returns {HTMLTableRowElement} The created table row.
+     */
+    const renderRow = (modelData, activePlatform) => {
+        const row = document.createElement('tr');
+        row.className = 'bg-white border-b even:bg-gray-50';
+        row.innerHTML = `<th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">${modelData.name}</th>`;
+
+        const platformData = modelData[activePlatform];
+
+        const orcamentoDiarioInput = createNumberInputWithSpinners('orcamentoDiario');
+        orcamentoDiarioInput.querySelector('input').value = platformData.orcamentoDiario.toFixed(2);
+
+        const orcamentoTotalInput = createNumberInputWithSpinners('orcamentoTotal');
+        orcamentoTotalInput.querySelector('input').value = platformData.orcamentoTotal.toFixed(2);
+        
+        const resultadosInput = createNumberInputWithSpinners('resultados');
+        resultadosInput.querySelector('input').value = platformData.resultados;
+
+        const observacoesInput = createInput('text', 'observacoes');
+        observacoesInput.style.textAlign = 'left';
+        observacoesInput.value = platformData.observacoes || '';
+
+        const cells = [
+            orcamentoDiarioInput,
+            createInput('text', 'orcamentoSemanal', true),
+            orcamentoTotalInput,
+            resultadosInput,
+            createInput('text', 'custoPorResultado', true),
+            observacoesInput
+        ];
+
+        cells.forEach(cell => {
+            const td = document.createElement('td');
+            td.className = 'px-2 py-1';
+            td.appendChild(cell);
+            row.appendChild(td);
+        });
+        
+        calculateMetrics(row); // Calculate metrics on initial render
+        return row;
+    };
+
+    /**
+     * Renders an entire table for a specific section and platform.
+     * @param {string} sectionName - The name of the section (e.g., 'kia').
+     */
+    const renderTable = (sectionName) => {
+        const sectionElement = document.getElementById(sectionName);
+        if (!sectionElement) return;
+
+        const tableBody = sectionElement.querySelector('table tbody');
+        const models = campaignData[sectionName];
+        const activePlatform = activePlatforms[sectionName];
+        
+        if (tableBody && models) {
+            tableBody.innerHTML = ''; // Clear existing rows
+            models.forEach(model => {
+                tableBody.appendChild(renderRow(model, activePlatform));
+            });
+        }
+    };
+    
+    /**
+     * Calculates and updates the metrics for a given table row.
+     * @param {HTMLTableRowElement} row - The table row to calculate metrics for.
+     */
+    function calculateMetrics(row) {
+        const inputs = {
+            orcamentoDiario: parseFloat(row.querySelector('[name="orcamentoDiario"]').value) || 0,
+            orcamentoTotal: parseFloat(row.querySelector('[name="orcamentoTotal"]').value) || 0,
+            resultados: parseFloat(row.querySelector('[name="resultados"]').value) || 0,
+        };
+        const outputs = {
+            orcamentoSemanal: row.querySelector('[name="orcamentoSemanal"]'),
+            custoPorResultado: row.querySelector('[name="custoPorResultado"]'),
+        };
+        
+        // Update daily budget if total budget is changed by the user
+        const orcamentoTotalInput = row.querySelector('[name="orcamentoTotal"]');
+        const orcamentoDiarioInput = row.querySelector('[name="orcamentoDiario"]');
+
+        // This logic makes the daily budget react to total budget changes
+        const dailyBudgetFromTotal = inputs.orcamentoTotal / 30;
+        orcamentoDiarioInput.value = dailyBudgetFromTotal.toFixed(2);
+
+        const orcamentoSemanal = dailyBudgetFromTotal * 7;
+        const custoPorResultado = inputs.resultados > 0 ? inputs.orcamentoTotal / inputs.resultados : 0;
+
+        outputs.orcamentoSemanal.value = `R$ ${orcamentoSemanal.toFixed(2)}`;
+        outputs.custoPorResultado.value = `R$ ${custoPorResultado.toFixed(2)}`;
+    }
+
+    /**
+     * Saves the current data from the UI back to the campaignData object.
+     * @param {string} sectionName - The name of the section to save data for.
+     */
+    const saveData = (sectionName) => {
+        const sectionElement = document.getElementById(sectionName);
+        if (!sectionElement) return;
+
+        const activePlatform = activePlatforms[sectionName];
+        const rows = sectionElement.querySelectorAll('tbody tr');
+
+        rows.forEach((row, index) => {
+            const modelData = campaignData[sectionName][index];
+            if (modelData) {
+                modelData[activePlatform].orcamentoDiario = parseFloat(row.querySelector('[name="orcamentoDiario"]').value) || 0;
+                modelData[activePlatform].orcamentoTotal = parseFloat(row.querySelector('[name="orcamentoTotal"]').value) || 0;
+                modelData[activePlatform].resultados = parseFloat(row.querySelector('[name="resultados"]').value) || 0;
+                modelData[activePlatform].observacoes = row.querySelector('[name="observacoes"]').value || '';
+            }
+        });
+    };
+
+    // --- EVENT LISTENERS ---
+
+    // Main listener for the whole dashboard
+    document.getElementById('campaign-dashboard').addEventListener('click', function(event) {
+        // Handle platform toggle clicks
+        const toggleButton = event.target.closest('.platform-toggle button');
+        if (toggleButton) {
+            const sectionElement = toggleButton.closest('[data-section]');
+            const sectionName = sectionElement.dataset.section;
+            const newPlatform = toggleButton.dataset.platform;
+
+            if (activePlatforms[sectionName] !== newPlatform) {
+                saveData(sectionName); // Save data from the old platform view
+                activePlatforms[sectionName] = newPlatform; // Set the new active platform
+                
+                sectionElement.querySelector('.platform-toggle .active').classList.remove('active');
+                toggleButton.classList.add('active');
+
+                renderTable(sectionName); // Re-render the table for the new platform
+            }
+        }
+        
+        // Handle spinner clicks
+        const spinner = event.target.closest('.spinner');
+        if (spinner) {
+            const input = spinner.closest('.number-input-wrapper').querySelector('input[type="number"]');
+            if (input) {
+                let value = parseFloat(input.value) || 0;
+                const direction = spinner.dataset.step === 'up' ? 1 : -1;
+                // Allow bigger steps for budget fields
+                const stepAmount = (input.name === 'resultados') ? 1 : (event.shiftKey ? 10 : 1);
+                value += direction * stepAmount;
+                if (value < 0) value = 0;
+                input.value = (input.name === 'resultados') ? Math.round(value) : value.toFixed(2);
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+        }
+    });
+
+    // Listener for input changes to trigger real-time calculations
+    document.getElementById('campaign-dashboard').addEventListener('input', function(event) {
+        if (event.target.matches('.metric-input')) {
+            const currentRow = event.target.closest('tr');
+            if (currentRow) {
+                // If the user changes the daily budget, we should NOT recalculate it from total
+                // Only recalculate daily if the total is the source of the change.
+                if (event.target.name !== 'orcamentoDiario') {
+                     calculateMetrics(currentRow);
+                } else {
+                    // if daily is changed, just update weekly
+                    const dailyValue = parseFloat(event.target.value) || 0;
+                    const weeklyOutput = currentRow.querySelector('[name="orcamentoSemanal"]');
+                    weeklyOutput.value = `R$ ${(dailyValue * 7).toFixed(2)}`;
+                }
+            }
+        }
+    });
+
+    // --- INITIAL RENDER ---
+    renderTable('kia');
+    renderTable('suzuki');
+    renderTable('zontes');
+    renderTable('haojue');
+});
+</script>
+
+</body>
+</html>
