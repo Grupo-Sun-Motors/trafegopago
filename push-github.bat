@@ -11,21 +11,31 @@ git init
 git config user.name "SunMotorsOficial"
 git config user.email "mktsunmotors@gmail.com"
 
-REM Adiciona remote (caso ainda não exista)
+REM Remove e reconfigura origin remoto
 git remote remove origin >nul 2>&1
 git remote add origin https://github.com/SunMotorsOficial/trafegopago.git
 
-REM Ignora supabase-infos.txt
+REM Garante que supabase-infos.txt seja ignorado
 echo supabase-infos.txt>>.gitignore
 
-REM Adiciona e commita tudo, exceto o supabase-infos.txt
-git add .
-git reset supabase-infos.txt
+REM Remove do Git se já tiver sido rastreado antes
+git rm --cached supabase-infos.txt >nul 2>&1
+
+REM Adiciona arquivos e pastas específicas (inclusive docs e midias)
+git add index.html
+git add push-github.bat
+git add .gitignore
+git add pages/
+git add shared/
+git add docs/
+git add midias/
+
+REM Commit com data/hora
 git commit -m "Atualização automática %date% %time%"
 
-REM Faz push do branch local master para o remoto main
+REM Push do branch local master para main remoto
 git push -f origin master:main
 
 echo.
-echo Push realizado com sucesso!
+echo Push concluído com sucesso!
 pause
