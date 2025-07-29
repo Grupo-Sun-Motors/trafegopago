@@ -43,8 +43,21 @@ body {
 }
 
 .sidemenu.collapsed .sidemenu-header {
-    justify-content: center;
+    justify-content: flex-start;
     padding: 0 0.5rem;
+    position: relative;
+}
+
+.sidemenu.collapsed .sidemenu-logo {
+    justify-content: center;
+    flex: none;
+}
+
+.sidemenu.collapsed .sidemenu-controls {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .sidemenu.mobile-hidden {
@@ -60,12 +73,15 @@ body {
     padding: 0 1rem;
     border-bottom: 1px solid #e5e7eb;
     background: #fafafa;
+    flex-shrink: 0;
 }
 
 .sidemenu-logo {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    flex: 1;
+    min-width: 0;
 }
 
 .sidemenu-logo svg {
@@ -76,8 +92,8 @@ body {
 }
 
 .sidemenu-text {
-    font-weight: 500;
-    font-size: 1.125rem;
+    font-weight: 300;
+    font-size: 0.875rem;
     color: #111827;
     white-space: nowrap;
     transition: all 0.3s ease;
@@ -86,6 +102,7 @@ body {
 .sidemenu-controls {
     display: flex;
     gap: 0.5rem;
+    flex-shrink: 0;
 }
 
 .sidemenu-btn {
@@ -123,8 +140,9 @@ body {
 /* ===== NAVIGATION ===== */
 .sidemenu-nav {
     padding: 1rem 0;
-    overflow-y: auto;
     height: calc(100vh - 64px);
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
 .nav-item {
@@ -135,7 +153,8 @@ body {
     border-radius: 0.5rem;
     text-decoration: none;
     color: #6b7280;
-    font-weight: 400;
+    font-weight: 300;
+    font-size: 0.875rem;
     transition: all 0.2s ease;
     position: relative;
 }
