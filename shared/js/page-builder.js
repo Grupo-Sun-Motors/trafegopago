@@ -53,21 +53,21 @@ class PageBuilder {
             
             <!-- Navigation -->
             <nav class="sidemenu-nav">
-                <a href="./index.html" class="nav-item" data-page="dashboard">
+                <a href="./" class="nav-item" data-page="dashboard">
                     <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
                     </svg>
                     <span class="sidemenu-text">Dashboard</span>
                 </a>
                 
-                <a href="./pages/orcamento/index.html" class="nav-item" data-page="orcamento">
+                <a href="./pages/orcamento" class="nav-item" data-page="orcamento">
                     <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
                     </svg>
                     <span class="sidemenu-text">Orçamento</span>
                 </a>
                 
-                <a href="./pages/publico-alvo/index.html" class="nav-item" data-page="publico-alvo">
+                <a href="./pages/publico-alvo" class="nav-item" data-page="publico-alvo">
                     <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                     </svg>
@@ -91,25 +91,25 @@ class PageBuilder {
         // Determine navigation paths based on current location
         const currentPath = window.location.pathname;
         let navPaths = {
-            dashboard: './index.html',
-            orcamento: './pages/orcamento/index.html',
-            publicoAlvo: './pages/publico-alvo/index.html'
+            dashboard: './',
+            orcamento: './pages/orcamento',
+            publicoAlvo: './pages/publico-alvo'
         };
 
         // Adjust paths for subdirectories
         if (currentPath.includes('/pages/')) {
             navPaths = {
-                dashboard: '../../index.html',
-                orcamento: '../orcamento/index.html',
-                publicoAlvo: '../publico-alvo/index.html'
+                dashboard: '../../',
+                orcamento: '../orcamento',
+                publicoAlvo: '../publico-alvo'
             };
         }
 
         // Update navigation links in sidemenu
         let sidemenuHtml = this.sidemenuComponent;
-        sidemenuHtml = sidemenuHtml.replace('href="./index.html"', `href="${navPaths.dashboard}"`);
-        sidemenuHtml = sidemenuHtml.replace('href="./pages/orcamento/index.html"', `href="${navPaths.orcamento}"`);
-        sidemenuHtml = sidemenuHtml.replace('href="./pages/publico-alvo/index.html"', `href="${navPaths.publicoAlvo}"`);
+        sidemenuHtml = sidemenuHtml.replace('href="../../"', `href="${navPaths.dashboard}"`);
+        sidemenuHtml = sidemenuHtml.replace('href="../../pages/orcamento"', `href="${navPaths.orcamento}"`);
+        sidemenuHtml = sidemenuHtml.replace('href="../../pages/publico-alvo"', `href="${navPaths.publicoAlvo}"`);
 
         const html = `<!DOCTYPE html>
 <html lang="pt-BR">

@@ -18,9 +18,6 @@ class SidemenuController {
     }
 
     init() {
-        // Clean URL immediately if possible
-        this.cleanUrl();
-        
         // Wait for DOM to be fully loaded
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => this.setup());
@@ -34,16 +31,6 @@ class SidemenuController {
         this.bindEvents();
         this.handleResize();
         this.setActiveNavItem();
-        this.cleanUrl();
-    }
-
-    cleanUrl() {
-        // Remove index.html from URL if present
-        const currentUrl = window.location.href;
-        if (currentUrl.includes('/index.html')) {
-            const cleanUrl = currentUrl.replace('/index.html', '/');
-            window.history.replaceState(null, '', cleanUrl);
-        }
     }
 
     cacheElements() {
@@ -86,31 +73,6 @@ class SidemenuController {
 
         // Handle keyboard shortcuts
         document.addEventListener('keydown', (e) => this.handleKeydown(e));
-
-        // Intercept navigation clicks to maintain clean URLs
-        this.bindNavigationEvents();
-
-        // Clean URL on history navigation
-        window.addEventListener('popstate', () => {
-            setTimeout(() => this.cleanUrl(), 10);
-        });
-    }
-
-    bindNavigationEvents() {
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', (e) => this.handleNavigation(e));
-        });
-    }
-
-    handleNavigation(e) {
-        // Let the default navigation happen
-        // The URL will be cleaned by the target page's load event
-    }
-
-    loadPage(url) {
-        // This method is no longer needed with the simplified approach
-        return;
     }
 
     openMobileMenu() {
@@ -192,28 +154,24 @@ class SidemenuController {
     setActiveNavItem() {
         const currentPath = window.location.pathname;
         const navItems = document.querySelectorAll('.nav-item');
-        
+
         navItems.forEach(item => {
             item.classList.remove('active');
-            
+
             const href = item.getAttribute('href');
             if (href) {
                 // Normalize paths for comparison
-                let normalizedHref = href.replace('./', '/').replace(/\/$/, '');
-                let normalizedCurrentPath = currentPath.replace(/\/$/, '');
-                
+                const normalizedHref = href.replace(/\/$/, '');
+                const normalizedCurrentPath = currentPath.replace(/\/$/, '');
+
                 // Handle root path
-                if (href === './' && (currentPath === '/' || currentPath.endsWith('/index.html'))) {
+                if ((href === './' || href === '../../') && (normalizedCurrentPath === '' || normalizedCurrentPath.endsWith('index.html'))) {
                     item.classList.add('active');
                     return;
                 }
-                
+
                 // Handle sub-paths
-                if (normalizedHref && (
-                    normalizedCurrentPath.endsWith(normalizedHref) ||
-                    normalizedCurrentPath.includes(normalizedHref) ||
-                    currentPath.includes(href.replace('./', ''))
-                )) {
+                if (normalizedHref && normalizedCurrentPath.endsWith(normalizedHref)) {
                     item.classList.add('active');
                 }
             }
