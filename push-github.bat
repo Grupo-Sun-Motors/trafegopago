@@ -22,7 +22,7 @@ git commit -m "Atualização automática %data% %hora%"
 
 REM Define o repositório remoto se não tiver
 git remote remove origin >nul 2>&1
-git remote add origin https://github.com/SunMotorsOficial/trafegopago.git
+git remote add origin https://github.com/SunMotorsOficial/trafegopago
 
 REM Envia para o repositório principal
 git push -u origin main --force
