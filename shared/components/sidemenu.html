@@ -1,0 +1,56 @@
+<!-- Sun Motors - Shared Sidemenu Component -->
+<!-- Mobile Overlay -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Sidemenu -->
+<div class="sidemenu mobile-hidden" id="sidemenu">
+    <!-- Header -->
+    <div class="sidemenu-header">
+        <div class="sidemenu-logo">
+            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            </svg>
+            <span class="sidemenu-text">Sun Motors</span>
+        </div>
+        
+        <div class="sidemenu-controls">
+            <!-- Desktop collapse button -->
+            <button class="sidemenu-btn desktop-collapse-btn" id="collapseBtn" title="Recolher menu (Ctrl+B)">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+                </svg>
+            </button>
+            
+            <!-- Mobile close button -->
+            <button class="sidemenu-btn mobile-close-btn" id="closeMobileMenu" title="Fechar menu">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="sidemenu-nav">
+        <a href="./index.html" class="nav-item" data-page="dashboard">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+            </svg>
+            <span class="sidemenu-text">Dashboard</span>
+        </a>
+        
+        <a href="./pages/orcamento/index.html" class="nav-item" data-page="orcamento">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+            <span class="sidemenu-text">Orçamento</span>
+        </a>
+        
+        <a href="./pages/publico-alvo/index.html" class="nav-item" data-page="publico-alvo">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            <span class="sidemenu-text">Público-Alvo</span>
+        </a>
+    </nav>
+</div> 

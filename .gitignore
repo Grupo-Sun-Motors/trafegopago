@@ -66,4 +66,4 @@ Thumbs.db
 
 # Backup files
 *.bak
-*.backup 
+*.backup supabase-infos.txt
