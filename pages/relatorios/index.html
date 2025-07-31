@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - Sun Motors</title>
+    
+    <!-- External Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="../../shared/css/layout.css">
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Page Specific Styles -->
+    <style>
+        th {
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        /* Simplify scrollbar styling */
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        .table-container::-webkit-scrollbar-track {
+            background: #e5e7eb;
+        }
+        .table-container::-webkit-scrollbar-thumb {
+            background: #9ca3af;
+            border-radius: 4px;
+        }
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+        .campaign-name {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            color: #1f2937;
+            white-space: nowrap;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem; /* 12px */
+            margin-bottom: 1.5rem; /* 24px */
+        }
+        .section-title {
+            font-size: 1.875rem; /* 30px */
+            font-weight: 700;
+            color: #111827;
+        }
+        /* Platform Toggle/Tabs Styling */
+        .platform-toggle {
+            display: flex;
+            border-radius: 0.75rem;
+            background-color: #e5e7eb;
+            padding: 0.25rem;
+            margin-bottom: 2rem;
+            width: fit-content;
+        }
+        .platform-toggle button {
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            background-color: transparent;
+            font-weight: 600;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .platform-toggle button.active {
+            background-color: #ffffff;
+            color: #111827;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+        }
+        .summary-card-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: #f9fafb;
+            border-radius: 1rem;
+            border: 1px solid #e5e7eb;
+        }
+        @media (min-width: 640px) {
+            .summary-card-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 1024px) {
+            .summary-card-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        .summary-card {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+        .summary-card-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .summary-card-value {
+            font-size: 1.875rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <!-- Mobile Overlay -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Sidemenu -->
+    <div class="sidemenu mobile-hidden" id="sidemenu">
+        <!-- Header -->
+        <div class="sidemenu-header">
+            <div class="sidemenu-logo">
+                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+                <span class="sidemenu-text">Sun Motors</span>
+            </div>
+            
+            <div class="sidemenu-controls">
+                <button class="sidemenu-btn desktop-collapse-btn" id="collapseBtn" title="Recolher menu (Ctrl+B)">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+                    </svg>
+                </button>
+                
+                <button class="sidemenu-btn mobile-close-btn" id="closeMobileMenu" title="Fechar menu">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="sidemenu-nav">
+            <a href="../../" class="nav-item" data-page="dashboard">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                </svg>
+                <span class="sidemenu-text">Dashboard</span>
+            </a>
+            
+            <a href="../orcamento/" class="nav-item" data-page="orcamento">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+                <span class="sidemenu-text">Orçamento</span>
+            </a>
+            
+            <a href="../publico-alvo/" class="nav-item" data-page="publico-alvo">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                <span class="sidemenu-text">Público-Alvo</span>
+            </a>
+            
+            <a href="../otimizacoes/" class="nav-item" data-page="otimizacoes">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+                <span class="sidemenu-text">Otimizações</span>
+            </a>
+            
+            <a href="./" class="nav-item active" data-page="relatorios">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <span class="sidemenu-text">Relatórios</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Top Header -->
+        <header class="top-header">
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+                <span class="sr-only">Abrir menu</span>
+            </button>
+            
+            <h1>Relatórios</h1>
+            
+            <div class="w-8"></div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="main-content-inner">
+            <div class="content-container">
+                <!-- Page Header -->
+                <header class="mb-6">
+                    <h1 class="text-3xl font-bold text-gray-900">Relatórios de Campanha</h1>
+                    <p class="text-gray-600 mt-1">Análise de Desempenho | Período: 01 a 30 de Junho</p>
+                </header>
+
+            <div class="platform-toggle">
+                <button id="meta-btn" class="active" onclick="showPlatform('meta')">Meta Ads</button>
+                <button id="google-btn" onclick="showPlatform('google')">Google Ads</button>
+            </div>
+
+            <!-- Reports Sections -->
+            <div id="meta-data">
+                <main class="space-y-12">
+                    <!-- Kia Sun Motors Section -->
+                    <section class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                        <div class="section-header">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-1.621-1.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z" /></svg>
+                            <h2 class="section-title">Kia Sun Motors</h2>
+                        </div>
+                        <div class="summary-card-grid">
+                            <div class="summary-card bg-gray-200"><p class="summary-card-label text-gray-800">Valor Total Investido</p><p class="summary-card-value text-gray-900">R$ 4.287,10</p></div>
+                            <div class="summary-card bg-blue-100"><p class="summary-card-label text-blue-800">Google Ads</p><p class="summary-card-value text-blue-900">R$ 1.978,65</p></div>
+                            <div class="summary-card bg-indigo-100"><p class="summary-card-label text-indigo-800">Meta Ads</p><p class="summary-card-value text-indigo-900">R$ 2.308,45</p></div>
+                            <div class="summary-card bg-green-100"><p class="summary-card-label text-green-800">Leads Totais</p><p class="summary-card-value text-green-900">8.803</p></div>
+                        </div>
+                        <div class="table-container">
+                            <table class="w-full min-w-[1300px] text-sm text-left text-gray-600">
+                                <thead class="text-xs text-gray-700 bg-gray-100">
+                                    <tr>
+                                        <th scope="col" class="p-4">Campanha</th>
+                                        <th scope="col" class="p-4 text-right">Gasto Diário Médio</th>
+                                        <th scope="col" class="p-4 text-right">Valor Usado</th>
+                                        <th scope="col" class="p-4 text-right">Resultados</th>
+                                        <th scope="col" class="p-4 text-right">Custo p/ Resultado</th>
+                                        <th scope="col" class="p-4 text-right">CPM</th>
+                                        <th scope="col" class="p-4 text-right">Alcance</th>
+                                        <th scope="col" class="p-4 text-right">Impressões</th>
+                                        <th scope="col" class="p-4 text-right">Cliques no Link</th>
+                                        <th scope="col" class="p-4 text-right">CPC</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Bongo -->
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="truck" class="w-5 h-5 text-gray-700"></i><span>[Amanita] Always On | KIA | Bongo</span></div></td><td class="p-4 text-right font-medium">R$ 27,51</td><td class="p-4 text-right font-medium text-red-600">R$ 825,43</td><td class="p-4 text-right font-bold text-blue-700">95</td><td class="p-4 text-right font-medium">R$ 8,69</td><td class="p-4 text-right font-medium">R$ 11,96</td><td class="p-4 text-right font-medium">22.881</td><td class="p-4 text-right font-medium">69.008</td><td class="p-4 text-right font-medium">587</td><td class="p-4 text-right font-medium">R$ 1,41</td></tr>
+                                    <!-- Sportage -->
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="car" class="w-5 h-5 text-gray-700"></i><span>[Amanita] Always On | KIA | Sportage</span></div></td><td class="p-4 text-right font-medium">R$ 23,65</td><td class="p-4 text-right font-medium text-red-600">R$ 709,45</td><td class="p-4 text-right font-bold text-blue-700">92</td><td class="p-4 text-right font-medium">R$ 7,71</td><td class="p-4 text-right font-medium">R$ 27,39</td><td class="p-4 text-right font-medium">12.529</td><td class="p-4 text-right font-medium">25.900</td><td class="p-4 text-right font-medium">644</td><td class="p-4 text-right font-medium">R$ 1,10</td></tr>
+                                    <!-- Passeio (Niro) -->
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="car" class="w-5 h-5 text-green-600"></i><span>[Amanita] Always On | KIA | Passeio (Niro)</span></div></td><td class="p-4 text-right font-medium">R$ 11,68</td><td class="p-4 text-right font-medium text-red-600">R$ 350,50</td><td class="p-4 text-right font-bold text-blue-700">25</td><td class="p-4 text-right font-medium">R$ 14,02</td><td class="p-4 text-right font-medium">R$ 28,13</td><td class="p-4 text-right font-medium">6.873</td><td class="p-4 text-right font-medium">12.461</td><td class="p-4 text-right font-medium">184</td><td class="p-4 text-right font-medium">R$ 1,90</td></tr>
+                                    <!-- Carnival -->
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="car-front" class="w-5 h-5 text-gray-700"></i><span>[Amanita] Always On | KIA | Carnival</span></div></td><td class="p-4 text-right font-medium">R$ 7,03</td><td class="p-4 text-right font-medium text-red-600">R$ 210,88</td><td class="p-4 text-right font-bold text-blue-700">36</td><td class="p-4 text-right font-medium">R$ 5,86</td><td class="p-4 text-right font-medium">R$ 13,58</td><td class="p-4 text-right font-medium">8.402</td><td class="p-4 text-right font-medium">15.526</td><td class="p-4 text-right font-medium">207</td><td class="p-4 text-right font-medium">R$ 1,02</td></tr>
+                                    <!-- EV5 -->
+                                    <tr class="bg-white hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="car" class="w-5 h-5 text-blue-500"></i><span>[Amanita] Always On | KIA | EV5</span></div></td><td class="p-4 text-right font-medium">R$ 7,07</td><td class="p-4 text-right font-medium text-red-600">R$ 212,19</td><td class="p-4 text-right font-bold text-blue-700">31</td><td class="p-4 text-right font-medium">R$ 6,84</td><td class="p-4 text-right font-medium">R$ 16,80</td><td class="p-4 text-right font-medium">6.161</td><td class="p-4 text-right font-medium">12.627</td><td class="p-4 text-right font-medium">224</td><td class="p-4 text-right font-medium">R$ 0,95</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Suzuki Sun Motors Section -->
+                    <section class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                        <div class="section-header">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12.075c0-3.443 2.57-6.225 5.75-6.225h.5c.414 0 .75.336.75.75v1.5c0 .414-.336.75-.75.75h-.5c-1.82 0-3.25 1.43-3.25 3.225s1.43 3.225 3.25 3.225h.5c.414 0 .75.336.75.75v1.5c0 .414-.336.75-.75.75h-.5c-3.18 0-5.75-2.782-5.75-6.225zM13.75 5.85c3.18 0 5.75 2.782 5.75 6.225s-2.57 6.225-5.75 6.225h-.5c-.414 0-.75-.336-.75-.75v-1.5c0-.414.336-.75.75-.75h.5c1.82 0 3.25-1.43 3.25-3.225s-1.43-3.225-3.25-3.225h-.5c-.414 0-.75-.336-.75-.75v-1.5c0-.414.336-.75.75-.75h.5z" /></svg>
+                            <h2 class="section-title">Suzuki Sun Motors</h2>
+                        </div>
+                        <div class="summary-card-grid">
+                            <div class="summary-card bg-gray-200"><p class="summary-card-label text-gray-800">Valor Total Investido</p><p class="summary-card-value text-gray-900">R$ 1.777,15</p></div>
+                            <div class="summary-card bg-blue-100"><p class="summary-card-label text-blue-800">Google Ads</p><p class="summary-card-value text-blue-900">R$ 351,07</p></div>
+                            <div class="summary-card bg-indigo-100"><p class="summary-card-label text-indigo-800">Meta Ads</p><p class="summary-card-value text-indigo-900">R$ 1.426,08</p></div>
+                            <div class="summary-card bg-green-100"><p class="summary-card-label text-green-800">Leads Totais</p><p class="summary-card-value text-green-900">133</p></div>
+                        </div>
+                        <div class="table-container">
+                            <table class="w-full min-w-[1300px] text-sm text-left text-gray-600">
+                                <thead class="text-xs text-gray-700 bg-gray-100">
+                                    <tr>
+                                        <th scope="col" class="p-4">Campanha</th>
+                                        <th scope="col" class="p-4 text-right">Gasto Diário Médio</th>
+                                        <th scope="col" class="p-4 text-right">Valor Usado</th>
+                                        <th scope="col" class="p-4 text-right">Resultados</th>
+                                        <th scope="col" class="p-4 text-right">Custo p/ Resultado</th>
+                                        <th scope="col" class="p-4 text-right">CPM</th>
+                                        <th scope="col" class="p-4 text-right">Alcance</th>
+                                        <th scope="col" class="p-4 text-right">Impressões</th>
+                                        <th scope="col" class="p-4 text-right">Cliques no Link</th>
+                                        <th scope="col" class="p-4 text-right">CPC</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- GSX-8S -->
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-blue-700"></i><span>[Amanita] Suzuki - GSX-8S</span></div></td><td class="p-4 text-right font-medium">R$ 7,33</td><td class="p-4 text-right font-medium text-red-600">R$ 219,87</td><td class="p-4 text-right font-bold text-blue-700">33</td><td class="p-4 text-right font-medium">R$ 6,66</td><td class="p-4 text-right font-medium">R$ 8,15</td><td class="p-4 text-right font-medium">19.287</td><td class="p-4 text-right font-medium">26.990</td><td class="p-4 text-right font-medium">264</td><td class="p-4 text-right font-medium">R$ 0,83</td></tr>
+                                    <!-- V-Strom 650 -->
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-orange-600"></i><span>[Amanita] Suzuki - V-Strom 650</span></div></td><td class="p-4 text-right font-medium">R$ 13,75</td><td class="p-4 text-right font-medium text-red-600">R$ 412,56</td><td class="p-4 text-right font-bold text-blue-700">24</td><td class="p-4 text-right font-medium">R$ 17,19</td><td class="p-4 text-right font-medium">R$ 11,24</td><td class="p-4 text-right font-medium">18.957</td><td class="p-4 text-right font-medium">36.716</td><td class="p-4 text-right font-medium">333</td><td class="p-4 text-right font-medium">R$ 1,24</td></tr>
+                                    <!-- V-Strom 800 DE -->
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-yellow-500"></i><span>[Amanita] Suzuki - V-Strom 800 DE</span></div></td><td class="p-4 text-right font-medium">R$ 10,78</td><td class="p-4 text-right font-medium text-red-600">R$ 323,44</td><td class="p-4 text-right font-bold text-blue-700">28</td><td class="p-4 text-right font-medium">R$ 11,55</td><td class="p-4 text-right font-medium">R$ 15,06</td><td class="p-4 text-right font-medium">12.647</td><td class="p-4 text-right font-medium">21.478</td><td class="p-4 text-right font-medium">271</td><td class="p-4 text-right font-medium">R$ 1,19</td></tr>
+                                    <!-- GSX-8R -->
+                                    <tr class="bg-white hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-red-700"></i><span>[Amanita] Suzuki - GSX-8R</span></div></td><td class="p-4 text-right font-medium">R$ 15,67</td><td class="p-4 text-right font-medium text-red-600">R$ 470,21</td><td class="p-4 text-right font-bold text-blue-700">25</td><td class="p-4 text-right font-medium">R$ 18,81</td><td class="p-4 text-right font-medium">R$ 18,63</td><td class="p-4 text-right font-medium">14.768</td><td class="p-4 text-right font-medium">25.240</td><td class="p-4 text-right font-medium">340</td><td class="p-4 text-right font-medium">R$ 1,38</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Haojue Sun Motors Section -->
+                    <section class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                        <div class="section-header">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-700" viewBox="0 0 20 20" fill="currentColor"><path d="M5.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 8c0-2.691-1.46-5.083-3.687-6.364A1 1 0 007.007.25L5.682 2.094A1 1 0 006.9 3.65l.593-.435a5.525 5.525 0 014.005 4.313 1 1 0 001.99.143zM14.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 9a1 1 0 00-1 1v1a1 1 0 002 0v-1a1 1 0 00-1-1z" /></svg>
+                            <h2 class="section-title">Haojue Sun Motors</h2>
+                        </div>
+                        <div class="summary-card-grid">
+                            <div class="summary-card bg-gray-200"><p class="summary-card-label text-gray-800">Valor Total Investido</p><p class="summary-card-value text-gray-900">R$ 3.930,05</p></div>
+                            <div class="summary-card bg-blue-100"><p class="summary-card-label text-blue-800">Google Ads</p><p class="summary-card-value text-blue-900">R$ 1.181,67</p></div>
+                            <div class="summary-card bg-indigo-100"><p class="summary-card-label text-indigo-800">Meta Ads</p><p class="summary-card-value text-indigo-900">R$ 2.748,38</p></div>
+                            <div class="summary-card bg-green-100"><p class="summary-card-label text-green-800">Leads Totais</p><p class="summary-card-value text-green-900">710</p></div>
+                        </div>
+                        <div class="table-container">
+                            <table class="w-full min-w-[1300px] text-sm text-left text-gray-600">
+                                <thead class="text-xs text-gray-700 bg-gray-100">
+                                    <tr>
+                                        <th scope="col" class="p-4">Campanha</th>
+                                        <th scope="col" class="p-4 text-right">Gasto Diário Médio</th>
+                                        <th scope="col" class="p-4 text-right">Valor Usado</th>
+                                        <th scope="col" class="p-4 text-right">Resultados</th>
+                                        <th scope="col" class="p-4 text-right">Custo p/ Resultado</th>
+                                        <th scope="col" class="p-4 text-right">CPM</th>
+                                        <th scope="col" class="p-4 text-right">Alcance</th>
+                                        <th scope="col" class="p-4 text-right">Impressões</th>
+                                        <th scope="col" class="p-4 text-right">Cliques no Link</th>
+                                        <th scope="col" class="p-4 text-right">Visitas ao Perfil</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Master Ride -->
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-blue-600"></i><span>[Amanita] Always On | Master Ride</span></div></td><td class="p-4 text-right font-medium">R$ 23,60</td><td class="p-4 text-right font-medium text-red-600">R$ 708,11</td><td class="p-4 text-right font-bold text-blue-700">71</td><td class="p-4 text-right font-medium">R$ 9,97</td><td class="p-4 text-right font-medium">R$ 16,45</td><td class="p-4 text-right font-medium">20.165</td><td class="p-4 text-right font-medium">43.048</td><td class="p-4 text-right font-medium">651</td><td class="p-4 text-right font-medium">111</td></tr>
+                                    <!-- DR160 -->
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-red-600"></i><span>[Amanita] Always On | DR160</span></div></td><td class="p-4 text-right font-medium">R$ 27,85</td><td class="p-4 text-right font-medium text-red-600">R$ 835,42</td><td class="p-4 text-right font-bold text-blue-700">69</td><td class="p-4 text-right font-medium">R$ 12,11</td><td class="p-4 text-right font-medium">R$ 13,96</td><td class="p-4 text-right font-medium">28.307</td><td class="p-4 text-right font-medium">59.831</td><td class="p-4 text-right font-medium">549</td><td class="p-4 text-right font-medium">95</td></tr>
+                                    <!-- DK160 -->
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-green-600"></i><span>[Amanita] Always On | DK160</span></div></td><td class="p-4 text-right font-medium">R$ 11,70</td><td class="p-4 text-right font-medium text-red-600">R$ 350,86</td><td class="p-4 text-right font-bold text-blue-700">33</td><td class="p-4 text-right font-medium">R$ 10,63</td><td class="p-4 text-right font-medium">R$ 16,02</td><td class="p-4 text-right font-medium">10.745</td><td class="p-4 text-right font-medium">21.900</td><td class="p-4 text-right font-medium">198</td><td class="p-4 text-right font-medium">39</td></tr>
+                                    <!-- NK150 -->
+                                    <tr class="bg-white hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-purple-600"></i><span>[Amanita] Always On | NK150</span></div></td><td class="p-4 text-right font-medium">R$ 28,47</td><td class="p-4 text-right font-medium text-red-600">R$ 853,99</td><td class="p-4 text-right font-bold text-blue-700">124</td><td class="p-4 text-right font-medium">R$ 6,89</td><td class="p-4 text-right font-medium">R$ 11,75</td><td class="p-4 text-right font-medium">28.933</td><td class="p-4 text-right font-medium">72.683</td><td class="p-4 text-right font-medium">934</td><td class="p-4 text-right font-medium">61</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                    
+                    <!-- Zontes Sun Motors Section -->
+                    <section class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                        <div class="section-header">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+                            <h2 class="section-title">Zontes Sun Motors</h2>
+                        </div>
+                        <div class="summary-card-grid">
+                            <div class="summary-card bg-gray-200"><p class="summary-card-label text-gray-800">Valor Total Investido</p><p class="summary-card-value text-gray-900">R$ 1.788,83</p></div>
+                            <div class="summary-card bg-blue-100"><p class="summary-card-label text-blue-800">Google Ads</p><p class="summary-card-value text-blue-900">R$ 433,01</p></div>
+                            <div class="summary-card bg-indigo-100"><p class="summary-card-label text-indigo-800">Meta Ads</p><p class="summary-card-value text-indigo-900">R$ 1.355,82</p></div>
+                            <div class="summary-card bg-green-100"><p class="summary-card-label text-green-800">Leads Totais</p><p class="summary-card-value text-green-900">309</p></div>
+                        </div>
+                        <div class="table-container">
+                            <table class="w-full min-w-[1300px] text-sm text-left text-gray-600">
+                                <thead class="text-xs text-gray-700 bg-gray-100">
+                                    <tr>
+                                        <th scope="col" class="p-4">Campanha</th>
+                                        <th scope="col" class="p-4 text-right">Gasto Diário Médio</th>
+                                        <th scope="col" class="p-4 text-right">Valor Usado</th>
+                                        <th scope="col" class="p-4 text-right">Resultados</th>
+                                        <th scope="col" class="p-4 text-right">Custo p/ Resultado</th>
+                                        <th scope="col" class="p-4 text-right">CPM</th>
+                                        <th scope="col" class="p-4 text-right">Alcance</th>
+                                        <th scope="col" class="p-4 text-right">Impressões</th>
+                                        <th scope="col" class="p-4 text-right">Cliques no Link</th>
+                                        <th scope="col" class="p-4 text-right">Visitas ao Perfil</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- V350 -->
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-gray-800"></i><span>[Amanita] Zontes - V350</span></div></td><td class="p-4 text-right font-medium">R$ 14,51</td><td class="p-4 text-right font-medium text-red-600">R$ 435,37</td><td class="p-4 text-right font-bold text-blue-700">138</td><td class="p-4 text-right font-medium">R$ 3,15</td><td class="p-4 text-right font-medium">R$ 6,14</td><td class="p-4 text-right font-medium">34.708</td><td class="p-4 text-right font-medium">70.890</td><td class="p-4 text-right font-medium">1.105</td><td class="p-4 text-right font-medium"> - </td></tr>
+                                    <!-- T350 e T350x -->
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-cyan-600"></i><span>[Amanita] Zontes - T350 e T350x</span></div></td><td class="p-4 text-right font-medium">R$ 14,52</td><td class="p-4 text-right font-medium text-red-600">R$ 435,67</td><td class="p-4 text-right font-bold text-blue-700">56</td><td class="p-4 text-right font-medium">R$ 7,78</td><td class="p-4 text-right font-medium">R$ 8,68</td><td class="p-4 text-right font-medium">24.492</td><td class="p-4 text-right font-medium">50.181</td><td class="p-4 text-right font-medium">443</td><td class="p-4 text-right font-medium"> - </td></tr>
+                                    <!-- Tactic 400 -->
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-lime-600"></i><span>[Amanita] Zontes - Tactic 400</span></div></td><td class="p-4 text-right font-medium">R$ 5,20</td><td class="p-4 text-right font-medium text-red-600">R$ 156,00</td><td class="p-4 text-right font-bold text-blue-700">18</td><td class="p-4 text-right font-medium">R$ 8,67</td><td class="p-4 text-right font-medium">R$ 16,01</td><td class="p-4 text-right font-medium">6.262</td><td class="p-4 text-right font-medium">9.744</td><td class="p-4 text-right font-medium">134</td><td class="p-4 text-right font-medium"> - </td></tr>
+                                    <!-- S350 -->
+                                    <tr class="bg-white hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-fuchsia-600"></i><span>[Amanita] Zontes - S350</span></div></td><td class="p-4 text-right font-medium">R$ 10,96</td><td class="p-4 text-right font-medium text-red-600">R$ 328,78</td><td class="p-4 text-right font-bold text-blue-700">84</td><td class="p-4 text-right font-medium">R$ 3,91</td><td class="p-4 text-right font-medium">R$ 12,62</td><td class="p-4 text-right font-medium">14.511</td><td class="p-4 text-right font-medium">26.048</td><td class="p-4 text-right font-medium">557</td><td class="p-4 text-right font-medium"> - </td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </main>
+            </div>
+
+            <div id="google-data" style="display: none;">
+                <main class="space-y-12">
+                     <!-- Kia Sun Motors Section (Google) -->
+                    <section class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                        <div class="section-header">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-1.621-1.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z" /></svg>
+                            <h2 class="section-title">Kia Sun Motors</h2>
+                        </div>
+                        <div class="summary-card-grid">
+                            <div class="summary-card bg-gray-200"><p class="summary-card-label text-gray-800">Valor Total Investido</p><p class="summary-card-value text-gray-900">R$ 4.287,10</p></div>
+                            <div class="summary-card bg-blue-100"><p class="summary-card-label text-blue-800">Google Ads</p><p class="summary-card-value text-blue-900">R$ 1.978,65</p></div>
+                            <div class="summary-card bg-indigo-100"><p class="summary-card-label text-indigo-800">Meta Ads</p><p class="summary-card-value text-indigo-900">R$ 2.308,45</p></div>
+                            <div class="summary-card bg-green-100"><p class="summary-card-label text-green-800">Leads Totais</p><p class="summary-card-value text-green-900">8.803</p></div>
+                        </div>
+                        <div class="table-container">
+                            <table class="w-full min-w-[1000px] text-sm text-left text-gray-600">
+                                <thead class="text-xs text-gray-700 bg-gray-100">
+                                    <tr>
+                                        <th scope="col" class="p-4">Campanha</th>
+                                        <th scope="col" class="p-4 text-right">Gasto Diário Médio</th>
+                                        <th scope="col" class="p-4 text-right">Custo</th>
+                                        <th scope="col" class="p-4 text-right">Impressões</th>
+                                        <th scope="col" class="p-4 text-right">Interações</th>
+                                        <th scope="col" class="p-4 text-right">CPM Médio</th>
+                                        <th scope="col" class="p-4 text-right">CPV Médio</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="car" class="w-5 h-5 text-gray-700"></i><span>[Amanita] [PMAX] Sportage</span></div></td><td class="p-4 text-right font-medium">R$ 14,97</td><td class="p-4 text-right font-medium text-red-600">R$ 449,21</td><td class="p-4 text-right font-medium">104.916</td><td class="p-4 text-right font-bold text-blue-700">1.946</td><td class="p-4 text-right font-medium">R$ 4,28</td><td class="p-4 text-right font-medium">R$ 0,02</td></tr>
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="truck" class="w-5 h-5 text-gray-700"></i><span>[Amanita] [PMAX] Bongo</span></div></td><td class="p-4 text-right font-medium">R$ 14,73</td><td class="p-4 text-right font-medium text-red-600">R$ 441,91</td><td class="p-4 text-right font-medium">114.900</td><td class="p-4 text-right font-bold text-blue-700">3.777</td><td class="p-4 text-right font-medium">R$ 3,85</td><td class="p-4 text-right font-medium">R$ 0,02</td></tr>
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="building-2" class="w-5 h-5 text-gray-700"></i><span>01 [Pesquisa] Institucional</span></div></td><td class="p-4 text-right font-medium">R$ 14,22</td><td class="p-4 text-right font-medium text-red-600">R$ 426,70</td><td class="p-4 text-right font-medium">7.031</td><td class="p-4 text-right font-bold text-blue-700">1.028</td><td class="p-4 text-right font-medium">R$ 60,69</td><td class="p-4 text-right font-medium">R$ 0,00</td></tr>
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="car" class="w-5 h-5 text-green-600"></i><span>16 [Pesquisa] Niro</span></div></td><td class="p-4 text-right font-medium">R$ 7,01</td><td class="p-4 text-right font-medium text-red-600">R$ 210,25</td><td class="p-4 text-right font-medium">26.292</td><td class="p-4 text-right font-bold text-blue-700">572</td><td class="p-4 text-right font-medium">R$ 8,00</td><td class="p-4 text-right font-medium">R$ 0,00</td></tr>
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="car" class="w-5 h-5 text-gray-700"></i><span>15 [Pesquisa] Sportage</span></div></td><td class="p-4 text-right font-medium">R$ 6,94</td><td class="p-4 text-right font-medium text-red-600">R$ 208,23</td><td class="p-4 text-right font-medium">32.290</td><td class="p-4 text-right font-bold text-blue-700">619</td><td class="p-4 text-right font-medium">R$ 6,45</td><td class="p-4 text-right font-medium">R$ 0,00</td></tr>
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="truck" class="w-5 h-5 text-gray-700"></i><span>03 [Pesquisa] Bongo</span></div></td><td class="p-4 text-right font-medium">R$ 4,81</td><td class="p-4 text-right font-medium text-red-600">R$ 144,19</td><td class="p-4 text-right font-medium">12.343</td><td class="p-4 text-right font-bold text-blue-700">340</td><td class="p-4 text-right font-medium">R$ 11,68</td><td class="p-4 text-right font-medium">R$ 0,00</td></tr>
+                                    <tr class="bg-white hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="car" class="w-5 h-5 text-purple-600"></i><span>08 [Pesquisa] Stonic</span></div></td><td class="p-4 text-right font-medium">R$ 3,27</td><td class="p-4 text-right font-medium text-red-600">R$ 98,16</td><td class="p-4 text-right font-medium">6.314</td><td class="p-4 text-right font-bold text-blue-700">242</td><td class="p-4 text-right font-medium">R$ 15,55</td><td class="p-4 text-right font-medium">R$ 0,00</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                    
+                    <!-- Suzuki Sun Motors Section (Google) -->
+                    <section class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                        <div class="section-header">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12.075c0-3.443 2.57-6.225 5.75-6.225h.5c.414 0 .75.336.75.75v1.5c0 .414-.336.75-.75.75h-.5c-1.82 0-3.25 1.43-3.25 3.225s1.43 3.225 3.25 3.225h.5c.414 0 .75.336.75.75v1.5c0 .414-.336.75-.75.75h-.5c-3.18 0-5.75-2.782-5.75-6.225zM13.75 5.85c3.18 0 5.75 2.782 5.75 6.225s-2.57 6.225-5.75 6.225h-.5c-.414 0-.75-.336-.75-.75v-1.5c0-.414.336-.75.75-.75h.5c1.82 0 3.25-1.43 3.25-3.225s-1.43-3.225-3.25-3.225h-.5c-.414 0-.75-.336-.75-.75v-1.5c0-.414.336-.75.75-.75h.5z" /></svg>
+                            <h2 class="section-title">Suzuki Sun Motors</h2>
+                        </div>
+                        <div class="summary-card-grid">
+                            <div class="summary-card bg-gray-200"><p class="summary-card-label text-gray-800">Valor Total Investido</p><p class="summary-card-value text-gray-900">R$ 1.777,15</p></div>
+                            <div class="summary-card bg-blue-100"><p class="summary-card-label text-blue-800">Google Ads</p><p class="summary-card-value text-blue-900">R$ 351,07</p></div>
+                            <div class="summary-card bg-indigo-100"><p class="summary-card-label text-indigo-800">Meta Ads</p><p class="summary-card-value text-indigo-900">R$ 1.426,08</p></div>
+                            <div class="summary-card bg-green-100"><p class="summary-card-label text-green-800">Leads Totais</p><p class="summary-card-value text-green-900">133</p></div>
+                        </div>
+                        <div class="table-container">
+                            <table class="w-full min-w-[1000px] text-sm text-left text-gray-600">
+                                <thead class="text-xs text-gray-700 bg-gray-100">
+                                    <tr>
+                                        <th scope="col" class="p-4">Campanha</th>
+                                        <th scope="col" class="p-4 text-right">Gasto Diário Médio</th>
+                                        <th scope="col" class="p-4 text-right">Custo</th>
+                                        <th scope="col" class="p-4 text-right">Cliques</th>
+                                        <th scope="col" class="p-4 text-right">CPC Méd.</th>
+                                        <th scope="col" class="p-4 text-right">Conversões</th>
+                                        <th scope="col" class="p-4 text-right">Custo / conv.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-orange-600"></i><span>[Pesquisa] V-Strom 650</span></div></td><td class="p-4 text-right font-medium">R$ 6,02</td><td class="p-4 text-right font-medium text-red-600">R$ 180,55</td><td class="p-4 text-right font-medium">305</td><td class="p-4 text-right font-medium">R$ 0,59</td><td class="p-4 text-right font-bold text-blue-700">19,0</td><td class="p-4 text-right font-medium">R$ 9,50</td></tr>
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-yellow-500"></i><span>03 [Pesquisa] V-strom 800de</span></div></td><td class="p-4 text-right font-medium">R$ 3,35</td><td class="p-4 text-right font-medium text-red-600">R$ 100,35</td><td class="p-4 text-right font-medium">173</td><td class="p-4 text-right font-medium">R$ 0,58</td><td class="p-4 text-right font-bold text-blue-700">4,0</td><td class="p-4 text-right font-medium">R$ 25,09</td></tr>
+                                    <tr class="bg-white hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-blue-700"></i><span>14 [Pesquisa] Gsx8s</span></div></td><td class="p-4 text-right font-medium">R$ 2,34</td><td class="p-4 text-right font-medium text-red-600">R$ 70,17</td><td class="p-4 text-right font-medium">49</td><td class="p-4 text-right font-medium">R$ 1,43</td><td class="p-4 text-right font-bold text-blue-700">0,0</td><td class="p-4 text-right font-medium">R$ 0,00</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Haojue Sun Motors Section (Google)-->
+                    <section class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                        <div class="section-header">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-700" viewBox="0 0 20 20" fill="currentColor"><path d="M5.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 8c0-2.691-1.46-5.083-3.687-6.364A1 1 0 007.007.25L5.682 2.094A1 1 0 006.9 3.65l.593-.435a5.525 5.525 0 014.005 4.313 1 1 0 001.99.143zM14.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 9a1 1 0 00-1 1v1a1 1 0 002 0v-1a1 1 0 00-1-1z" /></svg>
+                            <h2 class="section-title">Haojue Sun Motors</h2>
+                        </div>
+                         <div class="summary-card-grid">
+                            <div class="summary-card bg-gray-200"><p class="summary-card-label text-gray-800">Valor Total Investido</p><p class="summary-card-value text-gray-900">R$ 3.930,05</p></div>
+                            <div class="summary-card bg-blue-100"><p class="summary-card-label text-blue-800">Google Ads</p><p class="summary-card-value text-blue-900">R$ 1.181,67</p></div>
+                            <div class="summary-card bg-indigo-100"><p class="summary-card-label text-indigo-800">Meta Ads</p><p class="summary-card-value text-indigo-900">R$ 2.748,38</p></div>
+                            <div class="summary-card bg-green-100"><p class="summary-card-label text-green-800">Leads Totais</p><p class="summary-card-value text-green-900">710</p></div>
+                        </div>
+                        <div class="table-container">
+                            <table class="w-full min-w-[1000px] text-sm text-left text-gray-600">
+                                <thead class="text-xs text-gray-700 bg-gray-100">
+                                    <tr>
+                                        <th scope="col" class="p-4">Campanha</th>
+                                        <th scope="col" class="p-4 text-right">Gasto Diário Médio</th>
+                                        <th scope="col" class="p-4 text-right">Custo</th>
+                                        <th scope="col" class="p-4 text-right">Cliques</th>
+                                        <th scope="col" class="p-4 text-right">CPC Méd.</th>
+                                        <th scope="col" class="p-4 text-right">Conversões</th>
+                                        <th scope="col" class="p-4 text-right">Custo / conv.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-gray-700"></i><span>[Amanita] [PMAX] Haojue</span></div></td><td class="p-4 text-right font-medium">R$ 15,20</td><td class="p-4 text-right font-medium text-red-600">R$ 456,00</td><td class="p-4 text-right font-medium">2.444</td><td class="p-4 text-right font-medium">R$ 0,19</td><td class="p-4 text-right font-bold text-blue-700">363,0</td><td class="p-4 text-right font-medium">R$ 1,26</td></tr>
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-blue-600"></i><span>01 [Pesquisa] Master Ride</span></div></td><td class="p-4 text-right font-medium">R$ 8,82</td><td class="p-4 text-right font-medium text-red-600">R$ 264,59</td><td class="p-4 text-right font-medium">283</td><td class="p-4 text-right font-medium">R$ 0,93</td><td class="p-4 text-right font-bold text-blue-700">18,0</td><td class="p-4 text-right font-medium">R$ 14,70</td></tr>
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-red-600"></i><span>24 [Pesquisa] DR 160</span></div></td><td class="p-4 text-right font-medium">R$ 7,27</td><td class="p-4 text-right font-medium text-red-600">R$ 218,13</td><td class="p-4 text-right font-medium">429</td><td class="p-4 text-right font-medium">R$ 0,51</td><td class="p-4 text-right font-bold text-blue-700">22,0</td><td class="p-4 text-right font-medium">R$ 9,91</td></tr>
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-gray-500"></i><span>10 [Pesquisa] Chopper</span></div></td><td class="p-4 text-right font-medium">R$ 4,66</td><td class="p-4 text-right font-medium text-red-600">R$ 139,65</td><td class="p-4 text-right font-medium">83</td><td class="p-4 text-right font-medium">R$ 1,68</td><td class="p-4 text-right font-bold text-blue-700">4,0</td><td class="p-4 text-right font-medium">R$ 34,91</td></tr>
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-purple-600"></i><span>02 [Pesquisa] Nk 150</span></div></td><td class="p-4 text-right font-medium">R$ 1,65</td><td class="p-4 text-right font-medium text-red-600">R$ 49,49</td><td class="p-4 text-right font-medium">163</td><td class="p-4 text-right font-medium">R$ 0,30</td><td class="p-4 text-right font-bold text-blue-700">2,0</td><td class="p-4 text-right font-medium">R$ 24,75</td></tr>
+                                    <tr class="bg-white hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-green-600"></i><span>04 [Pesquisa] Dk 150</span></div></td><td class="p-4 text-right font-medium">R$ 1,79</td><td class="p-4 text-right font-medium text-red-600">R$ 53,81</td><td class="p-4 text-right font-medium">182</td><td class="p-4 text-right font-medium">R$ 0,30</td><td class="p-4 text-right font-bold text-blue-700">4,0</td><td class="p-4 text-right font-medium">R$ 13,45</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                    
+                    <!-- Zontes Sun Motors Section (Google) -->
+                    <section class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                        <div class="section-header">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+                            <h2 class="section-title">Zontes Sun Motors</h2>
+                        </div>
+                        <div class="summary-card-grid">
+                            <div class="summary-card bg-gray-200"><p class="summary-card-label text-gray-800">Valor Total Investido</p><p class="summary-card-value text-gray-900">R$ 1.788,83</p></div>
+                            <div class="summary-card bg-blue-100"><p class="summary-card-label text-blue-800">Google Ads</p><p class="summary-card-value text-blue-900">R$ 433,01</p></div>
+                            <div class="summary-card bg-indigo-100"><p class="summary-card-label text-indigo-800">Meta Ads</p><p class="summary-card-value text-indigo-900">R$ 1.355,82</p></div>
+                            <div class="summary-card bg-green-100"><p class="summary-card-label text-green-800">Leads Totais</p><p class="summary-card-value text-green-900">309</p></div>
+                        </div>
+                        <div class="table-container">
+                            <table class="w-full min-w-[1000px] text-sm text-left text-gray-600">
+                                <thead class="text-xs text-gray-700 bg-gray-100">
+                                    <tr>
+                                        <th scope="col" class="p-4">Campanha</th>
+                                        <th scope="col" class="p-4 text-right">Gasto Diário Médio</th>
+                                        <th scope="col" class="p-4 text-right">Custo</th>
+                                        <th scope="col" class="p-4 text-right">Cliques</th>
+                                        <th scope="col" class="p-4 text-right">CPC Méd.</th>
+                                        <th scope="col" class="p-4 text-right">Conversões</th>
+                                        <th scope="col" class="p-4 text-right">Custo / conv.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-cyan-600"></i><span>06 [Pesquisa] T 350</span></div></td><td class="p-4 text-right font-medium">R$ 8,63</td><td class="p-4 text-right font-medium text-red-600">R$ 258,77</td><td class="p-4 text-right font-medium">371</td><td class="p-4 text-right font-medium">R$ 0,70</td><td class="p-4 text-right font-bold text-blue-700">12,6</td><td class="p-4 text-right font-medium">R$ 20,62</td></tr>
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-gray-800"></i><span>12 [Pesquisa] V 350</span></div></td><td class="p-4 text-right font-medium">R$ 2,68</td><td class="p-4 text-right font-medium text-red-600">R$ 80,47</td><td class="p-4 text-right font-medium">92</td><td class="p-4 text-right font-medium">R$ 0,87</td><td class="p-4 text-right font-bold text-blue-700">0,3</td><td class="p-4 text-right font-medium">R$ 321,88</td></tr>
+                                    <tr class="bg-white border-b hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-red-500"></i><span>20 [Pesquisa] R350</span></div></td><td class="p-4 text-right font-medium">R$ 2,50</td><td class="p-4 text-right font-medium text-red-600">R$ 74,92</td><td class="p-4 text-right font-medium">77</td><td class="p-4 text-right font-medium">R$ 0,97</td><td class="p-4 text-right font-bold text-blue-700">0,2</td><td class="p-4 text-right font-medium">R$ 374,62</td></tr>
+                                    <tr class="bg-white hover:bg-gray-50"><td class="p-4"><div class="campaign-name"><i data-lucide="bike" class="w-5 h-5 text-teal-500"></i><span>17 [Pesquisa] GK350</span></div></td><td class="p-4 text-right font-medium">R$ 0,63</td><td class="p-4 text-right font-medium text-red-600">R$ 18,85</td><td class="p-4 text-right font-medium">12</td><td class="p-4 text-right font-medium">R$ 1,57</td><td class="p-4 text-right font-bold text-blue-700">0,0</td><td class="p-4 text-right font-medium">R$ 0,00</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </main>
+            </div>
+                
+                <footer class="text-center mt-8 py-4">
+                    <p class="text-sm text-gray-500">Relatório gerado para análise de desempenho. Porto Alegre, 2024.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shared JavaScript -->
+    <script src="../../shared/js/sidemenu.js"></script>
+    
+    <!-- Page Specific JavaScript -->
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        function showPlatform(platform) {
+            const metaBtn = document.getElementById('meta-btn');
+            const googleBtn = document.getElementById('google-btn');
+            const metaData = document.getElementById('meta-data');
+            const googleData = document.getElementById('google-data');
+
+            if (platform === 'meta') {
+                metaData.style.display = 'block';
+                googleData.style.display = 'none';
+                metaBtn.classList.add('active');
+                googleBtn.classList.remove('active');
+            } else {
+                metaData.style.display = 'none';
+                googleData.style.display = 'block';
+                metaBtn.classList.remove('active');
+                googleBtn.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>

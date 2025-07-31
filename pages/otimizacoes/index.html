@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Otimizações - Sun Motors</title>
+    
+    <!-- External Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="../../shared/css/layout.css">
+    
+    <!-- Page Specific Styles -->
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .form-input, .form-select, .form-textarea {
+            @apply w-full px-3 py-2 text-gray-700 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out;
+        }
+        .form-label {
+            @apply block text-sm font-medium text-gray-700 mb-1;
+        }
+        th {
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        /* Estilos para o Sidemenu */
+        #add-change-sidemenu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        #add-change-sidemenu.is-open {
+            transform: translateX(0);
+        }
+        #sidemenu-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        #sidemenu-overlay.is-open {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <!-- Mobile Overlay -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Sidemenu -->
+    <div class="sidemenu mobile-hidden" id="sidemenu">
+        <!-- Header -->
+        <div class="sidemenu-header">
+            <div class="sidemenu-logo">
+                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+                <span class="sidemenu-text">Sun Motors</span>
+            </div>
+            
+            <div class="sidemenu-controls">
+                <button class="sidemenu-btn desktop-collapse-btn" id="collapseBtn" title="Recolher menu (Ctrl+B)">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+                    </svg>
+                </button>
+                
+                <button class="sidemenu-btn mobile-close-btn" id="closeMobileMenu" title="Fechar menu">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="sidemenu-nav">
+            <a href="../../" class="nav-item" data-page="dashboard">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                </svg>
+                <span class="sidemenu-text">Dashboard</span>
+            </a>
+            
+            <a href="../orcamento/" class="nav-item" data-page="orcamento">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+                <span class="sidemenu-text">Orçamento</span>
+            </a>
+            
+            <a href="../publico-alvo/" class="nav-item" data-page="publico-alvo">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                <span class="sidemenu-text">Público-Alvo</span>
+            </a>
+            
+            <a href="./" class="nav-item active" data-page="otimizacoes">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+                <span class="sidemenu-text">Otimizações</span>
+            </a>
+            
+            <a href="../relatorios/" class="nav-item" data-page="relatorios">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <span class="sidemenu-text">Relatórios</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Top Header -->
+        <header class="top-header">
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+                <span class="sr-only">Abrir menu</span>
+            </button>
+            
+            <h1>Otimizações</h1>
+            
+            <div class="w-8"></div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="main-content-inner">
+            <div class="content-container">
+                <!-- Cabeçalho da Página -->
+                <header class="mb-8 flex justify-between items-center">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">Registro de Alterações</h1>
+                        <p class="text-gray-600 mt-1">Histórico de otimizações e mudanças nas campanhas.</p>
+                    </div>
+                    <button id="open-sidemenu-btn" class="flex items-center gap-2 bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                        <span class="hidden sm:inline">Adicionar</span>
+                    </button>
+                </header>
+
+            <!-- Seção de Filtros e Visualização -->
+            <section id="view-section" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                <div class="flex items-center gap-3 mb-6">
+                    <i data-lucide="history" class="w-8 h-8 text-green-600"></i>
+                    <h2 class="text-2xl font-bold text-gray-800">Histórico de Alterações</h2>
+                </div>
+
+                <!-- Filtros -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6 p-4 bg-gray-50 rounded-lg border">
+                     <div>
+                        <label for="filter-start-date" class="form-label">De:</label>
+                        <input type="date" id="filter-start-date" class="form-input">
+                    </div>
+                    <div>
+                        <label for="filter-end-date" class="form-label">Até:</label>
+                        <input type="date" id="filter-end-date" class="form-input">
+                    </div>
+                    <div>
+                        <label for="filter-platform" class="form-label">Plataforma:</label>
+                        <select id="filter-platform" class="form-select">
+                            <option value="">Todas</option>
+                            <option value="Meta Ads">Meta Ads</option>
+                            <option value="Google Ads">Google Ads</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="filter-brand" class="form-label">Marca:</label>
+                        <select id="filter-brand" class="form-select">
+                            <option value="">Todas</option>
+                            <option value="Kia Sun Motors">Kia Sun Motors</option>
+                            <option value="Suzuki Sun Motors">Suzuki Sun Motors</option>
+                            <option value="Haojue Sun Motors">Haojue Sun Motors</option>
+                            <option value="Zontes Sun Motors">Zontes Sun Motors</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button id="clear-filters" class="w-full bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-gray-700 transition-all duration-200">Limpar Filtros</button>
+                    </div>
+                </div>
+
+                <!-- Tabela de Registros -->
+                <div class="table-container">
+                    <table class="w-full min-w-[1200px] text-sm text-left text-gray-600">
+                        <thead class="text-xs text-gray-700 bg-gray-100">
+                            <tr>
+                                <th scope="col" class="p-4">Data</th>
+                                <th scope="col" class="p-4">Plataforma</th>
+                                <th scope="col" class="p-4">Marca</th>
+                                <th scope="col" class="p-4">Campanha</th>
+                                <th scope="col" class="p-4">Tipo</th>
+                                <th scope="col" class="p-4">Descrição</th>
+                                <th scope="col" class="p-4">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="changelog-table-body">
+                           <tr id="empty-state" class="bg-white border-b">
+                                <td colspan="7" class="p-8 text-center text-gray-500">
+                                    <i data-lucide="search-x" class="mx-auto w-12 h-12 mb-4"></i>
+                                    Nenhuma alteração encontrada. Comece adicionando uma no formulário acima.
+                                </td>
+                           </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+                <footer class="text-center mt-8 py-4">
+                    <p class="text-sm text-gray-500">Página de Registro de Alterações. Porto Alegre, 2024.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay do Sidemenu -->
+    <div id="sidemenu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+
+    <!-- Sidemenu para Adicionar Nova Alteração -->
+    <aside id="add-change-sidemenu" class="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-50 flex flex-col">
+        <!-- Cabeçalho do Sidemenu -->
+        <div class="flex justify-between items-center p-4 border-b">
+            <div class="flex items-center gap-3">
+                <i data-lucide="file-plus-2" class="w-6 h-6 text-indigo-600"></i>
+                <h2 class="text-xl font-bold text-gray-800">Adicionar Nova Alteração</h2>
+            </div>
+            <button id="close-sidemenu-btn" class="p-2 rounded-full hover:bg-gray-200">
+                <i data-lucide="x" class="w-6 h-6 text-gray-600"></i>
+            </button>
+        </div>
+
+        <!-- Conteúdo do Formulário -->
+        <div class="flex-grow p-6 overflow-y-auto">
+            <form id="changelog-form" class="space-y-6">
+                <div>
+                    <label for="change-date" class="form-label">Data da Alteração</label>
+                    <input type="date" id="change-date" class="form-input" required>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label for="change-platform" class="form-label">Plataforma</label>
+                        <select id="change-platform" class="form-select" required>
+                            <option value="Meta Ads">Meta Ads</option>
+                            <option value="Google Ads">Google Ads</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="change-brand" class="form-label">Marca</label>
+                        <select id="change-brand" class="form-select" required>
+                            <option value="Kia Sun Motors">Kia Sun Motors</option>
+                            <option value="Suzuki Sun Motors">Suzuki Sun Motors</option>
+                            <option value="Haojue Sun Motors">Haojue Sun Motors</option>
+                            <option value="Zontes Sun Motors">Zontes Sun Motors</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="change-type" class="form-label">Tipo de Alteração</label>
+                    <select id="change-type" class="form-select" required>
+                        <option value="Orçamento">Orçamento</option>
+                        <option value="Segmentação">Segmentação</option>
+                        <option value="Criativo">Criativo</option>
+                        <option value="Lance">Lance</option>
+                        <option value="Posicionamento">Posicionamento</option>
+                        <option value="Pausa/Ativação">Pausa/Ativação</option>
+                        <option value="Estrutural">Estrutural</option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="campaign-name" class="form-label">Nome da Campanha/Anúncio</label>
+                    <input type="text" id="campaign-name" class="form-input" placeholder="Ex: [Amanita] Always On | KIA | Bongo" required>
+                </div>
+                
+                <div>
+                    <label for="change-description" class="form-label">Descrição da Alteração</label>
+                    <textarea id="change-description" rows="4" class="form-textarea" placeholder="Detalhe o que foi modificado. Ex: Aumento do orçamento diário de R$25 para R$40." required></textarea>
+                </div>
+
+                <div>
+                    <label for="change-hypothesis" class="form-label">Hipótese / Motivo (Opcional)</label>
+                    <input type="text" id="change-hypothesis" class="form-input" placeholder="Ex: Aumentar a captação de leads no final de semana.">
+                </div>
+
+                <div>
+                    <label for="change-responsible" class="form-label">Responsável (Opcional)</label>
+                    <input type="text" id="change-responsible" class="form-input" placeholder="Seu nome">
+                </div>
+            </form>
+        </div>
+
+        <!-- Rodapé do Sidemenu com Botão de Envio -->
+        <div class="p-4 border-t bg-gray-50">
+            <button type="submit" form="changelog-form" class="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
+                <i data-lucide="save"></i>
+                Salvar Alteração
+            </button>
+        </div>
+    </aside>
+
+    <!-- Shared JavaScript -->
+    <script src="../../shared/js/sidemenu.js"></script>
+    
+    <!-- Page Specific JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            const form = document.getElementById('changelog-form');
+            const tableBody = document.getElementById('changelog-table-body');
+            const emptyStateRow = document.getElementById('empty-state');
+            
+            // Elementos do Sidemenu
+            const openSidemenuBtn = document.getElementById('open-sidemenu-btn');
+            const closeSidemenuBtn = document.getElementById('close-sidemenu-btn');
+            const sidemenu = document.getElementById('add-change-sidemenu');
+            const overlay = document.getElementById('sidemenu-overlay');
+
+            // Filtros
+            const filterStartDate = document.getElementById('filter-start-date');
+            const filterEndDate = document.getElementById('filter-end-date');
+            const filterPlatform = document.getElementById('filter-platform');
+            const filterBrand = document.getElementById('filter-brand');
+            const clearFiltersBtn = document.getElementById('clear-filters');
+
+            const changeTypeStyles = {
+                'Orçamento': { icon: 'dollar-sign', color: 'text-green-600' },
+                'Segmentação': { icon: 'users', color: 'text-blue-600' },
+                'Criativo': { icon: 'image', color: 'text-purple-600' },
+                'Lance': { icon: 'trending-up', color: 'text-yellow-600' },
+                'Posicionamento': { icon: 'layout', color: 'text-teal-600' },
+                'Pausa/Ativação': { icon: 'power', color: 'text-red-600' },
+                'Estrutural': { icon: 'folder-git-2', color: 'text-gray-700' },
+                'Outro': { icon: 'settings-2', color: 'text-gray-500' }
+            };
+
+            const openSidemenu = () => {
+                sidemenu.classList.add('is-open');
+                overlay.classList.add('is-open');
+            };
+
+            const closeSidemenu = () => {
+                sidemenu.classList.remove('is-open');
+                overlay.classList.remove('is-open');
+            };
+
+            openSidemenuBtn.addEventListener('click', openSidemenu);
+            closeSidemenuBtn.addEventListener('click', closeSidemenu);
+            overlay.addEventListener('click', closeSidemenu);
+            
+            renderTable();
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                saveChange();
+            });
+            
+            [filterStartDate, filterEndDate, filterPlatform, filterBrand].forEach(el => {
+                el.addEventListener('change', renderTable);
+            });
+
+            clearFiltersBtn.addEventListener('click', () => {
+                filterStartDate.value = '';
+                filterEndDate.value = '';
+                filterPlatform.value = '';
+                filterBrand.value = '';
+                renderTable();
+            });
+
+            function saveChange() {
+                const changes = getChangesFromStorage();
+                
+                const newChange = {
+                    id: Date.now(),
+                    date: document.getElementById('change-date').value,
+                    platform: document.getElementById('change-platform').value,
+                    brand: document.getElementById('change-brand').value,
+                    campaignName: document.getElementById('campaign-name').value,
+                    type: document.getElementById('change-type').value,
+                    description: document.getElementById('change-description').value,
+                    hypothesis: document.getElementById('change-hypothesis').value,
+                    responsible: document.getElementById('change-responsible').value,
+                };
+
+                changes.push(newChange);
+                localStorage.setItem('campaignChanges', JSON.stringify(changes));
+                
+                // FIX: Select the button using a more robust selector that is not dependent on the form's parent element.
+                const submitButton = document.querySelector('button[form="changelog-form"]');
+                
+                if (submitButton) {
+                    submitButton.innerHTML = '<i data-lucide="check-circle"></i> Salvo com Sucesso!';
+                    submitButton.classList.replace('bg-indigo-600', 'bg-green-600');
+                    lucide.createIcons();
+
+                    setTimeout(() => {
+                        submitButton.innerHTML = '<i data-lucide="save"></i> Salvar Alteração';
+                        submitButton.classList.replace('bg-green-600', 'bg-indigo-600');
+                        lucide.createIcons();
+                        form.reset();
+                        closeSidemenu();
+                        renderTable();
+                    }, 1500);
+                }
+            }
+
+            function getChangesFromStorage() {
+                const changes = localStorage.getItem('campaignChanges');
+                return changes ? JSON.parse(changes) : [];
+            }
+
+            function renderTable() {
+                tableBody.innerHTML = '';
+                let changes = getChangesFromStorage();
+
+                const sDate = filterStartDate.value;
+                const eDate = filterEndDate.value;
+                const platform = filterPlatform.value;
+                const brand = filterBrand.value;
+
+                const filteredChanges = changes.filter(change => {
+                    const changeDate = new Date(change.date + 'T00:00:00');
+                    if (sDate && changeDate < new Date(sDate + 'T00:00:00')) return false;
+                    if (eDate && changeDate > new Date(eDate + 'T23:59:59')) return false;
+                    if (platform && change.platform !== platform) return false;
+                    if (brand && change.brand !== brand) return false;
+                    return true;
+                });
+
+                filteredChanges.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                if (filteredChanges.length === 0) {
+                    tableBody.appendChild(emptyStateRow);
+                } else {
+                    filteredChanges.forEach(change => {
+                        const row = createTableRow(change);
+                        tableBody.appendChild(row);
+                    });
+                }
+                lucide.createIcons();
+            }
+
+            function createTableRow(change) {
+                const row = document.createElement('tr');
+                row.className = 'bg-white border-b hover:bg-gray-50';
+                
+                const style = changeTypeStyles[change.type] || changeTypeStyles['Outro'];
+                const formattedDate = new Date(change.date + 'T00:00:00').toLocaleDateString('pt-BR');
+
+                row.innerHTML = `
+                    <td class="p-4 font-medium whitespace-nowrap">${formattedDate}</td>
+                    <td class="p-4 whitespace-nowrap">${change.platform}</td>
+                    <td class="p-4 whitespace-nowrap">${change.brand}</td>
+                    <td class="p-4 font-semibold text-gray-900">${change.campaignName}</td>
+                    <td class="p-4">
+                        <span class="inline-flex items-center gap-2 font-semibold ${style.color}">
+                            <i data-lucide="${style.icon}" class="w-4 h-4"></i>
+                            ${change.type}
+                        </span>
+                    </td>
+                    <td class="p-4 max-w-sm">
+                        <p class="font-medium text-gray-800">${change.description}</p>
+                        ${change.hypothesis ? `<p class="text-xs text-gray-500 mt-1 italic">Hipótese: ${change.hypothesis}</p>` : ''}
+                        ${change.responsible ? `<p class="text-xs text-gray-500 mt-1">Responsável: ${change.responsible}</p>` : ''}
+                    </td>
+                    <td class="p-4">
+                        <button class="text-red-600 hover:text-red-800" onclick="deleteChange(${change.id})">
+                            <i data-lucide="trash-2" class="w-5 h-5"></i>
+                        </button>
+                    </td>
+                `;
+                return row;
+            }
+
+            window.deleteChange = (id) => {
+                // Use a custom modal in a real app instead of confirm()
+                if (confirm('Tem certeza que deseja excluir este registro?')) {
+                    let changes = getChangesFromStorage();
+                    changes = changes.filter(change => change.id !== id);
+                    localStorage.setItem('campaignChanges', JSON.stringify(changes));
+                    renderTable();
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

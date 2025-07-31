@@ -73,6 +73,20 @@ class PageBuilder {
                     </svg>
                     <span class="sidemenu-text">Público-Alvo</span>
                 </a>
+                
+                <a href="./pages/otimizacoes" class="nav-item" data-page="otimizacoes">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                    <span class="sidemenu-text">Otimizações</span>
+                </a>
+                
+                <a href="./pages/relatorios" class="nav-item" data-page="relatorios">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    <span class="sidemenu-text">Relatórios</span>
+                </a>
             </nav>
         </div>`;
     }
@@ -93,7 +107,9 @@ class PageBuilder {
         let navPaths = {
             dashboard: './',
             orcamento: './pages/orcamento',
-            publicoAlvo: './pages/publico-alvo'
+            publicoAlvo: './pages/publico-alvo',
+            otimizacoes: './pages/otimizacoes',
+            relatorios: './pages/relatorios'
         };
 
         // Adjust paths for subdirectories
@@ -101,7 +117,9 @@ class PageBuilder {
             navPaths = {
                 dashboard: '../../',
                 orcamento: '../orcamento',
-                publicoAlvo: '../publico-alvo'
+                publicoAlvo: '../publico-alvo',
+                otimizacoes: '../otimizacoes',
+                relatorios: '../relatorios'
             };
         }
 
@@ -110,6 +128,8 @@ class PageBuilder {
         sidemenuHtml = sidemenuHtml.replace('href="../../"', `href="${navPaths.dashboard}"`);
         sidemenuHtml = sidemenuHtml.replace('href="../../pages/orcamento"', `href="${navPaths.orcamento}"`);
         sidemenuHtml = sidemenuHtml.replace('href="../../pages/publico-alvo"', `href="${navPaths.publicoAlvo}"`);
+        sidemenuHtml = sidemenuHtml.replace('href="../../pages/otimizacoes"', `href="${navPaths.otimizacoes}"`);
+        sidemenuHtml = sidemenuHtml.replace('href="../../pages/relatorios"', `href="${navPaths.relatorios}"`);
 
         const html = `<!DOCTYPE html>
 <html lang="pt-BR">
