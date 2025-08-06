@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - Sun Motors</title>
+    
+    <!-- External Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="../../shared/css/layout.css">
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Page Specific Styles -->
+    <style>
+        .badge-pulse {
+            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        th {
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .table-container::-webkit-scrollbar-track {
+            background: #e5e7eb;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb {
+            background: #9ca3af;
+            border-radius: 4px;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+        
+        .campaign-name {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            color: #1f2937;
+            white-space: nowrap;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #111827;
+        }
+        
+        .platform-toggle {
+            display: flex;
+            border-radius: 0.75rem;
+            background-color: #e5e7eb;
+            padding: 0.25rem;
+            margin-bottom: 2rem;
+            width: fit-content;
+        }
+        
+        .platform-toggle button {
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            background-color: transparent;
+            font-weight: 600;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .platform-toggle button.active {
+            background-color: #ffffff;
+            color: #111827;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+        }
+        
+        .summary-card-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: #f9fafb;
+            border-radius: 1rem;
+            border: 1px solid #e5e7eb;
+        }
+        
+        @media (min-width: 640px) {
+            .summary-card-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .summary-card-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        .summary-card {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+        
+        .summary-card-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .summary-card-value {
+            font-size: 1.875rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <!-- Mobile Overlay -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Sidemenu -->
+    <div class="sidemenu mobile-hidden" id="sidemenu">
+        <!-- Header -->
+        <div class="sidemenu-header">
+            <div class="sidemenu-logo">
+                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+                <span class="sidemenu-text">Sun Motors</span>
+            </div>
+            
+            <div class="sidemenu-controls">
+                <button class="sidemenu-btn desktop-collapse-btn" id="collapseBtn" title="Recolher menu (Ctrl+B)">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+                    </svg>
+                </button>
+                
+                <button class="sidemenu-btn mobile-close-btn" id="closeMobileMenu" title="Fechar menu">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="sidemenu-nav">
+            <a href="../../" class="nav-item" data-page="dashboard">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                </svg>
+                <span class="sidemenu-text">Dashboard</span>
+            </a>
+            
+            <a href="../orcamento/" class="nav-item" data-page="orcamento">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+                <span class="sidemenu-text">Orçamento</span>
+            </a>
+            
+            <a href="../publico-alvo/" class="nav-item" data-page="publico-alvo">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                <span class="sidemenu-text">Público-Alvo</span>
+            </a>
+            
+            <a href="../otimizacoes/" class="nav-item" data-page="otimizacoes">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+                <span class="sidemenu-text">Otimizações</span>
+            </a>
+            
+            <a href="./" class="nav-item active" data-page="relatorios">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <span class="sidemenu-text">Relatórios</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Top Header -->
+        <header class="top-header">
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+                <span class="sr-only">Abrir menu</span>
+            </button>
+            
+            <h1>Relatórios</h1>
+            
+            <div class="w-8"></div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="main-content-inner">
+            <div class="content-container">
+                <!-- Page Header -->
+                <header class="mb-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h1 class="text-3xl font-bold text-gray-900">Relatórios de Campanha</h1>
+                            <p class="text-gray-600 mt-1">Análise de Desempenho | Dados em Tempo Real</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                <span class="text-sm text-gray-600" id="status-conexao">Conectado ao banco</span>
+                            </div>
+                            <button 
+                                id="btn-atualizar"
+                                class="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                                title="Atualizar dados"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                </svg>
+                                <span>Atualizar</span>
+                            </button>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Filtros Section -->
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"/>
+                            </svg>
+                            <h3 class="text-lg font-semibold text-gray-900">Filtros</h3>
+                            <span id="filtros-ativos-badge" class="hidden px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">0 ativos</span>
+                        </div>
+                        
+                        <button 
+                            id="toggle-filtros-avancados" 
+                            class="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors"
+                        >
+                            <span class="text-sm font-medium">Filtros Avançados</span>
+                            <svg id="chevron-filtros" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Filtros Principais -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <!-- Período -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Período</label>
+                            <select id="filtro-periodo" class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                <option value="todos" selected>Todos os períodos</option>
+                                <option value="ultimos-7">Últimos 7 dias</option>
+                                <option value="ultimos-30">Últimos 30 dias</option>
+                                <option value="ultimos-90">Últimos 90 dias</option>
+                                <option value="mes-atual">Mês atual</option>
+                                <option value="mes-anterior">Mês anterior</option>
+                                <option value="trimestre-atual">Trimestre atual</option>
+                                <option value="personalizado">Período personalizado</option>
+                            </select>
+                        </div>
+
+                        <!-- Marca/Cliente -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Marca</label>
+                            <select id="filtro-marca" class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                <option value="todas">Todas as marcas</option>
+                                <option value="Kia Sun Motors">Kia Sun Motors</option>
+                                <option value="Suzuki Sun Motors">Suzuki Sun Motors</option>
+                                <option value="Haojue Sun Motors">Haojue Sun Motors</option>
+                                <option value="Zontes Sun Motors">Zontes Sun Motors</option>
+                            </select>
+                        </div>
+
+                        <!-- Status -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                            <select id="filtro-status" class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                <option value="todos">Todos os status</option>
+                                <option value="ACTIVE,ENABLED" selected>Campanhas ativas</option>
+                                <option value="PAUSED">Campanhas pausadas</option>
+                                <option value="ENDED,DISABLED">Campanhas encerradas</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Período Personalizado -->
+                    <div id="periodo-personalizado" class="hidden mb-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                        <h4 class="text-sm font-medium text-blue-900 mb-3">Definir Período Personalizado</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-blue-700 mb-1">Data de Início</label>
+                                <input 
+                                    type="date" 
+                                    id="data-inicio" 
+                                    class="w-full p-2.5 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                                >
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-blue-700 mb-1">Data de Fim</label>
+                                <input 
+                                    type="date" 
+                                    id="data-fim" 
+                                    class="w-full p-2.5 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filtros Avançados -->
+                    <div id="filtros-avancados" class="hidden">
+                        <div class="border-t border-gray-200 pt-4">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <!-- Comparação e Análise -->
+                                <div class="space-y-4">
+                                    <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wide">Comparação & Análise</h4>
+                                    
+                                    <!-- Comparação -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Comparar com</label>
+                                        <select id="filtro-comparacao" class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                            <option value="nenhuma">Sem comparação</option>
+                                            <option value="periodo-anterior">Período anterior</option>
+                                            <option value="mes-anterior">Mês anterior</option>
+                                            <option value="ano-anterior">Ano anterior</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Tipo de Campanha -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Campanha</label>
+                                        <select id="filtro-tipo-campanha" class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                            <option value="todos">Todos os tipos</option>
+                                            <option value="PMAX">Performance Max</option>
+                                            <option value="Pesquisa">Campanhas de Pesquisa</option>
+                                            <option value="Display">Campanhas de Display</option>
+                                            <option value="Video">Campanhas de Vídeo</option>
+                                            <option value="outros">Outros tipos</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Filtros de Faixa de Valores -->
+                                <div class="space-y-4">
+                                    <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wide">Faixa de Valores</h4>
+                                    
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <!-- CPC -->
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-600 mb-1">CPC Mín (R$)</label>
+                                            <input 
+                                                type="number" 
+                                                id="cpc-min" 
+                                                step="0.01" 
+                                                placeholder="0.00"
+                                                class="w-full p-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                            >
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-600 mb-1">CPC Máx (R$)</label>
+                                            <input 
+                                                type="number" 
+                                                id="cpc-max" 
+                                                step="0.01" 
+                                                placeholder="999.99"
+                                                class="w-full p-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                            >
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <!-- Investimento -->
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-600 mb-1">Investimento Mín (R$)</label>
+                                            <input 
+                                                type="number" 
+                                                id="investimento-min" 
+                                                step="0.01" 
+                                                placeholder="0.00"
+                                                class="w-full p-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                            >
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-600 mb-1">Investimento Máx (R$)</label>
+                                            <input 
+                                                type="number" 
+                                                id="investimento-max" 
+                                                step="0.01" 
+                                                placeholder="99999.99"
+                                                class="w-full p-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                            >
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <!-- Leads -->
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-600 mb-1">Leads Mín</label>
+                                            <input 
+                                                type="number" 
+                                                id="leads-min" 
+                                                placeholder="0"
+                                                class="w-full p-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                            >
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-600 mb-1">Leads Máx</label>
+                                            <input 
+                                                type="number" 
+                                                id="leads-max" 
+                                                placeholder="9999"
+                                                class="w-full p-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                            >
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <!-- CPM -->
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-600 mb-1">CPM Mín (R$)</label>
+                                            <input 
+                                                type="number" 
+                                                id="cpm-min" 
+                                                step="0.01" 
+                                                placeholder="0.00"
+                                                class="w-full p-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                            >
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-600 mb-1">CPM Máx (R$)</label>
+                                            <input 
+                                                type="number" 
+                                                id="cpm-max" 
+                                                step="0.01" 
+                                                placeholder="999.99"
+                                                class="w-full p-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="flex justify-between items-center pt-4 border-t border-gray-200">
+                        <div class="flex items-center space-x-2 text-sm text-gray-600">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                            <span id="contador-resultados">Carregando resultados...</span>
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <button 
+                                id="btn-limpar-filtros"
+                                class="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                            >
+                                Limpar Filtros
+                            </button>
+                            <button 
+                                id="btn-aplicar-filtros"
+                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                            >
+                                Aplicar Filtros
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Toggle Meta/Google -->
+                <div class="platform-toggle">
+                    <button id="meta-btn" class="active">Meta Ads</button>
+                    <button id="google-btn">Google Ads</button>
+                </div>
+
+                <!-- Reports Sections -->
+                <div id="meta-data">
+                    <main class="space-y-12">
+                        <!-- Kia Sun Motors Section -->
+                        <section class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                            <div class="section-header">
+                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-1.621-1.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z" /></svg>
+                                <h2 class="section-title">Kia Sun Motors</h2>
+                            </div>
+                            <div class="summary-card-grid" id="kia-summary-cards">
+                                <div class="summary-card bg-gray-200"><p class="summary-card-label text-gray-800">Valor Total Investido</p><p class="summary-card-value text-gray-900" id="kia-valor-total">R$ 0,00</p></div>
+                                <div class="summary-card bg-blue-100"><p class="summary-card-label text-blue-800">Google Ads</p><p class="summary-card-value text-blue-900" id="kia-google-valor">R$ 0,00</p></div>
+                                <div class="summary-card bg-indigo-100"><p class="summary-card-label text-indigo-800">Meta Ads</p><p class="summary-card-value text-indigo-900" id="kia-meta-valor">R$ 0,00</p></div>
+                                <div class="summary-card bg-green-100">
+                                    <p class="summary-card-label text-green-800">Leads Totais</p>
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <p class="summary-card-value text-green-900" id="kia-leads-total">0</p>
+                                        <span class="text-sm text-green-700 font-medium" id="kia-leads-distribuicao">(0/0)</span>
+                                    </div>
+                                    <p class="text-xs text-green-600 mt-1">meta / google</p>
+                                </div>
+                            </div>
+
+                            <!-- Kia Detailed Table -->
+                            <div class="table-container">
+                                <table class="w-full border-collapse bg-white rounded-lg overflow-hidden shadow-sm">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="text-left p-3 text-xs font-medium text-gray-500 border-b">Campanha</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Gasto Diário</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Valor Usado</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Resultados</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Custo/Resultado</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">CPM</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Alcance</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Impressões</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Cliques</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">CPC</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <!-- Campanhas serão inseridas dinamicamente aqui -->
+                                        <tr><td colspan="10" class="text-center py-8 text-gray-500">Carregando campanhas...</td></tr>
+                                    </tbody>
+                                    <tfoot class="bg-gray-50 font-semibold">
+                                        <tr>
+                                            <td class="p-3 text-sm text-gray-900">TOTAL</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-gasto-diario">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-valor-usado">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-resultados">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-custo-resultado">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-cpm">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-alcance">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-impressoes">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-cliques">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-cpc">R$ 0,00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- Suzuki Sun Motors Section -->
+                        <section class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                            <div class="section-header">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12.075c0-3.443 2.57-6.225 5.75-6.225h.5c.414 0 .75.336.75.75v1.5c0 .414-.336.75-.75.75h-.5c-1.82 0-3.25 1.43-3.25 3.225s1.43 3.225 3.25 3.225h.5c.414 0 .75.336.75.75v1.5c0 .414-.336.75-.75.75h-.5c-3.18 0-5.75-2.782-5.75-6.225zM13.75 5.85c3.18 0 5.75 2.782 5.75 6.225s-2.57 6.225-5.75 6.225h-.5c-.414 0-.75-.336-.75-.75v-1.5c0-.414.336-.75.75-.75h.5c1.82 0 3.25-1.43 3.25-3.225s-1.43-3.225-3.25-3.225h-.5c-.414 0-.75-.336-.75-.75v-1.5c0-.414.336-.75.75-.75h.5z" /></svg>
+                                <h2 class="section-title">Suzuki Sun Motors</h2>
+                            </div>
+                            <div class="summary-card-grid" id="suzuki-summary-cards">
+                                <div class="summary-card bg-gray-200"><p class="summary-card-label text-gray-800">Valor Total Investido</p><p class="summary-card-value text-gray-900" id="suzuki-valor-total">R$ 0,00</p></div>
+                                <div class="summary-card bg-blue-100"><p class="summary-card-label text-blue-800">Google Ads</p><p class="summary-card-value text-blue-900" id="suzuki-google-valor">R$ 0,00</p></div>
+                                <div class="summary-card bg-indigo-100"><p class="summary-card-label text-indigo-800">Meta Ads</p><p class="summary-card-value text-indigo-900" id="suzuki-meta-valor">R$ 0,00</p></div>
+                                <div class="summary-card bg-green-100">
+                                    <p class="summary-card-label text-green-800">Leads Totais</p>
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <p class="summary-card-value text-green-900" id="suzuki-leads-total">0</p>
+                                        <span class="text-sm text-green-700 font-medium" id="suzuki-leads-distribuicao">(0/0)</span>
+                                    </div>
+                                    <p class="text-xs text-green-600 mt-1">meta / google</p>
+                                </div>
+                            </div>
+
+                            <!-- Suzuki Detailed Table -->
+                            <div class="table-container">
+                                <table class="w-full border-collapse bg-white rounded-lg overflow-hidden shadow-sm">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="text-left p-3 text-xs font-medium text-gray-500 border-b">Campanha</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Gasto Diário</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Valor Usado</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Resultados</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Custo/Resultado</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">CPM</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Alcance</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Impressões</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Cliques</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">CPC</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr><td colspan="10" class="text-center py-8 text-gray-500">Carregando campanhas...</td></tr>
+                                    </tbody>
+                                    <tfoot class="bg-gray-50 font-semibold">
+                                        <tr>
+                                            <td class="p-3 text-sm text-gray-900">TOTAL</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-gasto-diario">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-valor-usado">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-resultados">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-custo-resultado">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-cpm">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-alcance">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-impressoes">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-cliques">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-cpc">R$ 0,00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- Haojue Sun Motors Section -->
+                        <section class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                            <div class="section-header">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-700" viewBox="0 0 20 20" fill="currentColor"><path d="M5.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 8c0-2.691-1.46-5.083-3.687-6.364A1 1 0 007.007.25L5.682 2.094A1 1 0 006.9 3.65l.593-.435a5.525 5.525 0 014.005 4.313 1 1 0 001.99.143zM14.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 9a1 1 0 00-1 1v1a1 1 0 002 0v-1a1 1 0 00-1-1z" /></svg>
+                                <h2 class="section-title">Haojue Sun Motors</h2>
+                            </div>
+                            <div class="summary-card-grid" id="haojue-summary-cards">
+                                <div class="summary-card bg-gray-200"><p class="summary-card-label text-gray-800">Valor Total Investido</p><p class="summary-card-value text-gray-900" id="haojue-valor-total">R$ 0,00</p></div>
+                                <div class="summary-card bg-blue-100"><p class="summary-card-label text-blue-800">Google Ads</p><p class="summary-card-value text-blue-900" id="haojue-google-valor">R$ 0,00</p></div>
+                                <div class="summary-card bg-indigo-100"><p class="summary-card-label text-indigo-800">Meta Ads</p><p class="summary-card-value text-indigo-900" id="haojue-meta-valor">R$ 0,00</p></div>
+                                <div class="summary-card bg-green-100">
+                                    <p class="summary-card-label text-green-800">Leads Totais</p>
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <p class="summary-card-value text-green-900" id="haojue-leads-total">0</p>
+                                        <span class="text-sm text-green-700 font-medium" id="haojue-leads-distribuicao">(0/0)</span>
+                                    </div>
+                                    <p class="text-xs text-green-600 mt-1">meta / google</p>
+                                </div>
+                            </div>
+
+                            <!-- Haojue Detailed Table -->
+                            <div class="table-container">
+                                <table class="w-full border-collapse bg-white rounded-lg overflow-hidden shadow-sm">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="text-left p-3 text-xs font-medium text-gray-500 border-b">Campanha</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Gasto Diário</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Valor Usado</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Resultados</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Custo/Resultado</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">CPM</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Alcance</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Impressões</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Cliques</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">CPC</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr><td colspan="10" class="text-center py-8 text-gray-500">Carregando campanhas...</td></tr>
+                                    </tbody>
+                                    <tfoot class="bg-gray-50 font-semibold">
+                                        <tr>
+                                            <td class="p-3 text-sm text-gray-900">TOTAL</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-gasto-diario">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-valor-usado">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-resultados">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-custo-resultado">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-cpm">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-alcance">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-impressoes">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-cliques">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-cpc">R$ 0,00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </section>
+                        
+                        <!-- Zontes Sun Motors Section -->
+                        <section class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                            <div class="section-header">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+                                <h2 class="section-title">Zontes Sun Motors</h2>
+                            </div>
+                            <div class="summary-card-grid" id="zontes-summary-cards">
+                                <div class="summary-card bg-gray-200"><p class="summary-card-label text-gray-800">Valor Total Investido</p><p class="summary-card-value text-gray-900" id="zontes-valor-total">R$ 0,00</p></div>
+                                <div class="summary-card bg-blue-100"><p class="summary-card-label text-blue-800">Google Ads</p><p class="summary-card-value text-blue-900" id="zontes-google-valor">R$ 0,00</p></div>
+                                <div class="summary-card bg-indigo-100"><p class="summary-card-label text-indigo-800">Meta Ads</p><p class="summary-card-value text-indigo-900" id="zontes-meta-valor">R$ 0,00</p></div>
+                                <div class="summary-card bg-green-100">
+                                    <p class="summary-card-label text-green-800">Leads Totais</p>
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <p class="summary-card-value text-green-900" id="zontes-leads-total">0</p>
+                                        <span class="text-sm text-green-700 font-medium" id="zontes-leads-distribuicao">(0/0)</span>
+                                    </div>
+                                    <p class="text-xs text-green-600 mt-1">meta / google</p>
+                                </div>
+                            </div>
+
+                            <!-- Zontes Detailed Table -->
+                            <div class="table-container">
+                                <table class="w-full border-collapse bg-white rounded-lg overflow-hidden shadow-sm">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="text-left p-3 text-xs font-medium text-gray-500 border-b">Campanha</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Gasto Diário</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Valor Usado</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Resultados</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Custo/Resultado</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">CPM</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Alcance</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Impressões</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Cliques</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">CPC</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr><td colspan="10" class="text-center py-8 text-gray-500">Carregando campanhas...</td></tr>
+                                    </tbody>
+                                    <tfoot class="bg-gray-50 font-semibold">
+                                        <tr>
+                                            <td class="p-3 text-sm text-gray-900">TOTAL</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-gasto-diario">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-valor-usado">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-resultados">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-custo-resultado">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-cpm">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-alcance">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-impressoes">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-cliques">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-cpc">R$ 0,00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </section>
+                    </main>
+                </div>
+
+                <div id="google-data" style="display: none;">
+                    <main class="space-y-12">
+                         <!-- Kia Sun Motors Section (Google) -->
+                        <section class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                            <div class="section-header">
+                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-1.621-1.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z" /></svg>
+                                <h2 class="section-title">Kia Sun Motors</h2>
+                            </div>
+                            <div class="summary-card-grid" id="kia-summary-cards-google">
+                                <div class="summary-card bg-gray-200"><p class="summary-card-label text-gray-800">Valor Total Investido</p><p class="summary-card-value text-gray-900" id="kia-valor-total-google">R$ 0,00</p></div>
+                                <div class="summary-card bg-blue-100"><p class="summary-card-label text-blue-800">Google Ads</p><p class="summary-card-value text-blue-900" id="kia-google-valor-google">R$ 0,00</p></div>
+                                <div class="summary-card bg-indigo-100"><p class="summary-card-label text-indigo-800">Meta Ads</p><p class="summary-card-value text-indigo-900" id="kia-meta-valor-google">R$ 0,00</p></div>
+                                <div class="summary-card bg-green-100">
+                                    <p class="summary-card-label text-green-800">Leads Totais</p>
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <p class="summary-card-value text-green-900" id="kia-leads-total-google">0</p>
+                                        <span class="text-sm text-green-700 font-medium" id="kia-leads-distribuicao-google">(0/0)</span>
+                                    </div>
+                                    <p class="text-xs text-green-600 mt-1">meta / google</p>
+                                </div>
+                            </div>
+
+                            <!-- Kia Google Table -->
+                            <div class="table-container">
+                                <table class="w-full border-collapse bg-white rounded-lg overflow-hidden shadow-sm">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="text-left p-3 text-xs font-medium text-gray-500 border-b">Campanha</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Gasto Diário</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Valor Usado</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Resultados</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Custo/Resultado</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">CPM</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Alcance</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Impressões</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Cliques</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">CPC</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr><td colspan="10" class="text-center py-8 text-gray-500">Carregando campanhas...</td></tr>
+                                    </tbody>
+                                    <tfoot class="bg-gray-50 font-semibold">
+                                        <tr>
+                                            <td class="p-3 text-sm text-gray-900">TOTAL</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-gasto-diario-google">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-valor-usado-google">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-resultados-google">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-custo-resultado-google">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-cpm-google">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-alcance-google">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-impressoes-google">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-cliques-google">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="kia-total-cpc-google">R$ 0,00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </section>
+                        
+                        <!-- Suzuki Sun Motors Section (Google) -->
+                        <section class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                            <div class="section-header">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12.075c0-3.443 2.57-6.225 5.75-6.225h.5c.414 0 .75.336.75.75v1.5c0 .414-.336.75-.75.75h-.5c-1.82 0-3.25 1.43-3.25 3.225s1.43 3.225 3.25 3.225h.5c.414 0 .75.336.75.75v1.5c0 .414-.336.75-.75.75h-.5c-3.18 0-5.75-2.782-5.75-6.225zM13.75 5.85c3.18 0 5.75 2.782 5.75 6.225s-2.57 6.225-5.75 6.225h-.5c-.414 0-.75-.336-.75-.75v-1.5c0-.414.336-.75.75-.75h.5c1.82 0 3.25-1.43 3.25-3.225s-1.43-3.225-3.25-3.225h-.5c-.414 0-.75-.336-.75-.75v-1.5c0-.414.336-.75.75-.75h.5z" /></svg>
+                                <h2 class="section-title">Suzuki Sun Motors</h2>
+                            </div>
+                            <div class="summary-card-grid" id="suzuki-summary-cards-google">
+                                <div class="summary-card bg-gray-200"><p class="summary-card-label text-gray-800">Valor Total Investido</p><p class="summary-card-value text-gray-900" id="suzuki-valor-total-google">R$ 0,00</p></div>
+                                <div class="summary-card bg-blue-100"><p class="summary-card-label text-blue-800">Google Ads</p><p class="summary-card-value text-blue-900" id="suzuki-google-valor-google">R$ 0,00</p></div>
+                                <div class="summary-card bg-indigo-100"><p class="summary-card-label text-indigo-800">Meta Ads</p><p class="summary-card-value text-indigo-900" id="suzuki-meta-valor-google">R$ 0,00</p></div>
+                                <div class="summary-card bg-green-100">
+                                    <p class="summary-card-label text-green-800">Leads Totais</p>
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <p class="summary-card-value text-green-900" id="suzuki-leads-total-google">0</p>
+                                        <span class="text-sm text-green-700 font-medium" id="suzuki-leads-distribuicao-google">(0/0)</span>
+                                    </div>
+                                    <p class="text-xs text-green-600 mt-1">meta / google</p>
+                                </div>
+                            </div>
+
+                            <!-- Suzuki Google Table -->
+                            <div class="table-container">
+                                <table class="w-full border-collapse bg-white rounded-lg overflow-hidden shadow-sm">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="text-left p-3 text-xs font-medium text-gray-500 border-b">Campanha</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Gasto Diário</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Valor Usado</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Resultados</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Custo/Resultado</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">CPM</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Alcance</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Impressões</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Cliques</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">CPC</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr><td colspan="10" class="text-center py-8 text-gray-500">Carregando campanhas...</td></tr>
+                                    </tbody>
+                                    <tfoot class="bg-gray-50 font-semibold">
+                                        <tr>
+                                            <td class="p-3 text-sm text-gray-900">TOTAL</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-gasto-diario-google">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-valor-usado-google">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-resultados-google">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-custo-resultado-google">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-cpm-google">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-alcance-google">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-impressoes-google">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-cliques-google">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="suzuki-total-cpc-google">R$ 0,00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- Haojue Sun Motors Section (Google)-->
+                        <section class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                            <div class="section-header">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-700" viewBox="0 0 20 20" fill="currentColor"><path d="M5.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 8c0-2.691-1.46-5.083-3.687-6.364A1 1 0 007.007.25L5.682 2.094A1 1 0 006.9 3.65l.593-.435a5.525 5.525 0 014.005 4.313 1 1 0 001.99.143zM14.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 9a1 1 0 00-1 1v1a1 1 0 002 0v-1a1 1 0 00-1-1z" /></svg>
+                                <h2 class="section-title">Haojue Sun Motors</h2>
+                            </div>
+                             <div class="summary-card-grid" id="haojue-summary-cards-google">
+                                <div class="summary-card bg-gray-200"><p class="summary-card-label text-gray-800">Valor Total Investido</p><p class="summary-card-value text-gray-900" id="haojue-valor-total-google">R$ 0,00</p></div>
+                                <div class="summary-card bg-blue-100"><p class="summary-card-label text-blue-800">Google Ads</p><p class="summary-card-value text-blue-900" id="haojue-google-valor-google">R$ 0,00</p></div>
+                                <div class="summary-card bg-indigo-100"><p class="summary-card-label text-indigo-800">Meta Ads</p><p class="summary-card-value text-indigo-900" id="haojue-meta-valor-google">R$ 0,00</p></div>
+                                <div class="summary-card bg-green-100">
+                                    <p class="summary-card-label text-green-800">Leads Totais</p>
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <p class="summary-card-value text-green-900" id="haojue-leads-total-google">0</p>
+                                        <span class="text-sm text-green-700 font-medium" id="haojue-leads-distribuicao-google">(0/0)</span>
+                                    </div>
+                                    <p class="text-xs text-green-600 mt-1">meta / google</p>
+                                </div>
+                            </div>
+
+                            <!-- Haojue Google Table -->
+                            <div class="table-container">
+                                <table class="w-full border-collapse bg-white rounded-lg overflow-hidden shadow-sm">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="text-left p-3 text-xs font-medium text-gray-500 border-b">Campanha</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Gasto Diário</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Valor Usado</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Resultados</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Custo/Resultado</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">CPM</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Alcance</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Impressões</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Cliques</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">CPC</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr><td colspan="10" class="text-center py-8 text-gray-500">Carregando campanhas...</td></tr>
+                                    </tbody>
+                                    <tfoot class="bg-gray-50 font-semibold">
+                                        <tr>
+                                            <td class="p-3 text-sm text-gray-900">TOTAL</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-gasto-diario-google">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-valor-usado-google">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-resultados-google">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-custo-resultado-google">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-cpm-google">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-alcance-google">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-impressoes-google">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-cliques-google">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="haojue-total-cpc-google">R$ 0,00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </section>
+                        
+                        <!-- Zontes Sun Motors Section (Google) -->
+                        <section class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                            <div class="section-header">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+                                <h2 class="section-title">Zontes Sun Motors</h2>
+                            </div>
+                            <div class="summary-card-grid" id="zontes-summary-cards-google">
+                                <div class="summary-card bg-gray-200"><p class="summary-card-label text-gray-800">Valor Total Investido</p><p class="summary-card-value text-gray-900" id="zontes-valor-total-google">R$ 0,00</p></div>
+                                <div class="summary-card bg-blue-100"><p class="summary-card-label text-blue-800">Google Ads</p><p class="summary-card-value text-blue-900" id="zontes-google-valor-google">R$ 0,00</p></div>
+                                <div class="summary-card bg-indigo-100"><p class="summary-card-label text-indigo-800">Meta Ads</p><p class="summary-card-value text-indigo-900" id="zontes-meta-valor-google">R$ 0,00</p></div>
+                                <div class="summary-card bg-green-100">
+                                    <p class="summary-card-label text-green-800">Leads Totais</p>
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <p class="summary-card-value text-green-900" id="zontes-leads-total-google">0</p>
+                                        <span class="text-sm text-green-700 font-medium" id="zontes-leads-distribuicao-google">(0/0)</span>
+                                    </div>
+                                    <p class="text-xs text-green-600 mt-1">meta / google</p>
+                                </div>
+                            </div>
+
+                            <!-- Zontes Google Table -->
+                            <div class="table-container">
+                                <table class="w-full border-collapse bg-white rounded-lg overflow-hidden shadow-sm">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="text-left p-3 text-xs font-medium text-gray-500 border-b">Campanha</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Gasto Diário</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Valor Usado</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Resultados</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Custo/Resultado</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">CPM</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Alcance</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Impressões</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">Cliques</th>
+                                            <th class="text-right p-3 text-xs font-medium text-gray-500 border-b">CPC</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr><td colspan="10" class="text-center py-8 text-gray-500">Carregando campanhas...</td></tr>
+                                    </tbody>
+                                    <tfoot class="bg-gray-50 font-semibold">
+                                        <tr>
+                                            <td class="p-3 text-sm text-gray-900">TOTAL</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-gasto-diario-google">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-valor-usado-google">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-resultados-google">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-custo-resultado-google">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-cpm-google">R$ 0,00</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-alcance-google">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-impressoes-google">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-cliques-google">0</td>
+                                            <td class="p-3 text-sm text-right text-gray-900" id="zontes-total-cpc-google">R$ 0,00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </section>
+                    </main>
+                </div>
+                
+                <footer class="text-center mt-8 py-4">
+                    <p class="text-sm text-gray-500">Relatório gerado para análise de desempenho. Porto Alegre, 2024.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shared JavaScript -->
+    <script src="../../shared/js/sidemenu.js"></script>
+    
+    <!-- Supabase Integration -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
+    <script>
+        // Configurações do Supabase - Sun Motors
+        window.SUPABASE_URL = 'https://agdvozsqcrszflzsimyl.supabase.co';
+        window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnZHZvenNxY3JzemZsenNpbXlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4MDUzODksImV4cCI6MjA2OTM4MTM4OX0.pgYBlwUqLZZ7I5EOD1LFcSeBrrTy1Jf1Ep8zLjYj3LQ';
+        console.log('✅ Configurações do Supabase carregadas para Relatórios');
+    </script>
+    <script src="../../shared/js/supabase-client.js"></script>
+    
+    <!-- Data Integration -->
+    <script src="relatorios-data.js"></script>
+    
+    <!-- Page Specific JavaScript -->
+    <script>
+        // Mover TODA a lógica JavaScript para relatorios-data.js
+        // Este arquivo mantém apenas a inicialização
+        
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Inicializar página quando DOM estiver pronto
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Inicializando página de relatórios...');
+            
+            // Aguardar Supabase estar disponível
+            setTimeout(() => {
+                if (window.relatoriosData) {
+                    window.relatoriosData.inicializarPagina();
+                } else {
+                    console.error('❌ RelatoriosData não disponível');
+                }
+            }, 500);
+        });
+    </script>
+</body>
+</html>

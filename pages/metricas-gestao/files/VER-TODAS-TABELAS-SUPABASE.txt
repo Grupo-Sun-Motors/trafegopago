@@ -1,0 +1,37 @@
+WITH fk_info AS (
+    -- Subconsulta para pegar todas as informações de chave estrangeira primeiro
+    SELECT
+        con.conrelid::regclass::text AS table_name,
+        a.attname AS column_name,
+        confrelid::regclass::text AS foreign_table_name,
+        af.attname AS foreign_column_name
+    FROM
+        pg_constraint con
+    JOIN
+        pg_attribute a ON a.attnum = ANY(con.conkey) AND a.attrelid = con.conrelid
+    JOIN
+        pg_attribute af ON af.attnum = ANY(con.confkey) AND af.attrelid = con.confrelid
+    WHERE
+        con.contype = 'f' AND con.connamespace = (SELECT oid FROM pg_namespace WHERE nspname = 'public')
+)
+SELECT
+    c.table_name AS "Tabela",
+    c.column_name AS "Campo",
+    c.ordinal_position AS "Ordem",
+    c.data_type AS "Tipo de Dado",
+    c.is_nullable AS "Pode ser Nulo?",
+    CASE
+        WHEN fk.foreign_table_name IS NOT NULL THEN 'SIM'
+        ELSE 'NÃO'
+    END AS "É Relacionamento?",
+    fk.foreign_table_name AS "Aponta para Tabela",
+    fk.foreign_column_name AS "Aponta para Campo"
+FROM
+    information_schema.columns c
+LEFT JOIN
+    fk_info fk ON c.table_name = fk.table_name AND c.column_name = fk.column_name
+WHERE
+    c.table_schema = 'public'
+ORDER BY
+    c.table_name,
+    c.ordinal_position;

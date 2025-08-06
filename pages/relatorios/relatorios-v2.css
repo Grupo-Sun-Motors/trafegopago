@@ -1,0 +1,125 @@
+/* === ANIMAÇÕES === */
+.badge-pulse {
+    animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* === ESTILOS DE TABELA === */
+th {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #e5e7eb;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #9ca3af;
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* === CAMPANHAS === */
+.campaign-name {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+    color: #1f2937;
+    white-space: nowrap;
+}
+
+/* === SEÇÕES === */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+/* === TOGGLE DE PLATAFORMA === */
+.platform-toggle {
+    display: flex;
+    border-radius: 0.75rem;
+    background-color: #e5e7eb;
+    padding: 0.25rem;
+    margin-bottom: 2rem;
+    width: fit-content;
+}
+
+.platform-toggle button {
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: transparent;
+    font-weight: 600;
+    color: #4b5563;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.platform-toggle button.active {
+    background-color: #ffffff;
+    color: #111827;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+}
+
+/* === CARDS DE RESUMO === */
+.summary-card-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #f9fafb;
+    border-radius: 1rem;
+    border: 1px solid #e5e7eb;
+}
+
+@media (min-width: 640px) {
+    .summary-card-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .summary-card-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.summary-card {
+    padding: 1rem;
+    border-radius: 0.75rem;
+    text-align: center;
+}
+
+.summary-card-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.summary-card-value {
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
