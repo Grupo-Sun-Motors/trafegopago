@@ -5,18 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plano de Campanha - Sun Motors</title>
     
-    <!-- External Dependencies -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Shared Styles -->
     <link rel="stylesheet" href="../../shared/css/layout.css">
     
-    <!-- Page Specific Styles -->
     <style>
         th {
             text-transform: uppercase;
@@ -24,7 +20,6 @@
         }
     </style>
     
-    <!-- Tailwind Configuration -->
     <script>
         tailwind.config = {
             theme: {
@@ -38,12 +33,9 @@
     </script>
 </head>
 <body class="text-gray-800">
-    <!-- Mobile Overlay -->
     <div class="overlay" id="overlay"></div>
     
-    <!-- Sidemenu -->
     <div class="sidemenu mobile-hidden" id="sidemenu">
-        <!-- Header -->
         <div class="sidemenu-header">
             <div class="sidemenu-logo">
                 <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,31 +53,30 @@
                 
                 <button class="sidemenu-btn mobile-close-btn" id="closeMobileMenu" title="Fechar menu">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12M18 6l-12 12"/>
                     </svg>
                 </button>
             </div>
         </div>
         
-        <!-- Navigation -->
         <nav class="sidemenu-nav">
             <a href="../../" class="nav-item" data-page="dashboard">
                 <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 01-2-2H5a2 2 0 016 0z"/>
                 </svg>
                 <span class="sidemenu-text">Dashboard</span>
             </a>
             
             <a href="../orcamento/" class="nav-item" data-page="orcamento">
                 <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                 </svg>
                 <span class="sidemenu-text">Orçamento</span>
             </a>
             
             <a href="./" class="nav-item active" data-page="publico-alvo">
                 <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.25 1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                 </svg>
                 <span class="sidemenu-text">Público-Alvo</span>
             </a>
@@ -106,9 +97,7 @@
         </nav>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content" id="mainContent">
-        <!-- Top Header -->
         <header class="top-header">
             <button class="mobile-menu-btn" id="mobileMenuBtn">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,26 +111,35 @@
             <div class="w-8"></div>
         </header>
 
-        <!-- Page Content -->
         <div class="main-content-inner">
             <div class="content-container">
                 
-
-                <!-- Main Content -->
                 <main class="space-y-12">
 
-                    <!-- Kia Sun Motors Section -->
                     <section id="kia" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg content-section">
                         <div class="flex items-center mb-6">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-1.621-1.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h7v-2a3 3 0 015.356-1.857h5.644a3 3 0 015.356 1.857v-1.007M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h7v-2a3 3 0 015.356-1.857h5.644a3 3 0 015.356 1.857v-1.007M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h7v-2a3 3 0 015.356-1.857h5.644a3 3 0 015.356 1.857v-1.007"/>
                             </svg>
                             <h2 class="text-3xl font-bold text-gray-900">Kia Sun Motors</h2>
                         </div>
 
-                        <!-- Client Profile Section -->
                         <div class="mb-8 p-4 bg-gray-50 rounded-lg">
-                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Perfil dos Clientes KIA</h3>
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-gray-800">Perfil dos Clientes KIA</h3>
+                                <div class="flex items-center space-x-2">
+                                    <button onclick="editBrandProfile('kia')" class="text-gray-600 hover:text-gray-800 transition-colors" title="Editar perfil da marca">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                        </svg>
+                                    </button>
+                                    <button onclick="openProfileSidemenu('kia')" class="text-red-600 hover:text-red-800 transition-colors" title="Ver detalhes completos">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div class="bg-red-100 p-4 rounded-lg">
                                     <p class="text-sm text-red-800 font-semibold">Demografia Principal</p>
@@ -168,69 +166,68 @@
                                         <th scope="col" class="px-6 py-3 rounded-l-lg">Modelo</th>
                                         <th scope="col" class="px-6 py-3">Segmento</th>
                                         <th scope="col" class="px-6 py-3">Faixa de Idade</th>
-                                        <th scope="col" class="px-6 py-3">Gênero</th>
-                                        <th scope="col" class="px-6 py-3">Público-Alvo Potencial</th>
-                                        <th scope="col" class="px-6 py-3">Perfil de Clientes</th>
-                                        <th scope="col" class="px-6 py-3 rounded-r-lg">Desejos Ocultos</th>
+                                        <th scope="col" class="px-6 py-3 rounded-r-lg">Gênero</th>
+                                        <th scope="col" class="px-6 py-3">
+                                            <div class="flex items-center space-x-2">
+                                                <button onclick="addNewModel('kia')" class="text-green-600 hover:text-green-800 transition-colors" title="Adicionar novo modelo">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Dados populados via JavaScript -->
-                                </tbody>
+                                    </tbody>
                             </table>
                         </div>
                     </section>
 
-                    <!-- Suzuki Motor Ipiranga Section -->
                     <section id="suzuki" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg content-section">
                         <div class="flex items-center mb-6">
                              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600 mr-3" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M5.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 8c0-2.691-1.46-5.083-3.687-6.364A1 1 0 007.007.25L5.682 2.094A1 1 0 006.9 3.65l.593-.435a5.525 5.525 0 014.005 4.313 1 1 0 001.99.143zM14.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 9a1 1 0 00-1 1v1a1 1 0 002 0v-1a1 1 0 00-1-1z" />
+                                <path d="M5.5 16a3.5 3 0 100-7 3.5 3.5 0 000 7zM12 3v1m6.364 1.636l-.707.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             <h2 class="text-3xl font-bold text-gray-900">Suzuki Sun Motors</h2>
                         </div>
                         
-                        <!-- Client Profile Section -->
-                        <div class="mb-8 p-4 bg-gray-50 rounded-lg">
-                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Perfil dos Clientes (Suzuki + Zontes + Haojue)</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="bg-blue-100 p-4 rounded-lg">
-                                    <p class="text-sm text-blue-800 font-semibold">Demografia Principal</p>
-                                    <p class="text-lg font-bold text-blue-900">Homens de 18-50 anos</p>
-                                    <p class="text-sm text-blue-700">Motociclistas e aventureiros</p>
-                                </div>
-                                <div class="bg-green-100 p-4 rounded-lg">
-                                    <p class="text-sm text-green-800 font-semibold">Motivações</p>
-                                    <p class="text-lg font-bold text-green-900">Adrenalina e Liberdade</p>
-                                    <p class="text-sm text-green-700">Performance e estilo de vida</p>
-                                </div>
-                                <div class="bg-purple-100 p-4 rounded-lg">
-                                    <p class="text-sm text-purple-800 font-semibold">Comportamento</p>
-                                    <p class="text-lg font-bold text-purple-900">Enthusiasts</p>
-                                    <p class="text-sm text-purple-700">Valorizam performance e design</p>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- Sub-section Suzuki -->
+
                         <div class="mb-8">
                             <h3 class="text-2xl font-semibold text-blue-700 mb-4 border-l-4 border-blue-700 pl-4">Suzuki</h3>
                             
-                            <!-- Suzuki Client Profile -->
                             <div class="mb-6 p-4 bg-blue-50 rounded-lg">
-                                <h4 class="text-lg font-semibold text-blue-800 mb-3">Perfil dos Clientes Suzuki</h4>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                    <div class="bg-white p-3 rounded border-l-4 border-blue-600">
-                                        <p class="text-sm text-blue-700 font-medium">Demografia</p>
-                                        <p class="text-sm font-bold text-blue-900">Homens 25-50 anos</p>
+                                <div class="flex items-center justify-between mb-4">
+                                    <h4 class="text-lg font-semibold text-blue-800">Perfil dos Clientes Suzuki</h4>
+                                    <div class="flex items-center space-x-2">
+                                        <button onclick="editBrandProfile('suzuki')" class="text-gray-600 hover:text-gray-800 transition-colors" title="Editar perfil da marca">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                        </button>
+                                        <button onclick="openProfileSidemenu('suzuki')" class="text-blue-600 hover:text-blue-800 transition-colors" title="Ver detalhes completos">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                        </button>
                                     </div>
-                                    <div class="bg-white p-3 rounded border-l-4 border-blue-600">
-                                        <p class="text-sm text-blue-700 font-medium">Perfil</p>
-                                        <p class="text-sm font-bold text-blue-900">Motociclistas experientes</p>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div class="bg-blue-100 p-4 rounded-lg">
+                                        <p class="text-sm text-blue-800 font-semibold">Demografia Principal</p>
+                                        <p class="text-lg font-bold text-blue-900">Homens 30-50 anos</p>
+                                        <p class="text-sm text-blue-700">Urbana e suburbana</p>
                                     </div>
-                                    <div class="bg-white p-3 rounded border-l-4 border-blue-600">
-                                        <p class="text-sm text-blue-700 font-medium">Motivação</p>
-                                        <p class="text-sm font-bold text-blue-900">Performance e aventura</p>
+                                    <div class="bg-green-100 p-4 rounded-lg">
+                                        <p class="text-sm text-green-800 font-semibold">Motivações</p>
+                                        <p class="text-lg font-bold text-green-900">Alta Performance</p>
+                                        <p class="text-sm text-green-700">Engenharia e Aventura</p>
+                                    </div>
+                                    <div class="bg-purple-100 p-4 rounded-lg">
+                                        <p class="text-sm text-purple-800 font-semibold">Comportamento</p>
+                                        <p class="text-lg font-bold text-purple-900">Movido pela paixão</p>
+                                        <p class="text-sm text-purple-700">Conhecedor técnico</p>
                                     </div>
                                 </div>
                             </div>
@@ -242,38 +239,58 @@
                                             <th scope="col" class="px-6 py-3 rounded-l-lg">Modelo</th>
                                             <th scope="col" class="px-6 py-3">Segmento</th>
                                             <th scope="col" class="px-6 py-3">Faixa de Idade</th>
-                                            <th scope="col" class="px-6 py-3">Gênero</th>
-                                            <th scope="col" class="px-6 py-3">Público-Alvo Potencial</th>
-                                            <th scope="col" class="px-6 py-3">Perfil de Clientes</th>
-                                            <th scope="col" class="px-6 py-3 rounded-r-lg">Desejos Ocultos</th>
+                                            <th scope="col" class="px-6 py-3 rounded-r-lg">Gênero</th>
+                                            <th scope="col" class="px-6 py-3">
+                                                <div class="flex items-center space-x-2">
+                                                    <button onclick="addNewModel('suzuki')" class="text-green-600 hover:text-green-800 transition-colors" title="Adicionar novo modelo">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Dados populados via JavaScript -->
-                                    </tbody>
+                                        </tbody>
                                 </table>
                             </div>
                         </div>
 
-                        <!-- Sub-section Zontes -->
-                         <div class="mb-8">
+                        <div class="mb-8">
                             <h3 class="text-2xl font-semibold text-gray-700 mb-4 border-l-4 border-gray-700 pl-4">Zontes</h3>
                             
-                            <!-- Zontes Client Profile -->
                             <div class="mb-6 p-4 bg-gray-50 rounded-lg">
-                                <h4 class="text-lg font-semibold text-gray-800 mb-3">Perfil dos Clientes Zontes</h4>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                    <div class="bg-white p-3 rounded border-l-4 border-gray-600">
-                                        <p class="text-sm text-gray-700 font-medium">Demografia</p>
-                                        <p class="text-sm font-bold text-gray-900">Ambos os gêneros, 25-40 anos</p>
+                                <div class="flex items-center justify-between mb-4">
+                                    <h4 class="text-lg font-semibold text-gray-800">Perfil dos Clientes Zontes</h4>
+                                    <div class="flex items-center space-x-2">
+                                        <button onclick="editBrandProfile('zontes')" class="text-gray-600 hover:text-gray-800 transition-colors" title="Editar perfil da marca">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                        </button>
+                                        <button onclick="openProfileSidemenu('zontes')" class="text-gray-600 hover:text-gray-800 transition-colors" title="Ver detalhes completos">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                        </button>
                                     </div>
-                                    <div class="bg-white p-3 rounded border-l-4 border-gray-600">
-                                        <p class="text-sm text-gray-700 font-medium">Perfil</p>
-                                        <p class="text-sm font-bold text-gray-900">Jovens urbanos tech-savvy</p>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div class="bg-gray-100 p-4 rounded-lg">
+                                        <p class="text-sm text-gray-800 font-semibold">Demografia Principal</p>
+                                        <p class="text-lg font-bold text-gray-900">Homens 25-40 anos</p>
+                                        <p class="text-sm text-gray-700">Grandes centros urbanos</p>
                                     </div>
-                                    <div class="bg-white p-3 rounded border-l-4 border-gray-600">
-                                        <p class="text-sm text-gray-700 font-medium">Motivação</p>
-                                        <p class="text-sm font-bold text-gray-900">Tecnologia e design único</p>
+                                    <div class="bg-indigo-100 p-4 rounded-lg">
+                                        <p class="text-sm text-indigo-800 font-semibold">Motivações</p>
+                                        <p class="text-lg font-bold text-indigo-900">Inovação</p>
+                                        <p class="text-sm text-indigo-700">Gadgets e Tecnologia</p>
+                                    </div>
+                                    <div class="bg-teal-100 p-4 rounded-lg">
+                                        <p class="text-sm text-teal-800 font-semibold">Comportamento</p>
+                                        <p class="text-lg font-bold text-teal-900">Early adopter</p>
+                                        <p class="text-sm text-teal-700">Formador de tendências</p>
                                     </div>
                                 </div>
                             </div>
@@ -285,38 +302,58 @@
                                             <th scope="col" class="px-6 py-3 rounded-l-lg">Modelo</th>
                                             <th scope="col" class="px-6 py-3">Segmento</th>
                                             <th scope="col" class="px-6 py-3">Faixa de Idade</th>
-                                            <th scope="col" class="px-6 py-3">Gênero</th>
-                                            <th scope="col" class="px-6 py-3">Público-Alvo Potencial</th>
-                                            <th scope="col" class="px-6 py-3">Perfil de Clientes</th>
-                                            <th scope="col" class="px-6 py-3 rounded-r-lg">Desejos Ocultos</th>
+                                            <th scope="col" class="px-6 py-3 rounded-r-lg">Gênero</th>
+                                            <th scope="col" class="px-6 py-3">
+                                                <div class="flex items-center space-x-2">
+                                                    <button onclick="addNewModel('zontes')" class="text-green-600 hover:text-green-800 transition-colors" title="Adicionar novo modelo">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Dados populados via JavaScript -->
-                                    </tbody>
+                                        </tbody>
                                 </table>
                             </div>
                         </div>
 
-                        <!-- Sub-section Haojue -->
                         <div>
                             <h3 class="text-2xl font-semibold text-red-700 mb-4 border-l-4 border-red-700 pl-4">Haojue</h3>
                             
-                            <!-- Haojue Client Profile -->
                             <div class="mb-6 p-4 bg-red-50 rounded-lg">
-                                <h4 class="text-lg font-semibold text-red-800 mb-3">Perfil dos Clientes Haojue</h4>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                    <div class="bg-white p-3 rounded border-l-4 border-red-600">
-                                        <p class="text-sm text-red-700 font-medium">Demografia</p>
-                                        <p class="text-sm font-bold text-red-900">Jovens 18-35 anos</p>
+                                <div class="flex items-center justify-between mb-4">
+                                    <h4 class="text-lg font-semibold text-red-800">Perfil dos Clientes Haojue</h4>
+                                    <div class="flex items-center space-x-2">
+                                        <button onclick="editBrandProfile('haojue')" class="text-gray-600 hover:text-gray-800 transition-colors" title="Editar perfil da marca">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                        </button>
+                                        <button onclick="openProfileSidemenu('haojue')" class="text-red-600 hover:text-red-800 transition-colors" title="Ver detalhes completos">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                        </button>
                                     </div>
-                                    <div class="bg-white p-3 rounded border-l-4 border-red-600">
-                                        <p class="text-sm text-red-700 font-medium">Perfil</p>
-                                        <p class="text-sm font-bold text-red-900">Primeira moto, trabalhadores</p>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div class="bg-red-100 p-4 rounded-lg">
+                                        <p class="text-sm text-red-800 font-semibold">Demografia Principal</p>
+                                        <p class="text-lg font-bold text-red-900">Homens 20-45 anos</p>
+                                        <p class="text-sm text-red-700">Centros urbanos</p>
                                     </div>
-                                    <div class="bg-white p-3 rounded border-l-4 border-red-600">
-                                        <p class="text-sm text-red-700 font-medium">Motivação</p>
-                                        <p class="text-sm font-bold text-red-900">Mobilidade e economia</p>
+                                    <div class="bg-yellow-100 p-4 rounded-lg">
+                                        <p class="text-sm text-yellow-800 font-semibold">Motivações</p>
+                                        <p class="text-lg font-bold text-yellow-900">Economia de Combustível</p>
+                                        <p class="text-sm text-yellow-700">Baixo Custo e Durabilidade</p>
+                                    </div>
+                                    <div class="bg-orange-100 p-4 rounded-lg">
+                                        <p class="text-sm text-orange-800 font-semibold">Comportamento</p>
+                                        <p class="text-lg font-bold text-orange-900">Extremamente prático</p>
+                                        <p class="text-sm text-orange-700">Consciente do orçamento</p>
                                     </div>
                                 </div>
                             </div>
@@ -328,25 +365,29 @@
                                             <th scope="col" class="px-6 py-3 rounded-l-lg">Modelo</th>
                                             <th scope="col" class="px-6 py-3">Segmento</th>
                                             <th scope="col" class="px-6 py-3">Faixa de Idade</th>
-                                            <th scope="col" class="px-6 py-3">Gênero</th>
-                                            <th scope="col" class="px-6 py-3">Público-Alvo Potencial</th>
-                                            <th scope="col" class="px-6 py-3">Perfil de Clientes</th>
-                                            <th scope="col" class="px-6 py-3 rounded-r-lg">Desejos Ocultos</th>
+                                            <th scope="col" class="px-6 py-3 rounded-r-lg">Gênero</th>
+                                            <th scope="col" class="px-6 py-3">
+                                                <div class="flex items-center space-x-2">
+                                                    <button onclick="addNewModel('haojue')" class="text-green-600 hover:text-green-800 transition-colors" title="Adicionar novo modelo">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Dados populados via JavaScript -->
-                                    </tbody>
+                                        </tbody>
                                 </table>
                             </div>
                         </div>
                     </section>
 
-                    <!-- Recommendations Section -->
                     <section id="recomendacoes" class="bg-gray-800 text-white p-6 sm:p-8 rounded-2xl shadow-lg content-section">
                         <div class="flex items-center mb-6">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             <h2 class="text-3xl font-bold">Recomendações Estratégicas</h2>
                         </div>
@@ -361,7 +402,6 @@
 
                 </main>
 
-                <!-- Footer -->
                 <footer class="text-center mt-12 py-4 border-t border-gray-200">
                     <p class="text-sm text-gray-500">Documento gerado para planejamento de campanha. Porto Alegre, 2024.</p>
                 </footer>
@@ -369,10 +409,51 @@
         </div>
     </div>
 
-    <!-- Shared JavaScript -->
+    <!-- Floating Side Menu for Details -->
+    <div id="details-sidemenu" class="fixed inset-y-0 right-0 z-50 w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
+        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+            <h3 id="details-title" class="text-lg font-semibold text-gray-900">Detalhes</h3>
+            <button onclick="closeSidemenu()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <div id="details-content" class="p-6">
+            <!-- Content will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Overlay for side menu -->
+    <div id="details-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <h3 id="edit-modal-title" class="text-xl font-semibold text-gray-900">Editar</h3>
+                <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div id="edit-modal-content" class="p-6">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+            <div class="flex items-center justify-end space-x-3 p-6 border-t border-gray-200">
+                <button onclick="closeEditModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+                    Cancelar
+                </button>
+                <button onclick="saveEdit()" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">
+                    Salvar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="../../shared/js/sidemenu.js"></script>
-    
-    <!-- Page Specific JavaScript -->
     <script src="./publico-alvo.js"></script>
+    <script src="./publico-alvo-script.js"></script>
 </body>
 </html>

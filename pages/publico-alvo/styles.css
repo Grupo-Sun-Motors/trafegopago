@@ -1,0 +1,27 @@
+th {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-active {
+    background-color: #10b981;
+    color: white;
+}
+
+.status-inactive {
+    background-color: #ef4444;
+    color: white;
+}
+
+.list-item-custom {
+    position: relative;
+    padding-left: 1rem;
+}
+
+.list-item-custom:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #6b7280;
+}
+

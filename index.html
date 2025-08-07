@@ -42,6 +42,12 @@
             background-color: #fee2e2;
             color: #991b1b;
         }
+        .sort-indicator {
+            font-size: 0.8em;
+            margin-left: 5px;
+            opacity: 0.5;
+            transition: all 0.2s ease;
+        }
     </style>
     
     <script>
@@ -77,7 +83,7 @@
                 
                 <button class="sidemenu-btn mobile-close-btn" id="closeMobileMenu" title="Fechar menu">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                     </svg>
                 </button>
             </div>
@@ -86,7 +92,7 @@
         <nav class="sidemenu-nav">
             <a href="./" class="nav-item active" data-page="dashboard">
                 <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 000 2h14a2 2 0 000-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h6m0 0v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                 </svg>
                 <span class="sidemenu-text">Dashboard</span>
             </a>
@@ -147,7 +153,7 @@
                 <section id="kia" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
                     <div class="flex items-center mb-6">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 000-7 3 3 0 000 7zM12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 17h6m0 0v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                         </svg>
                         <h2 class="text-3xl font-bold text-gray-900">Kia Sun Motors</h2>
                     </div>
@@ -176,7 +182,8 @@
                         <table class="w-full text-sm text-left text-gray-600">
                             <thead class="text-xs text-gray-700 bg-gray-100">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 rounded-l-lg">Modelo</th>
+                                    <th scope="col" class="px-6 py-3 rounded-l-lg">Fonte</th>
+                                    <th scope="col" class="px-6 py-3">Modelo</th>
                                     <th scope="col" class="px-6 py-3">Investimento</th>
                                     <th scope="col" class="px-6 py-3">Cliques</th>
                                     <th scope="col" class="px-6 py-3">Leads</th>
@@ -189,7 +196,7 @@
                         </table>
                     </div>
                      <div class="mt-8">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Investimento por Modelo (Kia)</h3>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Investimento & Leads por Modelo (Kia)</h3>
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <canvas id="kiaInvestChart"></canvas>
                         </div>
@@ -199,7 +206,7 @@
                 <section id="suzuki" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
                     <div class="flex items-center mb-6">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600 mr-3" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M5.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 8c0-2.691-1.46-5.083-3.687-6.364A1 1 0 007.007.25L5.682 2.094A1 1 0 006.9 3.65l.593-.435a5.525 5.525 0 014.005 4.313 1 1 0 001.99.143zM14.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 9a1 1 0 00-1 1v1a1 1 0 002 0v-1a1 1 0 00-1-1z" />
+                            <path d="M5.5 16a3.5 3 0 100-7 3.5 3.5 0 000 7zM12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                         </svg>
                         <h2 class="text-3xl font-bold text-gray-900">Suzuki Sun Motors</h2>
                     </div>
@@ -228,7 +235,8 @@
                         <table class="w-full text-sm text-left text-gray-600">
                             <thead class="text-xs text-gray-700 bg-gray-100">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 rounded-l-lg">Marca / Modelo</th>
+                                    <th scope="col" class="px-6 py-3 rounded-l-lg">Fonte</th>
+                                    <th scope="col" class="px-6 py-3">Marca / Modelo</th>
                                     <th scope="col" class="px-6 py-3">Investimento</th>
                                     <th scope="col" class="px-6 py-3">Cliques</th>
                                     <th scope="col" class="px-6 py-3">Leads</th>
@@ -241,9 +249,15 @@
                         </table>
                     </div>
                      <div class="mt-8">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Investimento por Marca (Suzuki & Associadas)</h3>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Investimento & Leads por Marca (Suzuki & Associadas)</h3>
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <canvas id="suzukiInvestChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Investimento & Leads por Modelo</h3>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <canvas id="suzukiModelsChart"></canvas>
                         </div>
                     </div>
                 </section>
@@ -270,7 +284,7 @@
                 <section id="recomendacoes" class="bg-gray-800 text-white p-6 sm:p-8 rounded-2xl shadow-lg">
                     <div class="flex items-center mb-6">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
                         <h2 class="text-3xl font-bold">Recomendações e Observações</h2>
                     </div>
@@ -293,8 +307,8 @@
     </div>
 
     <script src="./shared/js/sidemenu.js"></script>
-    
     <script src="./data.js"></script>
+    <script src="./script.js"></script>
 
     <script>
         // Helper functions
