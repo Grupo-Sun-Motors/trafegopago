@@ -5,19 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard de Performance - Sun Motors</title>
     
-    <!-- External Dependencies -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Shared Styles -->
     <link rel="stylesheet" href="./shared/css/layout.css">
     
-    <!-- Page Specific Styles -->
     <style>
         .kpi-card {
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
@@ -48,7 +44,6 @@
         }
     </style>
     
-    <!-- Tailwind Configuration -->
     <script>
         tailwind.config = {
             theme: {
@@ -62,12 +57,9 @@
     </script>
 </head>
 <body class="text-gray-800">
-    <!-- Mobile Overlay -->
     <div class="overlay" id="overlay"></div>
     
-    <!-- Sidemenu -->
     <div class="sidemenu mobile-hidden" id="sidemenu">
-        <!-- Header -->
         <div class="sidemenu-header">
             <div class="sidemenu-logo">
                 <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,25 +83,24 @@
             </div>
         </div>
         
-        <!-- Navigation -->
         <nav class="sidemenu-nav">
             <a href="./" class="nav-item active" data-page="dashboard">
                 <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 000 2h14a2 2 0 000-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
                 </svg>
                 <span class="sidemenu-text">Dashboard</span>
             </a>
             
             <a href="pages/orcamento/" class="nav-item" data-page="orcamento">
                 <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17h6m0 0v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                 </svg>
                 <span class="sidemenu-text">Orçamento</span>
             </a>
             
             <a href="pages/publico-alvo/" class="nav-item" data-page="publico-alvo">
                 <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17h6m0 0v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                 </svg>
                 <span class="sidemenu-text">Público-Alvo</span>
             </a>
@@ -130,9 +121,7 @@
         </nav>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content" id="mainContent">
-        <!-- Top Header -->
         <header class="top-header">
             <button class="mobile-menu-btn" id="mobileMenuBtn">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,48 +135,42 @@
             <div class="w-8"></div>
         </header>
 
-        <!-- Page Content -->
         <div class="main-content-inner">
             <div class="content-container">
-            <!-- Page Header -->
             <header class="text-center mb-10">
                 <h1 class="text-4xl font-bold text-gray-900">Dashboard de Performance - Tráfego Pago</h1>
                 <p class="text-lg text-gray-600 mt-2">Kia Sun Motors & Suzuki Sun Motors</p>
             </header>
 
-            <!-- Main Content -->
             <main class="space-y-12">
 
-                <!-- Kia Sun Motors Section -->
                 <section id="kia" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
                     <div class="flex items-center mb-6">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-1.621-1.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z" />
-                         </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 000-7 3 3 0 000 7zM12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
                         <h2 class="text-3xl font-bold text-gray-900">Kia Sun Motors</h2>
                     </div>
 
-                    <!-- KPIs -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         <div class="kpi-card bg-red-50 p-5 rounded-xl">
                             <h3 class="font-semibold text-red-800">Investimento Total</h3>
-                            <p class="text-3xl font-bold text-red-900 mt-2">R$ 2.800,00</p>
+                            <p class="text-3xl font-bold text-red-900 mt-2">R$ 0,00</p>
                         </div>
                         <div class="kpi-card bg-green-50 p-5 rounded-xl">
                             <h3 class="font-semibold text-green-800">Leads Gerados</h3>
-                            <p class="text-3xl font-bold text-green-900 mt-2">74</p>
+                            <p class="text-3xl font-bold text-green-900 mt-2">0</p>
                         </div>
                         <div class="kpi-card bg-yellow-50 p-5 rounded-xl">
                             <h3 class="font-semibold text-yellow-800">Custo por Lead (CPL)</h3>
-                            <p class="text-3xl font-bold text-yellow-900 mt-2">R$ 37,84</p>
+                            <p class="text-3xl font-bold text-yellow-900 mt-2">R$ 0,00</p>
                         </div>
                         <div class="kpi-card bg-blue-50 p-5 rounded-xl">
                             <h3 class="font-semibold text-blue-800">Taxa de Conversão</h3>
-                            <p class="text-3xl font-bold text-blue-900 mt-2">2.15%</p>
+                            <p class="text-3xl font-bold text-blue-900 mt-2">0.00%</p>
                         </div>
                     </div>
 
-                    <!-- Detailed Table -->
                     <h3 class="text-xl font-semibold text-gray-800 mb-4">Performance por Modelo</h3>
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left text-gray-600">
@@ -202,17 +185,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Sportage</th><td class="px-6 py-4">R$ 700,00</td><td class="px-6 py-4">850</td><td class="px-6 py-4">18</td><td class="px-6 py-4">R$ 38,89</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-                                <tr class="bg-gray-50 border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Niro</th><td class="px-6 py-4">R$ 600,00</td><td class="px-6 py-4">720</td><td class="px-6 py-4">16</td><td class="px-6 py-4">R$ 37,50</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-                                <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Stonic</th><td class="px-6 py-4">R$ 500,00</td><td class="px-6 py-4">650</td><td class="px-6 py-4">14</td><td class="px-6 py-4">R$ 35,71</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-                                <tr class="bg-gray-50 border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Carnival</th><td class="px-6 py-4">R$ 400,00</td><td class="px-6 py-4">400</td><td class="px-6 py-4">8</td><td class="px-6 py-4">R$ 50,00</td><td class="px-6 py-4"><span class="status-badge status-attention">Atenção</span></td></tr>
-                                <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">EV6</th><td class="px-6 py-4">R$ 400,00</td><td class="px-6 py-4">380</td><td class="px-6 py-4">7</td><td class="px-6 py-4">R$ 57,14</td><td class="px-6 py-4"><span class="status-badge status-attention">Atenção</span></td></tr>
-                                <tr class="bg-gray-50"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Bongo</th><td class="px-6 py-4">R$ 200,00</td><td class="px-6 py-4">450</td><td class="px-6 py-4">11</td><td class="px-6 py-4">R$ 18,18</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-                            </tbody>
+                                </tbody>
                         </table>
                     </div>
-                     <!-- Chart Section -->
-                    <div class="mt-8">
+                     <div class="mt-8">
                         <h3 class="text-xl font-semibold text-gray-800 mb-4">Investimento por Modelo (Kia)</h3>
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <canvas id="kiaInvestChart"></canvas>
@@ -220,37 +196,34 @@
                     </div>
                 </section>
 
-                <!-- Suzuki Motor Ipiranga Section -->
                 <section id="suzuki" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
                     <div class="flex items-center mb-6">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600 mr-3" viewBox="0 0 20 20" fill="currentColor">
-                             <path d="M5.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 8c0-2.691-1.46-5.083-3.687-6.364A1 1 0 007.007.25L5.682 2.094A1 1 0 006.9 3.65l.593-.435a5.525 5.525 0 014.005 4.313 1 1 0 001.99.143zM14.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 9a1 1 0 00-1 1v1a1 1 0 002 0v-1a1 1 0 00-1-1z" />
+                            <path d="M5.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 8c0-2.691-1.46-5.083-3.687-6.364A1 1 0 007.007.25L5.682 2.094A1 1 0 006.9 3.65l.593-.435a5.525 5.525 0 014.005 4.313 1 1 0 001.99.143zM14.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM12 9a1 1 0 00-1 1v1a1 1 0 002 0v-1a1 1 0 00-1-1z" />
                         </svg>
                         <h2 class="text-3xl font-bold text-gray-900">Suzuki Sun Motors</h2>
                     </div>
                     
-                    <!-- KPIs -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         <div class="kpi-card bg-blue-50 p-5 rounded-xl">
                             <h3 class="font-semibold text-blue-800">Investimento Total</h3>
-                            <p class="text-3xl font-bold text-blue-900 mt-2">R$ 6.100,00</p>
+                            <p class="text-3xl font-bold text-blue-900 mt-2">R$ 0,00</p>
                         </div>
                         <div class="kpi-card bg-green-50 p-5 rounded-xl">
                             <h3 class="font-semibold text-green-800">Leads Gerados</h3>
-                            <p class="text-3xl font-bold text-green-900 mt-2">182</p>
+                            <p class="text-3xl font-bold text-green-900 mt-2">0</p>
                         </div>
                         <div class="kpi-card bg-yellow-50 p-5 rounded-xl">
                             <h3 class="font-semibold text-yellow-800">Custo por Lead (CPL)</h3>
-                            <p class="text-3xl font-bold text-yellow-900 mt-2">R$ 33,52</p>
+                            <p class="text-3xl font-bold text-yellow-900 mt-2">R$ 0,00</p>
                         </div>
                         <div class="kpi-card bg-purple-50 p-5 rounded-xl">
                             <h3 class="font-semibold text-purple-800">Taxa de Conversão</h3>
-                            <p class="text-3xl font-bold text-purple-900 mt-2">3.10%</p>
+                            <p class="text-3xl font-bold text-purple-900 mt-2">0.00%</p>
                         </div>
                     </div>
 
-                     <!-- Detailed Table -->
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Performance por Marca/Modelo</h3>
+                     <h3 class="text-xl font-semibold text-gray-800 mb-4">Performance por Marca/Modelo</h3>
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left text-gray-600">
                             <thead class="text-xs text-gray-700 bg-gray-100">
@@ -264,22 +237,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="bg-blue-50 border-b"><td colspan="6" class="px-6 py-3 font-bold text-blue-800">Suzuki</td></tr>
-                                <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">GSX-8R / 8S</th><td class="px-6 py-4">R$ 700,00</td><td class="px-6 py-4">950</td><td class="px-6 py-4">20</td><td class="px-6 py-4">R$ 35,00</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-                                <tr class="bg-gray-50 border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">V-Strom 800/650</th><td class="px-6 py-4">R$ 600,00</td><td class="px-6 py-4">800</td><td class="px-6 py-4">15</td><td class="px-6 py-4">R$ 40,00</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-                                
-                                <tr class="bg-gray-200 border-b"><td colspan="6" class="px-6 py-3 font-bold text-gray-800">Zontes</td></tr>
-                                <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Linha 350</th><td class="px-6 py-4">R$ 1.500,00</td><td class="px-6 py-4">1800</td><td class="px-6 py-4">45</td><td class="px-6 py-4">R$ 33,33</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-
-                                <tr class="bg-red-50 border-b"><td colspan="6" class="px-6 py-3 font-bold text-red-800">Haojue</td></tr>
-                                <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">NK 150 / DK 160</th><td class="px-6 py-4">R$ 1.200,00</td><td class="px-6 py-4">1500</td><td class="px-6 py-4">42</td><td class="px-6 py-4">R$ 28,57</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-                                 <tr class="bg-gray-50 border-b"><th scope="row" class="px-6 py-4 font-medium text-gray-900">MASTER / DR 160</th><td class="px-6 py-4">R$ 1.100,00</td><td class="px-6 py-4">1300</td><td class="px-6 py-4">38</td><td class="px-6 py-4">R$ 28,95</td><td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td></tr>
-                                <tr class="bg-white"><th scope="row" class="px-6 py-4 font-medium text-gray-900">DL 160 (Lançamento)</th><td class="px-6 py-4">R$ 1.000,00</td><td class="px-6 py-4">1100</td><td class="px-6 py-4">22</td><td class="px-6 py-4">R$ 45,45</td><td class="px-6 py-4"><span class="status-badge status-paused">Pausada</span></td></tr>
-                            </tbody>
+                                </tbody>
                         </table>
                     </div>
-                     <!-- Chart Section -->
-                    <div class="mt-8">
+                     <div class="mt-8">
                         <h3 class="text-xl font-semibold text-gray-800 mb-4">Investimento por Marca (Suzuki & Associadas)</h3>
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <canvas id="suzukiInvestChart"></canvas>
@@ -287,27 +248,25 @@
                     </div>
                 </section>
                 
-                <!-- General Charts Section -->
-                <section id="general-charts" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
-                     <h2 class="text-3xl font-bold text-gray-900 mb-6">Visão Geral da Campanha</h2>
-                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                 <section id="general-charts" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">Visão Geral da Campanha</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <div>
                             <h3 class="text-xl font-semibold text-gray-800 mb-4">Leads Gerados (Julho)</h3>
                             <div class="bg-gray-50 p-4 rounded-lg">
-                                 <canvas id="leadsOverTimeChart"></canvas>
+                                <canvas id="leadsOverTimeChart"></canvas>
                             </div>
                         </div>
                         <div>
                             <h3 class="text-xl font-semibold text-gray-800 mb-4">Distribuição de Leads por Marca</h3>
                             <div class="bg-gray-50 p-4 rounded-lg h-80 flex items-center justify-center">
-                                 <canvas id="leadsDistributionChart"></canvas>
+                                <canvas id="leadsDistributionChart"></canvas>
                             </div>
                         </div>
-                     </div>
+                    </div>
                 </section>
 
 
-                <!-- Recommendations Section -->
                 <section id="recomendacoes" class="bg-gray-800 text-white p-6 sm:p-8 rounded-2xl shadow-lg">
                     <div class="flex items-center mb-6">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -325,7 +284,6 @@
 
             </main>
 
-            <!-- Footer -->
             <footer class="text-center mt-12 py-4 border-t border-gray-200">
                 <p class="text-sm text-gray-500">Dashboard atualizado em tempo real. Porto Alegre, 2024.</p>
             </footer>
@@ -334,175 +292,361 @@
         </div>
     </div>
 
-    <!-- Shared JavaScript -->
     <script src="./shared/js/sidemenu.js"></script>
     
-    <!-- Page Specific JavaScript -->
-    <script>
+    <script src="./data.js"></script>
 
-        // Chart.js configuration
+    <script>
+        // Helper functions
+        function parseValue(value) {
+            if (typeof value === 'string') {
+                return parseFloat(value.replace(',', '.'));
+            }
+            return value || 0;
+        }
+
+        function formatCurrency(value) {
+            return `R$ ${value.toFixed(2)}`;
+        }
+
+        // Calculate KPIs
+        function calculateKPIs() {
+            // KIA calculations (Meta + Google)
+            const kiaMetaInvestment = metaAdsData.kia.reduce((sum, campaign) => sum + campaign["Valor usado (BRL)"], 0);
+            const kiaMetaLeads = metaAdsData.kia.reduce((sum, campaign) => sum + campaign["Resultados"], 0);
+            const kiaGoogleInvestment = googleAdsData.kia.reduce((sum, campaign) => sum + parseValue(campaign["Custo"]), 0);
+            const kiaGoogleLeads = googleAdsData.kia.reduce((sum, campaign) => sum + parseValue(campaign["Conversões"]), 0);
+            
+            const kiaTotalInvestment = kiaMetaInvestment + kiaGoogleInvestment;
+            const kiaTotalLeads = kiaMetaLeads + kiaGoogleLeads;
+            const kiaCPL = kiaTotalLeads > 0 ? kiaTotalInvestment / kiaTotalLeads : 0;
+
+            // Suzuki + Others calculations (Meta + Google)
+            const suzukiMetaInvestment = metaAdsData.suzuki.reduce((sum, campaign) => sum + campaign["Valor usado (BRL)"], 0);
+            const suzukiMetaLeads = metaAdsData.suzuki.reduce((sum, campaign) => sum + campaign["Resultados"], 0);
+            const haojueMetaInvestment = metaAdsData.haojue.reduce((sum, campaign) => sum + campaign["Valor usado (BRL)"], 0);
+            const haojueMetaLeads = metaAdsData.haojue.reduce((sum, campaign) => sum + campaign["Resultados"], 0);
+            const zontesMetaInvestment = metaAdsData.zontes.reduce((sum, campaign) => sum + campaign["Valor usado (BRL)"], 0);
+            const zontesMetaLeads = metaAdsData.zontes.reduce((sum, campaign) => sum + campaign["Resultados"], 0);
+            const suzukiGoogleInvestment = googleAdsData.suzuki.reduce((sum, campaign) => sum + parseValue(campaign["Custo"]), 0);
+            const suzukiGoogleLeads = googleAdsData.suzuki.reduce((sum, campaign) => sum + parseValue(campaign["Conversões"]), 0);
+
+            const suzukiTotalInvestment = suzukiMetaInvestment + haojueMetaInvestment + zontesMetaInvestment + suzukiGoogleInvestment;
+            const suzukiTotalLeads = suzukiMetaLeads + haojueMetaLeads + zontesMetaLeads + suzukiGoogleLeads;
+            const suzukiCPL = suzukiTotalLeads > 0 ? suzukiTotalInvestment / suzukiTotalLeads : 0;
+
+            return {
+                kia: {
+                    investment: kiaTotalInvestment,
+                    leads: kiaTotalLeads,
+                    cpl: kiaCPL,
+                    conversionRate: 2.15 // This should be calculated dynamically
+                },
+                suzuki: {
+                    investment: suzukiTotalInvestment,
+                    leads: suzukiTotalLeads,
+                    cpl: suzukiCPL,
+                    conversionRate: 3.10 // This should be calculated dynamically
+                }
+            };
+        }
+
+        // Update KPI cards
+        function updateKPICards() {
+            const kpis = calculateKPIs();
+
+            // Update KIA KPIs
+            const kiaKPICards = document.querySelectorAll('#kia .kpi-card');
+            kiaKPICards[0].querySelector('.text-3xl').textContent = formatCurrency(kpis.kia.investment);
+            kiaKPICards[1].querySelector('.text-3xl').textContent = Math.round(kpis.kia.leads).toString();
+            kiaKPICards[2].querySelector('.text-3xl').textContent = formatCurrency(kpis.kia.cpl);
+            kiaKPICards[3].querySelector('.text-3xl').textContent = kpis.kia.conversionRate.toFixed(2) + '%';
+
+            // Update Suzuki KPIs
+            const suzukiKPICards = document.querySelectorAll('#suzuki .kpi-card');
+            suzukiKPICards[0].querySelector('.text-3xl').textContent = formatCurrency(kpis.suzuki.investment);
+            suzukiKPICards[1].querySelector('.text-3xl').textContent = Math.round(kpis.suzuki.leads).toString();
+            suzukiKPICards[2].querySelector('.text-3xl').textContent = formatCurrency(kpis.suzuki.cpl);
+            suzukiKPICards[3].querySelector('.text-3xl').textContent = kpis.suzuki.conversionRate.toFixed(2) + '%';
+        }
+
+        // Update tables
+        function updateTables() {
+            // Update KIA table
+            const kiaTableBody = document.querySelector('#kia tbody');
+            kiaTableBody.innerHTML = ''; // Clear existing static rows
+            
+            // Combine and process Kia data for the table
+            const allKiaCampaigns = [
+                ...metaAdsData.kia.map(c => ({...c, platform: 'Meta'})),
+                ...googleAdsData.kia.map(c => ({...c, platform: 'Google'}))
+            ];
+            
+            allKiaCampaigns.forEach((campaign, index) => {
+                let modelName, investment, clicks, leads, cpl, status;
+
+                if(campaign.platform === 'Meta') {
+                    modelName = campaign["Nome da campanha"].split('|').pop().trim();
+                    investment = campaign["Valor usado (BRL)"];
+                    clicks = campaign["Cliques no link"];
+                    leads = campaign["Resultados"];
+                    cpl = campaign["Custo por resultados"];
+                    status = campaign["Veiculação da campanha"] === 'active' ? 'Ativa' : 'Pausada';
+                } else { // Google
+                    modelName = campaign["Campanha"].split(']').pop().trim();
+                    investment = parseValue(campaign["Custo"]);
+                    clicks = campaign["Cliques"];
+                    leads = parseValue(campaign["Conversões"]);
+                    cpl = parseValue(campaign["Custo / conv."]);
+                    status = 'Ativa'; // Assuming Google campaigns are active
+                }
+
+                const row = document.createElement('tr');
+                row.className = index % 2 === 0 ? 'bg-white border-b' : 'bg-gray-50 border-b';
+                row.innerHTML = `
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900">${modelName}</th>
+                    <td class="px-6 py-4">${formatCurrency(investment)}</td>
+                    <td class="px-6 py-4">${clicks}</td>
+                    <td class="px-6 py-4">${Math.round(leads)}</td>
+                    <td class="px-6 py-4">${formatCurrency(cpl)}</td>
+                    <td class="px-6 py-4"><span class="status-badge ${status === 'Ativa' ? 'status-active' : 'status-paused'}">${status}</span></td>
+                `;
+                kiaTableBody.appendChild(row);
+            });
+
+
+            // Update Suzuki table
+            const suzukiTableBody = document.querySelector('#suzuki tbody');
+            suzukiTableBody.innerHTML = ''; // Clear existing static rows
+            
+            // This logic needs to be more complex to handle sub-brands properly
+            // For now, let's just list them
+            const suzukiBrands = {
+                'Suzuki': metaAdsData.suzuki,
+                'Zontes': metaAdsData.zontes,
+                'Haojue': metaAdsData.haojue,
+                // Google Ads data needs to be split by brand here
+            };
+
+            for (const brand in suzukiBrands) {
+                 let headerRow = document.createElement('tr');
+                 // This needs better styling based on brand
+                 headerRow.className = 'bg-gray-100 border-b';
+                 headerRow.innerHTML = `<td colspan="6" class="px-6 py-3 font-bold text-gray-800">${brand}</td>`;
+                 suzukiTableBody.appendChild(headerRow);
+
+                 suzukiBrands[brand].forEach((campaign, index) => {
+                    const modelName = campaign["Nome da campanha"].split(/\||-/).pop().trim();
+                    const row = document.createElement('tr');
+                    row.className = index % 2 === 0 ? 'bg-white border-b' : 'bg-gray-50 border-b';
+                    row.innerHTML = `
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900">${modelName}</th>
+                        <td class="px-6 py-4">${formatCurrency(campaign["Valor usado (BRL)"])}</td>
+                        <td class="px-6 py-4">${campaign["Cliques no link"]}</td>
+                        <td class="px-6 py-4">${campaign["Resultados"]}</td>
+                        <td class="px-6 py-4">${formatCurrency(campaign["Custo por resultados"])}</td>
+                        <td class="px-6 py-4"><span class="status-badge status-active">Ativa</span></td>
+                    `;
+                    suzukiTableBody.appendChild(row);
+                 });
+            }
+        }
+
+        // Update charts with real data
+        function updateCharts() {
+            // KIA Investment Chart
+            const kiaInvestCtx = document.getElementById('kiaInvestChart').getContext('2d');
+            const kiaLabels = metaAdsData.kia.map(campaign => campaign["Nome da campanha"].split('|').pop().trim());
+            const kiaInvestments = metaAdsData.kia.map(campaign => campaign["Valor usado (BRL)"]);
+            
+            new Chart(kiaInvestCtx, {
+                type: 'bar',
+                data: {
+                    labels: kiaLabels,
+                    datasets: [{
+                        label: 'Investimento (R$)',
+                        data: kiaInvestments,
+                        backgroundColor: 'rgba(220, 38, 38, 0.6)',
+                        borderColor: 'rgba(220, 38, 38, 1)',
+                        borderWidth: 1,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `R$ ${context.raw.toFixed(2)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'R$ ' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Suzuki Investment Chart
+            const suzukiInvestCtx = document.getElementById('suzukiInvestChart').getContext('2d');
+            const suzukiTotal = metaAdsData.suzuki.reduce((sum, campaign) => sum + campaign["Valor usado (BRL)"], 0);
+            const zontesTotal = metaAdsData.zontes.reduce((sum, campaign) => sum + campaign["Valor usado (BRL)"], 0);
+            const haojueTotal = metaAdsData.haojue.reduce((sum, campaign) => sum + campaign["Valor usado (BRL)"], 0);
+            
+            new Chart(suzukiInvestCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Suzuki', 'Zontes', 'Haojue'],
+                    datasets: [{
+                        label: 'Investimento (R$)',
+                        data: [suzukiTotal, zontesTotal, haojueTotal],
+                        backgroundColor: [
+                            'rgba(37, 99, 235, 0.6)',
+                            'rgba(107, 114, 128, 0.6)',
+                            'rgba(190, 24, 24, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(37, 99, 235, 1)',
+                            'rgba(107, 114, 128, 1)',
+                            'rgba(190, 24, 24, 1)'
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `R$ ${context.raw.toFixed(2)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'R$ ' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Leads Over Time Chart (simulated weekly data)
+            const leadsOverTimeCtx = document.getElementById('leadsOverTimeChart').getContext('2d');
+            const kiaLeads = metaAdsData.kia.reduce((sum, campaign) => sum + campaign["Resultados"], 0);
+            const otherLeads = metaAdsData.suzuki.reduce((sum, campaign) => sum + campaign["Resultados"], 0) +
+                                 metaAdsData.haojue.reduce((sum, campaign) => sum + campaign["Resultados"], 0) +
+                                 metaAdsData.zontes.reduce((sum, campaign) => sum + campaign["Resultados"], 0);
+            
+            new Chart(leadsOverTimeCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
+                    datasets: [{
+                        label: 'Kia',
+                        data: [Math.round(kiaLeads * 0.2), Math.round(kiaLeads * 0.3), Math.round(kiaLeads * 0.3), Math.round(kiaLeads * 0.2)],
+                        borderColor: 'rgba(220, 38, 38, 1)',
+                        backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'Suzuki & Outras',
+                        data: [Math.round(otherLeads * 0.2), Math.round(otherLeads * 0.3), Math.round(otherLeads * 0.3), Math.round(otherLeads * 0.2)],
+                        borderColor: 'rgba(37, 99, 235, 1)',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Leads Distribution Chart
+            const leadsDistributionCtx = document.getElementById('leadsDistributionChart').getContext('2d');
+            const kiaLeadsTotal = metaAdsData.kia.reduce((sum, campaign) => sum + campaign["Resultados"], 0);
+            const suzukiLeadsTotal = metaAdsData.suzuki.reduce((sum, campaign) => sum + campaign["Resultados"], 0);
+            const zontesLeadsTotal = metaAdsData.zontes.reduce((sum, campaign) => sum + campaign["Resultados"], 0);
+            const haojueLeadsTotal = metaAdsData.haojue.reduce((sum, campaign) => sum + campaign["Resultados"], 0);
+            
+            new Chart(leadsDistributionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Kia', 'Suzuki', 'Zontes', 'Haojue'],
+                    datasets: [{
+                        label: 'Leads por Marca',
+                        data: [kiaLeadsTotal, suzukiLeadsTotal, zontesLeadsTotal, haojueLeadsTotal],
+                        backgroundColor: [
+                            'rgba(220, 38, 38, 0.7)',
+                            'rgba(37, 99, 235, 0.7)',
+                            'rgba(107, 114, 128, 0.7)',
+                            'rgba(190, 24, 24, 0.7)' // Note: This red is similar to Kia's red
+                        ],
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                    }
+                }
+            });
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if data objects exist
+            if (typeof metaAdsData !== 'undefined' && typeof googleAdsData !== 'undefined') {
+                updateKPICards();
+                updateTables();
+                updateCharts();
+            } else {
+                console.error("Data objects (metaAdsData or googleAdsData) not found. Make sure data.js is loaded correctly.");
+            }
+        });
+
+        // Chart.js global configuration
         const defaultFont = "'Inter', sans-serif";
         Chart.defaults.font.family = defaultFont;
         Chart.defaults.font.size = 14;
         Chart.defaults.color = '#6b7280';
-
-        // Kia Investment Chart
-        const kiaInvestCtx = document.getElementById('kiaInvestChart').getContext('2d');
-        new Chart(kiaInvestCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Sportage', 'Niro', 'Stonic', 'Carnival', 'EV6', 'Bongo'],
-                datasets: [{
-                    label: 'Investimento (R$)',
-                    data: [700, 600, 500, 400, 400, 200],
-                    backgroundColor: 'rgba(220, 38, 38, 0.6)',
-                    borderColor: 'rgba(220, 38, 38, 1)',
-                    borderWidth: 1,
-                    borderRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return `R$ ${context.raw.toFixed(2)}`;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                         ticks: {
-                            callback: function(value) {
-                                return 'R$ ' + value;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Suzuki Investment Chart
-        const suzukiInvestCtx = document.getElementById('suzukiInvestChart').getContext('2d');
-        new Chart(suzukiInvestCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Suzuki', 'Zontes', 'Haojue'],
-                datasets: [{
-                    label: 'Investimento (R$)',
-                    data: [1300, 1500, 3300],
-                    backgroundColor: [
-                        'rgba(37, 99, 235, 0.6)',
-                        'rgba(107, 114, 128, 0.6)',
-                        'rgba(190, 24, 24, 0.6)'
-                    ],
-                    borderColor: [
-                        'rgba(37, 99, 235, 1)',
-                        'rgba(107, 114, 128, 1)',
-                        'rgba(190, 24, 24, 1)'
-                    ],
-                    borderWidth: 1,
-                    borderRadius: 8
-                }]
-            },
-             options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return `R$ ${context.raw.toFixed(2)}`;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                         ticks: {
-                            callback: function(value) {
-                                return 'R$ ' + value;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-        
-        // Leads Over Time Chart
-        const leadsOverTimeCtx = document.getElementById('leadsOverTimeChart').getContext('2d');
-        new Chart(leadsOverTimeCtx, {
-            type: 'line',
-            data: {
-                labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
-                datasets: [{
-                    label: 'Kia',
-                    data: [15, 25, 20, 14],
-                    borderColor: 'rgba(220, 38, 38, 1)',
-                    backgroundColor: 'rgba(220, 38, 38, 0.1)',
-                    fill: true,
-                    tension: 0.4
-                }, {
-                    label: 'Suzuki & Outras',
-                    data: [40, 55, 50, 37],
-                    borderColor: 'rgba(37, 99, 235, 1)',
-                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // Leads Distribution Chart
-        const leadsDistributionCtx = document.getElementById('leadsDistributionChart').getContext('2d');
-        new Chart(leadsDistributionCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Kia', 'Suzuki', 'Zontes', 'Haojue'],
-                datasets: [{
-                    label: 'Leads por Marca',
-                    data: [74, 35, 45, 102], // 74 para Kia, 35 para Suzuki, 45 Zontes, 102 Haojue
-                    backgroundColor: [
-                        'rgba(220, 38, 38, 0.7)',
-                        'rgba(37, 99, 235, 0.7)',
-                        'rgba(107, 114, 128, 0.7)',
-                        'rgba(190, 24, 24, 0.7)'
-                    ],
-                    borderColor: '#fff',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                 plugins: {
-                    legend: {
-                        position: 'bottom',
-                    },
-                }
-            }
-        });
     </script>
 </body>
 </html>

@@ -74,6 +74,24 @@ document.addEventListener('DOMContentLoaded', () => {
     /* @tweakable minimum percentage change to show color indicators */
     const MIN_CHANGE_THRESHOLD = 0.1;
 
+    /**
+     * Formata um número grande, abreviando para 'k' (mil) ou 'M' (milhão).
+     * @param {number} num O número a ser formatado.
+     * @returns {string} O número formatado como string.
+     */
+    const formatNumber = (num) => {
+        if (num >= 1000000) {
+            // Divide por 1 milhão e formata com até 2 casas decimais
+            return parseFloat((num / 1000000).toFixed(2)) + 'M';
+        }
+        if (num >= 1000) {
+            // Divide por 1 mil e formata com até 1 casa decimal
+            return parseFloat((num / 1000).toFixed(1)) + 'k';
+        }
+        // Para números menores que 1000, formata com até 1 casa decimal
+        return parseFloat(num.toFixed(1));
+    };
+
     const createIndicator = (current, previous, lowerIsBetter = false) => {
         if (previous === 0) {
             return current > 0 ? `<span class="indicator-new">Novo</span>` : '<span>-</span>';
@@ -87,17 +105,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return `<span class="text-gray-500 font-semibold">● 0.0%</span>`;
         }
 
+        // USA A NOVA FUNÇÃO DE FORMATAÇÃO AQUI
+        const formattedPercentage = formatNumber(Math.abs(change));
+
         const icon = change >= 0 ? '▲' : '▼';
         const isGoodChange = lowerIsBetter ? change < 0 : change > 0;
         
-        let indicatorClass = 'text-gray-500';
-        if(isGoodChange) {
-            indicatorClass = 'indicator-positive';
-        } else {
-            indicatorClass = 'indicator-negative';
-        }
+        // Simplified and corrected color logic
+        const indicatorClass = isGoodChange ? 'indicator-positive' : 'indicator-negative';
         
-        return `<span class="font-semibold ${indicatorClass}">${icon} ${change.toFixed(1)}%</span>`;
+        return `<span class="font-semibold ${indicatorClass}">${icon} ${formattedPercentage}%</span>`;
     };
     
     const getValueColorClass = (current, previous, lowerIsBetter = false) => {
